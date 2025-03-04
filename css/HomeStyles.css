@@ -1,0 +1,366 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+
+
+}
+
+header {
+
+    position: fixed;
+    display: flex;
+    width: 100%;
+    top: 0;
+    left: 0%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px;
+    background-color: #3b3761;
+    height: 100px;
+    z-index: 1000; /* Ensure header stays on top */
+
+
+}
+
+
+header a {
+
+    text-decoration: none;
+    color: white;
+}
+
+body {
+
+    background-image: url(/img/3086.jpg);
+    background-size: cover;
+
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.logo-container img {
+    height: 90px;
+    width: auto;
+    box-shadow: none;
+
+}
+
+.Logo {
+    font-family: "Roboto Condensed", serif;
+    font-synthesis-weight: 500;
+    font-size: 40px;
+    color: #fdfdfd;
+    text-decoration: none;
+    background-color: #3b3761;
+
+
+}
+
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    /* Spacing between nav and login */
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+    /* Spacing between links */
+}
+
+.Login-Btn {
+    font-family: "Roboto Condensed", serif;
+    padding: 9px 23px;
+    background-color: rgb(194, 180, 245);
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    text-decoration: none;
+    color: black;
+
+}
+
+.Login-Btn:hover {
+    background-color: rgb(228, 198, 98);
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-container {
+
+    background-color: inherit;
+    position: relative;
+    width: 650px;
+
+
+}
+
+.searchbar {
+
+    width: 600px;
+    padding: 10px;
+    padding-left: 25px;
+    border: 3px solid rgb(142, 129, 190);
+    /* Proper border */
+    border-radius: 20px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #f5f3ef;
+    outline-color: rgb(142, 129, 190);
+
+}
+
+.search-btn {
+    position: absolute;
+    right: 10px;
+    /* Adjust for proper spacing */
+    top: 50%;
+    /* Moves button to the middle */
+    transform: translateY(-50%);
+    /* Centers it vertically */
+    color: #8d8b9c;
+    border: none;
+    transition: all 0.3s ease;
+    width: 37px;
+    /* Ensures button is round */
+    height: 37px;
+    /* Ensures button is round */
+    right: 3px;
+    font-size: 18px;
+    border-radius: 50%;
+    padding: 8px;
+    background-color: #ebe8d9;
+}
+
+.search-btn:hover {
+    color: rgba(37, 34, 34, 0.863);
+
+}
+
+
+.nav2 {
+    display: flex;
+    position: absolute; /* Place it absolutely */
+    left: 300px; /* Adjust distance from the right */
+    top: 120px; /* Keep margin-top */
+    width: auto; /* Only take necessary width */
+    gap: 20px;
+    padding: 10px;
+}
+
+.nav2 a {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px; /* Adjust size as needed */
+    height: 50px; /* Make it a perfect circle */
+    color: #000000; /* Text/icon color */
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    border-bottom: 3px solid transparent;
+    background-color: #eeedfd;
+    transition: all 0.5s ease-out, opacity 0.5s ease-out;
+    border-radius: 40px;
+}
+
+.nav2 a:hover {
+    border-bottom: 6px solid red;
+}
+
+.nav2 a.active {
+    border-bottom: 3px solid red;
+}
+
+.Category-part{
+
+    width: 70%;
+    margin: auto;
+}
+
+.Recommendation-Container{
+
+    display: flex;
+    position: relative;
+    justify-items: center;
+    justify-content: center;
+    padding: 40px;
+    background-color: rgba(205, 205, 221, 0.8);
+    margin-top: 200px;
+
+
+}
+
+<<<<<<< HEAD
+=======
+#mainImg{
+    width: 800px;
+    height: auto;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.597);
+}
+>>>>>>> 6a36f37 (3/5 2.27)
+
+
+#desc{
+    width: 40%;
+    color: rgba(65, 61, 61, 0.822);
+    text-align: justify;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    letter-spacing: 1px;
+    line-height: 1.5;
+    word-spacing: 5px;
+    margin-left: 20px;
+    background-color: transparent;
+
+
+}
+
+
+#back, #next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.7); /* Light background */
+    padding: 10px;
+    border-radius: 50%;
+}
+
+#back{
+    left: 400px;
+}
+
+#next{
+    right: 400px;
+}
+
+
+.Category-Section {
+
+    display: grid;
+    background-color: rgba(65, 65, 80, 0.8);
+    padding: 45px;
+    margin-top: 30px;
+    color: white;
+    width: 100%;
+
+}
+
+.Category-Section p {
+
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgb(231, 229, 229);
+    margin-bottom: 20px;
+    font-size: 35px;
+
+}
+
+.cat-img {
+
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+<<<<<<< HEAD
+img {
+=======
+#bookImg {
+>>>>>>> 6a36f37 (3/5 2.27)
+
+    width: 200px;
+    height: 300px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.459);
+
+}
+
+.material-symbols-outlined {
+
+    padding: 20px;
+    border: 20px;
+    border-radius: 40px;
+    background-color: rgba(20, 19, 19, 0.459);
+
+}
+
+footer {
+
+    background-color: rgb(255, 248, 248);
+    padding: 25px;
+    width: 100%;
+    text-align: left;
+    margin-top: 20px;
+
+
+
+}
+
+.Bottom-Area {
+    margin: 0;
+    display: flex;
+    /* Enables horizontal layout */
+    align-items: flex-start;
+    /* Aligns items at the top */
+    padding: 20px;
+    flex-wrap: wrap;
+    /* Ensures responsiveness */
+}
+
+
+.Bot1 {
+
+    margin: 0 15px;
+    font-size: 18px;
+    text-align: left;
+    width: 26%;
+
+
+
+}
+
+.Bot1 a {
+    text-decoration: none;
+    line-height: 1.5;
+    color: rgb(34, 198, 248);
+
+
+}
+
+.Bot2 {
+
+
+    width: 30%;
+    border-left: solid rgba(0, 0, 0, 0.562);
+    padding-left: 35px;
+    /* Adjust the value as needed */
+
+
+
+}
+
+.Bot2 p {
+
+    line-height: 1.5;
+
+
+
+}
