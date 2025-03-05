@@ -6,11 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $_title ?? 'Secret Shelf' ?></title>
-<<<<<<< HEAD
-    <link rel="stylesheet" href="css/AdminLoginStyles.css">
-=======
     <link rel="stylesheet" href="../css/AdminLoginStyles.css">
->>>>>>> 6a36f37 (3/5 2.27)
 
     
 

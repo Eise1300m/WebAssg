@@ -69,12 +69,7 @@
 
             <span id="back" class="material-symbols-outlined">arrow_back_ios_new</span>
 
-<<<<<<< HEAD
-            <img id="img" src="../img/image1.jpg" alt="BookCover">
-            <p id="desc">Ichigo Kurosaki never asked for the ability to see ghosts -- he was born with the gift. When his family is attacked by a Hollow -- a malevolent lost soul -- Ichigo becomes a Soul Reaper, dedicating his life to protecting the innocent and helping the tortured spirits themselves find peace.</p>
-=======
             <img id="mainImg" src="../img/Intro3.png" alt="BookCover">
->>>>>>> 6a36f37 (3/5 2.27)
 
             <span id="next" class="material-symbols-outlined">arrow_forward_ios</span>
 
@@ -88,34 +83,11 @@
 
             <div class="Category-Section">
 
-<<<<<<< HEAD
-                <p>Novel</p>
-=======
                 <p>Best-seller</p>
->>>>>>> 6a36f37 (3/5 2.27)
 
                 <div class="cat-img">
 
                     <figure>
-<<<<<<< HEAD
-                        <img src="../img/image1.jpg" title="Bleach">
-                        <figcaption>Bleach</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="../img/image2.jpg">
-                        <figcaption>Hunter</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="../img/image3.jpg">
-                        <figcaption>Full Metal Alchemist</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="../img/image4.jpg">
-                        <figcaption>One Punch Man</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="../img/image5.jpg">
-=======
                         <img id="bookImg" src="../img/image1.jpg" title="Bleach">
                         <figcaption>Bleach</figcaption>
                     </figure>
@@ -133,7 +105,6 @@
                     </figure>
                     <figure>
                         <img id="bookImg" src="../img/image5.jpg">
->>>>>>> 6a36f37 (3/5 2.27)
                         <figcaption>Jujutsu Kaisen</figcaption>
                     </figure>
 
@@ -146,21 +117,12 @@
 
             <div class="Category-Section">
 
-<<<<<<< HEAD
-                <p>Comic</p>
-
-                <div class="cat-img">
-
-                    <img id="img" src="/img/fate1.jpg">
-                    <img id="img" src="/img/fate2.jpg">
-=======
                 <p>What New</p>
 
                 <div class="cat-img">
 
                     <img id="bookImg" src="/img/fate1.jpg">
                     <img id="bookImg" src="/img/fate2.jpg">
->>>>>>> 6a36f37 (3/5 2.27)
                     <span class="material-symbols-outlined">add</span>
 
                 </div>
@@ -170,16 +132,6 @@
 
             <div class="Category-Section">
 
-<<<<<<< HEAD
-                <p>Education</p>
-
-                <div class="cat-img">
-
-                    <img id="img" src="../img/image1.jpg">
-                    <img id="img" src="../img/image2.jpg">
-                    <img id="img" src="../img/image3.jpg">
-                    <img id="img" src="../img/image4.jpg">
-=======
                 <p>Recommendation</p>
 
                 <div class="cat-img">
@@ -188,7 +140,6 @@
                     <img id="bookImg" src="../img/image2.jpg">
                     <img id="bookImg" src="../img/image3.jpg">
                     <img id="bookImg" src="../img/image4.jpg">
->>>>>>> 6a36f37 (3/5 2.27)
                     <span class="material-symbols-outlined">add</span>
 
                 </div>
@@ -196,25 +147,6 @@
 
             </div>
 
-<<<<<<< HEAD
-            <div class="Category-Section">
-
-                <p>Children</p>
-
-                <div class="cat-img">
-
-                    <img id="img" src="/img/image1.jpg">
-                    <img id="img" src="/img/image2.jpg">
-                    <img id="img" src="/img/image3.jpg">
-                    <img id="img" src="/img/image4.jpg">
-                    <span class="material-symbols-outlined">add</span>
-
-                </div>
-
-
-            </div>
-=======
->>>>>>> 6a36f37 (3/5 2.27)
 
         </div>
 

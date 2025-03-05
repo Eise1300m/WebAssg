@@ -1,22 +1,5 @@
 <?php
 
-<<<<<<< HEAD
-require_once("connection.php");
-
-$username = $_POST[CustName]
-$password = $_POST[pswcfm]
-$email = $_POST[emails]
-$email = $_POST[emails]
-$email = $_POST[emails]
-
-
-
-?>
-
-
-
-
-=======
 session_start();
 
 require_once("connection.php");
@@ -62,4 +45,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 $conn->close();
->>>>>>> 6a36f37 (3/5 2.27)
