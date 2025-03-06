@@ -15,11 +15,7 @@ html, body {
 
 body{
 
-<<<<<<< HEAD
-    background-image: url(/img/3086.jpg);
-=======
     background-image: url(../img/3086.jpg);
->>>>>>> 6a36f37 (3/5 2.27)
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

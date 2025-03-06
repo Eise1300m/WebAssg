@@ -5,33 +5,8 @@
     margin: 0;
     padding: 0;
 
-
-
 }
 
-header {
-
-    position: fixed;
-    display: flex;
-    width: 100%;
-    top: 0;
-    left: 0%;
-    align-items: center;
-    justify-content: space-between;
-    padding: 30px;
-    background-color: #3b3761;
-    height: 100px;
-    z-index: 1000; /* Ensure header stays on top */
-
-
-}
-
-
-header a {
-
-    text-decoration: none;
-    color: white;
-}
 
 body {
 
@@ -39,120 +14,6 @@ body {
     background-size: cover;
 
 }
-
-.logo-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-}
-
-.logo-container img {
-    height: 90px;
-    width: auto;
-    box-shadow: none;
-
-}
-
-.Logo {
-    font-family: "Roboto Condensed", serif;
-    font-synthesis-weight: 500;
-    font-size: 40px;
-    color: #fdfdfd;
-    text-decoration: none;
-    background-color: #3b3761;
-
-
-}
-
-
-.nav-container {
-    display: flex;
-    align-items: center;
-    gap: 50px;
-    /* Spacing between nav and login */
-}
-
-nav {
-    display: flex;
-    gap: 20px;
-    /* Spacing between links */
-}
-
-.Login-Btn {
-    font-family: "Roboto Condensed", serif;
-    padding: 9px 23px;
-    background-color: rgb(194, 180, 245);
-    border: none;
-    border-radius: 40px;
-    cursor: pointer;
-    transition: all 0.3s ease 0s;
-    text-decoration: none;
-    color: black;
-
-}
-
-.Login-Btn:hover {
-    background-color: rgb(228, 198, 98);
-}
-
-.nav-container {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.search-container {
-
-    background-color: inherit;
-    position: relative;
-    width: 650px;
-
-
-}
-
-.searchbar {
-
-    width: 600px;
-    padding: 10px;
-    padding-left: 25px;
-    border: 3px solid rgb(142, 129, 190);
-    /* Proper border */
-    border-radius: 20px;
-    font-size: 16px;
-    box-sizing: border-box;
-    background-color: #f5f3ef;
-    outline-color: rgb(142, 129, 190);
-
-}
-
-.search-btn {
-    position: absolute;
-    right: 10px;
-    /* Adjust for proper spacing */
-    top: 50%;
-    /* Moves button to the middle */
-    transform: translateY(-50%);
-    /* Centers it vertically */
-    color: #8d8b9c;
-    border: none;
-    transition: all 0.3s ease;
-    width: 37px;
-    /* Ensures button is round */
-    height: 37px;
-    /* Ensures button is round */
-    right: 3px;
-    font-size: 18px;
-    border-radius: 50%;
-    padding: 8px;
-    background-color: #ebe8d9;
-}
-
-.search-btn:hover {
-    color: rgba(37, 34, 34, 0.863);
-
-}
-
 
 .nav2 {
     display: flex;
@@ -174,15 +35,21 @@ nav {
     color: #000000; /* Text/icon color */
     text-align: center;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 21px;
     border-bottom: 3px solid transparent;
     background-color: #eeedfd;
     transition: all 0.5s ease-out, opacity 0.5s ease-out;
     border-radius: 40px;
+    font-family: "Big Shoulders", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    color: #373737;
+
+
 }
 
 .nav2 a:hover {
-    border-bottom: 6px solid red;
+    background-color: rgb(207, 178, 92);
 }
 
 .nav2 a.active {

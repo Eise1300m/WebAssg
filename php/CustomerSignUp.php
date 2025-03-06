@@ -5,58 +5,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $_title ?? 'Secret Shelf' ?></title>
+    <title><?= $_title ?? 'SignUp' ?></title>
+    <link rel="stylesheet" href="../css/SidenavStyles.css">
     <link rel="stylesheet" href="../css/CustomerSignUpStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/validation.js"></script>
 
 </head>
 
-<body> 
-    <div class="login-container">
+<body>
 
+    <div class="container">
 
-            <h1 style="font-size: 25px;">User Sign Up</h1>
+        <h1>User Sign Up</h1>
 
-            <form id="signupForm" method="post" action="CustomerSignUpProcess.php">
+        <form id="signupForm" method="post" action="CustomerSignUpProcess.php">
 
-                <label for="CustName">Username</label>
-                <input type="text" id="CustName" name="CustName" >
-                <span class="error-message" id="nameError"></span>
+            <label for="CustName">Username</label>
+            <input type="text" id="CustName" name="CustName" placeholder="Enter Username">
+            <span class="error-message" id="nameError"></span>
 
-                <label for="psw">Password</label>
-                <input type="password" id="psw" name="psw" >
-                <span class="error-message" id="pswError"></span>
+            <label for="psw">Password</label>
+            <input type="password" id="psw" name="psw" placeholder="Enter passsword">
+            <span class="error-message" id="pswError"></span>
 
-                <label for="pswcfm">Password Confirmation</label>
-                <input type="password" id="pswcfm" name="pswcfm" >
-                <span class="error-message" id="pswcfmError"></span>
+            <label for="pswcfm">Password Confirmation</label>
+            <input type="password" id="pswcfm" name="pswcfm" placeholder="Comfirm your password">
+            <span class="error-message" id="pswcfmError"></span>
 
-                <label for="emails">Email</label>
-                <input type="text" id="emails" placeholder="Exp: Secret@example.com" name="emails" >
-                <span class="error-message" id="emailError"></span>
+            <label for="emails">Email</label>
+            <input type="text" id="emails" placeholder="Exp: Secret@example.com" name="emails">
+            <span class="error-message" id="emailError"></span>
 
-                <label for="tel" > No Tel.</label>
-                <input type="text" id="tel" name="tel" placeholder = "Exp: 01XXXXXXXX" >
-                <span class="error-message" id="telError"></span>
+            <label for="tel"> No Tel.</label>
+            <input type="text" id="tel" name="tel" placeholder="Exp: 01XXXXXXXX">
+            <span class="error-message" id="telError"></span>
 
-                <button type="submit">Submit</button>
+            <button type="submit">Submit</button>
 
-            </form>
-
-        </div>
+        </form>
 
     </div>
 
 </body>
 
 
-
-
 </html>
-
-
-
-
-
-

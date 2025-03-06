@@ -1,41 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>  
+<head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $_title ?? 'Secret Shelf' ?></title>
-    <link rel="stylesheet" href="../css/AdminLoginStyles.css">
-
-    
+    <link rel="stylesheet" href="../css/StaffLoginStyles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,537;1,537&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
 
 </head>
 
-<body> 
-    <div class="login-container">
+<?php
 
-        <div class="login-left">
+require_once("navbar.php");
 
-            <h1 >User Login</h1>
+?>
 
+<body>
+
+    <div class="container">
+
+        <h1>Login</h1>
+
+        <form method="POST" action="CustomerLoginProcess.php">
+
+            <div class="input-container">
+                <input type="text" id="CustID" name="CustUname" placeholder="Username..">
+                <span class="material-symbols-outlined">person</span><br>
+            </div>
+
+            <div class="input-container">
+                <input type="password" id="Custpwd" name="Custpwd" placeholder="Password..">
+                <span class="material-symbols-outlined">lock</span>
+            </div>
+
+            <button type="submit" class="submit-but">Login</button>
+
+        </form>
+
+
+        <div class="signup-container">
+            <p>Don't have an account ?</p>
+            <a href="CustomerSignUp.php">Register</a>
         </div>
 
-        <div class="login-right">
-
-            <form method="POST" action="CustomerLoginProcess.php">
-                <label for="CustUname">Username:</label><br>
-                <input type="text" id="CustID" name="CustUname" ><br><br>
-                <label for="Adpwd">Password:</label><br>
-                <input type="password" id="Custpwd" name="Custpwd"><br><br>
-                <button type="submit">Login</button>
-            </form>
-
-        </div>
+    </div>
 
     </div>
 
 </body>
 
 </html>
-

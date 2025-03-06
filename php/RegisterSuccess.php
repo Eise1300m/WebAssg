@@ -17,7 +17,7 @@
         <p>Sign Up Successful</p>
         <p>Click here to login</p><br>
 
-        <button onclick="window.location.href='UserMain.php';">Login</button>
+        <button onclick="window.location.href='UserMain.php';" id = "login-btn">Login</button>
     </div>
     </body>
 

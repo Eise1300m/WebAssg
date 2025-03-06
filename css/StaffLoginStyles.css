@@ -1,0 +1,147 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url(../img/3086.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 0;
+}
+
+.container {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers vertically */
+    align-items: center; /* Centers horizontally */
+    padding: 20px;
+    width: 500px;
+    height: 500px;
+    background-color: rgba(255, 255, 255, 0.624);
+    border-radius: 40px;
+    border: 1px solid white;
+}
+
+h1 {
+
+    text-align: center;
+    font-size: 40px;
+    color: #ffffff;
+    margin-bottom: 50px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+}
+
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 22px;
+}
+
+input {
+
+    padding: 15px;
+    border: 2px solid #f0e8e8c5;
+    border-radius: 40px;
+    width: 100%;
+    outline: none;
+    background-color: transparent;
+}
+
+input::placeholder {
+    color: #ffffff;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+}
+
+.signup-container {
+    display: flex;
+    justify-content: center; /* Even spacing */
+    align-items: center; /* Align items vertically */
+    gap: 10px;
+    font-size: 18px;
+}
+
+.signup-container a {
+    font-weight: bold;
+    color: #761cb7; /* Adjust color */
+    transition: color 0.3s ease;
+}
+
+.signup-container p {
+    color: #2e2e2e;
+}
+.signup-container a:hover {
+    color: #a020f0; /* Hover effect */
+}
+
+.input-container {
+    position: relative;
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+/* Style input */
+.input-container input {
+    width: 80%;
+    padding: 12px 40px 12px 15px; /* Adjust padding for right icon */
+    border-radius: 40px;
+    border: 2px solid #fffefec5;
+    outline: none;
+    font-size: 16px;
+}
+
+/* Position the icon on the right side */
+.input-container .material-symbols-outlined {
+    position: absolute;
+    right: 15px; /* Adjust icon position */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #ffffff; /* Adjust icon color */
+}
+
+/* Optional: Improve input focus styling */
+.input-container input:focus {
+    border-color: #4954cf;
+}
+
+
+.submit-but {
+
+    margin-top: 30px;
+    margin-bottom: 10px;
+    padding: 12px;
+    width: 60%;
+    border-radius: 40px;
+    border: 2px solid rgb(162, 167, 168);
+    background-color: rgb(255, 255, 255);
+    justify-self: center;
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.775);
+}
+
+.error-message {
+    font-size: 0.9em;
+    margin-top: 5px;
+    padding: 3px 8px;
+    background: #ffe6e6;
+    border-left: 3px solid #e74c3c;
+    display: inline-block;
+}
+
+.error-message:empty {
+    background: transparent;
+    border-left-color: transparent;
+    padding: 0;
+    margin-top: 0;
+}
+
+

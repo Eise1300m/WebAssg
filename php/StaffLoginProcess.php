@@ -1,8 +1,8 @@
 <?php
 require_once("connection.php");
 
-$username = $_POST['AdUname'];
-$password = $_POST['Adpwd'];
+$username = $_POST['StaffUname'];
+$password = $_POST['Staffpwd'];
 if (isset($username) && isset($password)) {
 
 
@@ -27,13 +27,13 @@ if (isset($username) && isset($password)) {
        else{
         // echo "Invalid Login credentials"; 
         echo("<script>alert('Invalid Login Credentials');
-        window.location.href='AdminLogin.php';</script>");
+        window.location.href='StaffLogin.php';</script>");
        }
 
     } else {
         //echo "Invalid Login credentials";
         echo("<script>alert('Invalid Login Credentials');
-        window.location.href='AdminLogin.php';</script>");
+        window.location.href='StaffLogin.php';</script>");
     }
 
     $stmt->close();

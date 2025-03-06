@@ -13,40 +13,14 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/HomeScript.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&family=Roboto+Condensed:wght@344&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
 </head>
 
 
 
 <header>
-
-    <a href="HomePage.php" class="logo-link">
-        <div class="logo-container">
-            <img src="../img/Logo.png" alt="Logo">
-            <h1>Secret Shelf</h1>
-        </div>
-    </a>
-
-    <div class="search-container">
-
-        <input type="text" class="searchbar" placeholder="Search..." id="searchInput">
-
-        <button id="searchButton" class="search-btn">
-            <i class="fa fa-search" aria-hidden="true"></i>
-        </button>
-
-    </div>
-
-    <div class="nav-container">
-        <nav>
-            <a href="#Edu">Contact Us</a>
-            <a href="#Edu">Promo</a>
-            <a href="#Edu">Help</a>
-        </nav>
-
-        <a href="CustomerLogin.php" class="Login-Btn">Login / Sign up</a>
-    </div>
-
+    <?php include_once("navbar.php"); ?>
 </header>
 
 <body>

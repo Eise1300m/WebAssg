@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+}
+
+.navbar {
+
+    position: fixed;
+    display: flex;
+    width: 100%;
+    top: 0;
+    left: 0%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px;
+    background-color: #3b3761cd;
+    height: 100px;
+
+}
+
+
+.navbar a {
+
+    text-decoration: none;
+    color: #ffffff;
+    font-family: "Roboto Condensed", sans-serif;
+
+}
+
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 30px;
+    font-weight: 650;
+    font-style: normal;
+
+}
+
+.logo-container img {
+    height: 90px;
+    width: auto;
+    box-shadow: none;
+
+}
+
+.Logo {
+
+    color: #fdfdfd;
+    text-decoration: none;
+    background-color: #3b3761;
+
+
+}
+
+nav {
+    display: flex;
+    gap: 25px;
+    /* Spacing between links */
+}
+
+.Login-Btn {
+    font-family: "Roboto Condensed", serif;
+    padding: 9px 25px;
+    background-color: rgb(194, 180, 245);
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    text-decoration: none;
+    color: black;    
+
+}
+
+.Login-Btn:hover {
+    background-color: rgb(234, 185, 39);
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    font-size: 20px;
+}
+
+.navtittle a{
+    color: rgba(232, 232, 232, 0.742);
+}
+
+.navtittle a:hover{
+    color: hsl(0, 0%, 100%);
+}
+
+
+.search-container {
+
+    background-color: inherit;
+    position: relative;
+    width: 650px;
+
+
+}
+
+.searchbar {
+
+    width: 600px;
+    padding: 10px;
+    padding-left: 25px;
+    border: 3px solid rgb(142, 129, 190);
+    border-radius: 20px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    outline-color: rgb(142, 129, 190);
+
+}
+
+.search-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8d8b9c;
+    border: none;
+    transition: all 0.3s ease;
+    width: 37px;
+    height: 37px;
+    right: 3px;
+    font-size: 18px;
+    border-radius: 50%;
+    padding: 8px;
+    background-color: #f1f1f1;
+}
+
+.search-btn:hover {
+    color: rgba(37, 34, 34, 0.863);
+
+}
+
