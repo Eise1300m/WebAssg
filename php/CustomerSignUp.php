@@ -5,13 +5,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $_title ?? 'SignUp' ?></title>
+    <title><?= $_title ?? 'Secret Shelf / SignUp' ?></title>
     <link rel="stylesheet" href="../css/SidenavStyles.css">
     <link rel="stylesheet" href="../css/CustomerSignUpStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/validation.js"></script>
 
 </head>
+
+<?php
+
+require_once("navbar.php");
+
+?>
 
 <body>
 
@@ -41,7 +47,7 @@
             <input type="text" id="tel" name="tel" placeholder="Exp: 01XXXXXXXX">
             <span class="error-message" id="telError"></span>
 
-            <button type="submit">Submit</button>
+            <button type="submit" class="submit-but">Submit</button>
 
         </form>
 
