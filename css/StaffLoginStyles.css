@@ -103,7 +103,7 @@ form {
 
 /* Optional: Improve input focus styling */
 .input-container input:focus {
-    border-color: #4954cf;
+    border-color:rgb(53, 46, 109);
 }
 
 
@@ -118,7 +118,14 @@ form {
     background-color: rgb(255, 255, 255);
     justify-self: center;
     font-size: 18px;
-    color: rgba(0, 0, 0, 0.775);
+    color: rgb(0, 0, 0);
+    transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
+
+}
+
+.submit-but:hover{
+    background-color: rgb(53, 46, 109);
+    color: rgb(255, 255, 255);
 }
 
 .error-message {

@@ -13,14 +13,17 @@ body {
 
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centers vertically */
-    align-items: center; /* Centers horizontally */
+    justify-content: flex-start; /* Start content from the top */
+    min-height: auto; /* Allow dynamic height */
+    align-items: center;
     padding: 20px;
-    width: 500px;
+    width: 550px;
     height: auto;
     background-color: rgba(255, 255, 255, 0.624);
     border-radius: 40px;
     border: 1px solid white;
+    overflow: hidden; /* Prevents content from overflowing */
+
 }
 
 h1 {
@@ -33,21 +36,13 @@ h1 {
     font-weight: 600;
 }
 
-
-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    font-size: 22px;
-}
-
 input {
 
     padding: 15px;
-    border: 2px solid #f0e8e8c5;
+    border: 2px solid #ffffff;
     border-radius: 40px;
     width: 100%;
-    outline: none;
-    background-color: transparent;
+    background-color:transparent;
 }
 
 input::placeholder {
@@ -58,59 +53,78 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 80%;
+    width: 100%;
 }
 
 .signup-container {
     display: flex;
-    justify-content: center; /* Even spacing */
-    align-items: center; /* Align items vertically */
+    justify-content: center;
+    /* Even spacing */
+    align-items: center;
+    /* Align items vertically */
     gap: 10px;
     font-size: 18px;
 }
 
 .signup-container a {
     font-weight: bold;
-    color: #761cb7; /* Adjust color */
+    color: #761cb7;
+    /* Adjust color */
     transition: color 0.3s ease;
 }
 
 .signup-container p {
     color: #2e2e2e;
 }
+
 .signup-container a:hover {
-    color: #a020f0; /* Hover effect */
+    color: #a020f0;
+    /* Hover effect */
 }
 
 .input-container {
     position: relative;
-    width: 80%;
-    margin-bottom: 20px;
-}
+    width: 85%;
+    margin-bottom: 20px; /* Adjusted to give space for error messages */
+    display: flex;
+    flex-direction: column; /* Stack input and error message vertically */
+    align-items: flex-start; /* Align items to the left */}
 
 /* Style input */
 .input-container input {
-    width: 80%;
-    padding: 12px 40px 12px 15px; /* Adjust padding for right icon */
+    width: 100%;
+    padding: 12px 15px 12px 15px; /* Normal padding */
     border-radius: 40px;
-    border: 2px solid #fffefec5;
+    border: 2px solid #ffffff;
     outline: none;
     font-size: 16px;
+    box-sizing: border-box;
+}
+
+.input-container input:focus {
+    border-color:rgb(53, 46, 109);
+}
+
+.input-container .icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #ffffff;
+    pointer-events: none; /* Ensures it doesn't interfere with input */
 }
 
 /* Position the icon on the right side */
 .input-container .material-symbols-outlined {
     position: absolute;
-    right: 15px; /* Adjust icon position */
+    right: 15px;
+    /* Adjust icon position */
     top: 50%;
     transform: translateY(-50%);
     font-size: 20px;
-    color: #ffffff; /* Adjust icon color */
-}
-
-/* Optional: Improve input focus styling */
-.input-container input:focus {
-    border-color: #4954cf;
+    color: #ffffff;
+    /* Adjust icon color */
 }
 
 
@@ -125,16 +139,24 @@ form {
     background-color: rgb(255, 255, 255);
     justify-self: center;
     font-size: 18px;
-    color: rgba(0, 0, 0, 0.775);
+    color: rgb(0, 0, 0);
+    transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
+
 }
 
+.submit-but:hover{
+    background-color: rgb(53, 46, 109);
+    color: rgb(255, 255, 255);
+}
+
+
 .error-message {
-    font-size: 0.9em;
+    font-size: 0.85em;
     margin-top: 5px;
-    padding: 3px 8px;
     background: #ffe6e6;
     border-left: 3px solid #e74c3c;
-    display: inline-block;
+
+
 }
 
 .error-message:empty {
@@ -143,5 +165,3 @@ form {
     padding: 0;
     margin-top: 0;
 }
-
-

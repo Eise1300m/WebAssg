@@ -29,6 +29,9 @@ $(document).ready(function () {
         if ($("#psw").val() !== $("#pswcfm").val()) {
             $("#pswcfmError").text("Passwords do not match!");
             isValid = false;
+        }else if ($("#pswcfm").val() === ""){
+            $("#pswcfmError").text("Comfimation password is required!");
+            isValid = false;
         }
 
         if (email === "") {
