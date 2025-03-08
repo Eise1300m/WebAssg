@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&family=Poppins:wght@100..900&family=Roboto+Condensed:wght@537&display=swap');
+
+
+
 body {
     display: flex;
     justify-content: center;
@@ -123,9 +128,10 @@ form {
 
 }
 
-.submit-but:hover{
+.submit-but:hover {
     background-color: rgb(53, 46, 109);
     color: rgb(255, 255, 255);
+    cursor: pointer;
 }
 
 .error-message {
@@ -143,5 +149,4 @@ form {
     padding: 0;
     margin-top: 0;
 }
-
 

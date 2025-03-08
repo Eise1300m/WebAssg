@@ -25,9 +25,11 @@
 
                 <label for="StaffID">Staff Username:</label><br>
                 <input type="text" id="StaffID" name="StaffUname" placeholder="Username"><br><br>
+                <span class="error-message" id="wrongID"></span>
 
                 <label for="Staffpwd">Password:</label><br>
                 <input type="password" id="Staffpwd" name="Staffpwd" placeholder="Password"><br><br>
+                <span class="error-message" id="wrongPSW"></span>
 
                 <button type="submit" class="login-btn">Login</button>
 

@@ -1,5 +1,22 @@
-
 $(document).ready(function () {
+
+    $("input").on("input", function () {
+        $(this).next(".error-message").text(""); // Clears only the associated error message
+    });
+
+    $("#psw,#pswcfm").on("input", function () {
+        let password = $("#psw").val();
+        let comfirmPassword = $("#pswcfm").val();
+
+        if (comfirmPassword !== "" && password !== comfirmPassword) {
+            $("#pswcfmError").text("Passwords do not match !");
+        } else {
+            $("#pswcfmError").text("");
+        }
+
+    });
+
+
 
 
     $("#signupForm").submit(function (event) {
@@ -8,7 +25,7 @@ $(document).ready(function () {
         let phoneNumber = $("#tel").val().trim();
         let phonePattern = /^01\d{8,9}$/; // Malaysian phone number format
         let email = $("#emails").val().trim();
-        
+
         let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Standard email format
         let isValid = true;
 
@@ -29,7 +46,7 @@ $(document).ready(function () {
         if ($("#psw").val() !== $("#pswcfm").val()) {
             $("#pswcfmError").text("Passwords do not match!");
             isValid = false;
-        }else if ($("#pswcfm").val() === ""){
+        } else if ($("#pswcfm").val() === "") {
             $("#pswcfmError").text("Comfimation password is required!");
             isValid = false;
         }
@@ -58,5 +75,8 @@ $(document).ready(function () {
             console.log("Form validation passed");
         }
     });
-})
+
+
+
+});
 

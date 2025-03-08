@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+
 
 .navbar {
 
@@ -13,8 +15,9 @@
     align-items: center;
     justify-content: space-between;
     padding: 30px;
-    background-color: #3b3761cd;
+    background-color: #3b3761;
     height: 100px;
+    z-index: 100;
 
 }
 

@@ -1,16 +1,8 @@
 <?php
 
-$name_host = "localhost";
-$username = "root";
-$password = "";
-$database = "secretshelf";
-
-
-$conn = mysqli_connect($name_host,$username,$password,$database);
-
-if (!$conn){
+$_db = new PDO('mysql:dbname=secretshelf','root','',[PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,]);
+if (!$_db){
     echo"Could not connected!";
 }
-
 
 ?>

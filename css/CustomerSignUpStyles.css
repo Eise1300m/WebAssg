@@ -11,7 +11,9 @@ body {
 
 .container {
 
-    display: flex;
+    margin-top: 100px; /* Adjust this value as needed */
+
+    display: flex;    
     flex-direction: column;
     justify-content: flex-start; /* Start content from the top */
     min-height: auto; /* Allow dynamic height */
@@ -56,36 +58,11 @@ form {
     width: 100%;
 }
 
-.signup-container {
-    display: flex;
-    justify-content: center;
-    /* Even spacing */
-    align-items: center;
-    /* Align items vertically */
-    gap: 10px;
-    font-size: 18px;
-}
-
-.signup-container a {
-    font-weight: bold;
-    color: #761cb7;
-    /* Adjust color */
-    transition: color 0.3s ease;
-}
-
-.signup-container p {
-    color: #2e2e2e;
-}
-
-.signup-container a:hover {
-    color: #a020f0;
-    /* Hover effect */
-}
-
 .input-container {
     position: relative;
     width: 85%;
-    margin-bottom: 20px; /* Adjusted to give space for error messages */
+    height: 50px;
+    margin-bottom: 25px; /* Adjusted to give space for error messages */
     display: flex;
     flex-direction: column; /* Stack input and error message vertically */
     align-items: flex-start; /* Align items to the left */}
@@ -99,6 +76,7 @@ form {
     outline: none;
     font-size: 16px;
     box-sizing: border-box;
+    color: #ffffff;
 }
 
 .input-container input:focus {
@@ -127,6 +105,31 @@ form {
     /* Adjust icon color */
 }
 
+.signup-container {
+    display: flex;
+    justify-content: center;
+    /* Even spacing */
+    align-items: center;
+    /* Align items vertically */
+    gap: 10px;
+    font-size: 18px;
+}
+
+.signup-container a {
+    font-weight: bold;
+    color: #761cb7;
+    /* Adjust color */
+    transition: color 0.3s ease;
+}
+
+.signup-container p {
+    color: #2e2e2e;
+}
+
+.signup-container a:hover {
+    color: #a020f0;
+    /* Hover effect */
+}
 
 .submit-but {
 
@@ -151,10 +154,11 @@ form {
 
 
 .error-message {
-    font-size: 0.85em;
+    font-size: 15px;
     margin-top: 5px;
     background: #ffe6e6;
     border-left: 3px solid #e74c3c;
+    /* color: red; */
 
 
 }

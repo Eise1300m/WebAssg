@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&family=Roboto+Condensed:ital,wght@0,537;1,537&display=swap');
 
 * {
     box-sizing: border-box;
@@ -10,7 +12,7 @@
 
 body {
 
-    background-image: url(/img/3086.jpg);
+    background-image: url(../img/3086.jpg);
     background-size: cover;
 
 }
@@ -220,7 +222,5 @@ footer {
 .Bot2 p {
 
     line-height: 1.5;
-
-
 
 }
