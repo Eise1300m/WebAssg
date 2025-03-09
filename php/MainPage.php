@@ -11,17 +11,22 @@
 </head>
 
 <?php
-require_once("navbar.php");
+require_once("navbar2.php");
 ?>
-
 
 <body>
 
+
     <div class="container">
 
+    
         <p>User main</p>
 
+
     </div>
+
+
+
 </body>
 
 

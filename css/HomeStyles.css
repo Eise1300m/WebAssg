@@ -2,39 +2,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
 @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&family=Roboto+Condensed:ital,wght@0,537;1,537&display=swap');
 
+/* Base styles optimized for desktop */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-
 }
-
 
 body {
-
     background-image: url(../img/3086.jpg);
     background-size: cover;
-
+    background-attachment: fixed;
 }
 
+/* Desktop-optimized nav */
 .nav2 {
     display: flex;
-    position: absolute; /* Place it absolutely */
-    left: 300px; /* Adjust distance from the right */
-    top: 120px; /* Keep margin-top */
-    width: auto; /* Only take necessary width */
+    position: absolute;
+    left: 300px;
+    top: 120px;
+    width: auto;
     gap: 20px;
     padding: 10px;
 }
 
 .nav2 a {
-
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 120px; /* Adjust size as needed */
-    height: 50px; /* Make it a perfect circle */
-    color: #000000; /* Text/icon color */
+    width: 120px;
+    height: 50px;
     text-align: center;
     text-decoration: none;
     font-size: 21px;
@@ -46,8 +43,6 @@ body {
     font-weight: 500;
     font-style: normal;
     color: #373737;
-
-
 }
 
 .nav2 a:hover {
@@ -58,14 +53,8 @@ body {
     border-bottom: 3px solid red;
 }
 
-.Category-part{
-
-    width: 70%;
-    margin: auto;
-}
-
-.Recommendation-Container{
-
+/* Desktop-optimized recommendation container */
+.Recommendation-Container {
     display: flex;
     position: relative;
     justify-items: center;
@@ -73,18 +62,15 @@ body {
     padding: 40px;
     background-color: rgba(205, 205, 221, 0.8);
     margin-top: 200px;
-
-
 }
 
-#mainImg{
+#mainImg {
     width: 800px;
     height: auto;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.597);
 }
 
-
-#desc{
+#desc {
     width: 40%;
     color: rgba(65, 61, 61, 0.822);
     text-align: justify;
@@ -94,133 +80,151 @@ body {
     word-spacing: 5px;
     margin-left: 20px;
     background-color: transparent;
-
-
 }
-
 
 #back, #next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.7); /* Light background */
+    background: rgba(255, 255, 255, 0.7);
     padding: 10px;
     border-radius: 50%;
+    cursor: pointer;
 }
 
-#back{
-    left: 400px;
+#back {
+    left: 15%;
 }
 
-#next{
-    right: 400px;
+#next {
+    right: 15%;
 }
 
+/* Desktop-optimized category sections */
+.Category-part {
+    width: 80%;
+    min-width: 800px;  /* Prevents it from shrinking too much */
+    max-width: 1400px; /* Ensures it does not become too wide */
+    margin: auto;
+}
 
 .Category-Section {
-
-    display: grid;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
     background-color: rgba(65, 65, 80, 0.8);
     padding: 45px;
     margin-top: 30px;
     color: white;
     width: 100%;
-
 }
 
 .Category-Section p {
-
     padding-bottom: 10px;
     border-bottom: 2px solid rgb(231, 229, 229);
     margin-bottom: 20px;
     font-size: 35px;
-
 }
 
 .cat-img {
-
     display: flex;
-    gap: 30px;
+    flex-wrap: wrap;  /* Ensures images do not get squeezed */
+    gap: 40px;
     align-items: center;
     justify-content: center;
-
 }
 
 
 #bookImg {
-
     width: 200px;
     height: 300px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.459);
+}
 
+figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+figcaption {
+    margin-top: 8px;
+    text-align: center;
+    color: white;
 }
 
 .material-symbols-outlined {
-
     padding: 20px;
-    border: 20px;
     border-radius: 40px;
     background-color: rgba(20, 19, 19, 0.459);
-
+    cursor: pointer;
 }
 
+/* Desktop-optimized footer */
 footer {
-
     background-color: rgb(255, 248, 248);
     padding: 25px;
     width: 100%;
     text-align: left;
     margin-top: 20px;
-
-
-
 }
 
 .Bottom-Area {
     margin: 0;
     display: flex;
-    /* Enables horizontal layout */
     align-items: flex-start;
-    /* Aligns items at the top */
     padding: 20px;
-    flex-wrap: wrap;
-    /* Ensures responsiveness */
 }
 
-
 .Bot1 {
-
     margin: 0 15px;
     font-size: 18px;
     text-align: left;
     width: 26%;
-
-
-
 }
 
 .Bot1 a {
     text-decoration: none;
     line-height: 1.5;
     color: rgb(34, 198, 248);
-
-
 }
 
 .Bot2 {
-
-
     width: 30%;
     border-left: solid rgba(0, 0, 0, 0.562);
     padding-left: 35px;
-    /* Adjust the value as needed */
-
-
-
 }
 
 .Bot2 p {
-
     line-height: 1.5;
+}
 
+@media (max-width: 768px) {
+
+    .Category-part {
+        width: 90%;
+        min-width: 500px;
+    }
+
+    .Category-Section {
+        padding: 30px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cat-img {
+        gap: 20px;
+    }
+
+    #bookImg {
+        width: 150px;
+        height: 220px;
+    }
+    
+    #back {
+        left: 2%;
+    }
+
+    #next {
+        right: 2%;
+    }
 }

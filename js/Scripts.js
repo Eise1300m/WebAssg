@@ -71,47 +71,12 @@ $(document).ready(function () {
     });
 
     /** =================== LOGIN VALIDATION =================== **/
-    let loginForm = document.getElementById("login-form");
 
-    if (loginForm) {
-        loginForm.addEventListener("submit", function (event) {
-            let username = document.getElementById("CustID").value.trim();
-            let password = document.getElementById("Custpwd").value.trim();
-            let userError = document.getElementById("user-error");
-            let passError = document.getElementById("pass-error");
-            let isValid = true;
-
-            userError.textContent = "";
-            passError.textContent = "";
-
-            if (username === "") {
-                userError.textContent = "Please enter your username.";
-                userError.style.display = "block";
-                isValid = false;
-            }
-
-            if (password === "") {
-                passError.textContent = "Password cannot be empty.";
-                passError.style.display = "block";
-                isValid = false;
-            }
-
-            if (!isValid) {
-                event.preventDefault();
-            }
-        });
-    }
+    // Initialize forms and handle login redirect
+    initForms();
+    handleLoginRedirect();
 
     /** =================== SEARCH FUNCTIONALITY =================== **/
-    function performSearch() {
-        let query = $("#searchInput").val();
-        if (query) {
-            alert("Searching for: " + query);
-        } else {
-            alert("Please enter a search query.");
-        }
-    }
-
     $("#searchButton").click(function () {
         performSearch();
     });
@@ -172,13 +137,88 @@ $(document).ready(function () {
 
     startAutoSlide();
 
+    /** =================== HELPER FUNCTIONS =================== **/
 
-    /*** REDIRECT AFTER LOGIN ***/
-    let loginMessage = $("#loginMessage").text().trim();
-    if (loginMessage) {
-        setTimeout(function () {
-            window.location.href = sessionStorage.getItem("redirect_url") || "CustomerLogin.php";
-        }, 3000);
+    // Form initialization function
+    function initForms() {
+        let form = document.getElementById("login-form");
+
+        if (form) { // Ensure form exists before adding event listener
+            form.addEventListener("submit", function (event) {
+                let username = document.getElementById("CustID").value.trim();
+                let password = document.getElementById("Custpwd").value.trim();
+                let userError = document.getElementById("user-error");
+                let passError = document.getElementById("pass-error");
+                let isValid = true;
+
+                // Reset previous error messages
+                userError.textContent = "";
+                passError.textContent = "";
+
+                if (username === "") {
+                    userError.textContent = "Please enter your username.";
+                    userError.style.display = "block";
+                    isValid = false;
+                }
+
+                if (password === "") {
+                    passError.textContent = "Password cannot be empty.";
+                    passError.style.display = "block";
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    event.preventDefault(); // Stop form submission if validation fails
+                }
+            });
+        }
+    }
+
+    // Login redirect function
+    function handleLoginRedirect() {
+        let loginMessage = $("#loginMessage").text().trim();
+        let redirectUrl = $("#redirectUrl").text().trim();
+
+        if (loginMessage !== "") {
+            console.log("Redirecting to:", redirectUrl);
+
+            // Prevent multiple executions
+            $("#loginMessage").text(loginMessage); // Keep the message visible
+
+            setTimeout(function () {
+                window.location.href = redirectUrl || "MainPage.php";
+            }, 3000);
+        }
+    }
+
+    /** =================== ERROR AND REDIRECT HANDLING =================== **/
+    
+    // Handle login redirect using data attributes (new method)
+    const redirectElement = document.getElementById('redirectUrl');
+    if (redirectElement && redirectElement.hasAttribute('data-url')) {
+        const redirectUrl = redirectElement.getAttribute('data-url');
+        console.log("Redirecting to:", redirectUrl);
+        
+        setTimeout(function() {
+            window.location.href = redirectUrl;
+        }, 2000);
     }
     
+    // Handle floating error messages
+    if ($("#floating-error").length > 0) {
+        setTimeout(function() {
+            $("#floating-error").fadeOut("slow", function() {
+                $(this).remove();
+            });
+        }, 3000); // Hide after 3 seconds
+    }
+    // Search function
+    function performSearch() {
+        let query = $("#searchInput").val();
+        if (query) {
+            alert("Searching for: " + query);
+        } else {
+            alert("Please enter a search query.");
+        }
+    }
 });

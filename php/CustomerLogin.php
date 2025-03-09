@@ -12,15 +12,21 @@ unset($_SESSION['error_message']);
     <title><?= isset($_title) ? $_title : 'Secret Shelf / Login' ?></title>
     <link rel="stylesheet" href="../css/LoginStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&family=Poppins:wght@100..900&family=Roboto+Condensed:wght@537&display=swap" rel="stylesheet">
+    <script src="../js/Scripts.js"></script>
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
 </head>
 
 <?php include 'navbar.php'; ?>
 
+<?php if (!empty($error_message)): ?>
+    <div id="floating-error" class="floating-error"><?= htmlspecialchars($error_message) ?></div>
+<?php endif; ?>
+
 <body>
     <div class="container">
+
         <h1>Login</h1>
+        
         <form method="POST" action="CustomerLoginProcess.php" id="login-form" novalidate> 
 
             <div class="input-container">

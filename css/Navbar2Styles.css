@@ -43,7 +43,7 @@
 }
 
 .logo-container img {
-    height: 90px;
+    height: 80px;
     width: auto;
     box-shadow: none;
 
@@ -55,13 +55,12 @@
     text-decoration: none;
     background-color: #3b3761;
 
-
 }
 
 nav {
     display: flex;
     gap: 25px;
-    /* Spacing between links */
+    
 }
 
 .Login-Btn {
@@ -146,85 +145,72 @@ nav {
 
 }
 
-@media (max-width: 1200px) {
-    .search-container {
-        width: 450px;
-    }
-    
-    .searchbar {
-        width: 450px;
-    }
-    
-    .nav-container {
-        gap: 30px;
-    }
-    
-    .navbar {
-        padding: 30px 20px;
-    }
+/* Add these styles to your existing NavbarStyles.css file */
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-/* Small screens */
-@media (max-width: 992px) {
-    .navbar {
-        padding: 25px 15px;
-        height: auto;
-        min-height: 80px;
-    }
-    
-    .search-container {
-        width: 350px;
-    }
-    
-    .searchbar {
-        width: 350px;
-        padding: 8px;
-        padding-left: 15px;
-    }
-    
-    .nav-container {
-        gap: 20px;
-    }
-    
-    .logo-container {
-        font-size: 24px;
-    }
-    
-    .logo-container img {
-        height: 70px;
-    }
-    
-    .navtittle {
-        font-size: 18px;
-    }
-    
-    /* Ensure Login button maintains shape */
-    .Login-Btn {
-        padding: 8px 20px;
-        white-space: nowrap;
-        min-width: 120px;
-        text-align: center;
-    }
+.cart-btn {
+    position: relative;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    padding: 6px;
+    transition: color 0.3s;
+    margin-right: 25px; /* Shift cart to the left */
+
 }
 
-@media (max-width: 480px) {
-    .nav-container {
-        flex-direction: column;
-        gap: 15px;
-        align-items: center;
+.cart-btn:hover {
+    color: #ffffff;
+}
+
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff6b6b;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-btn {
+    background-color: #8585f4;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 20px;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.profile-btn:hover {
+    background-color: #5252ff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .user-actions {
+        gap: 10px;
     }
     
-    nav {
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-    }
-    
-    .Login-Btn {
-        margin-top: 10px;
-    }
-    
-    .navbar {
-        padding-bottom: 20px;
+    .logout-btn {
+        padding: 6px 12px;
+        font-size: 14px;
     }
 }

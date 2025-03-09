@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($pageTitle)? $pagetitle : 'Secret Shelf' ?></title>
     <link rel="stylesheet" href="../css/HomeStyles.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <link rel="stylesheet" href="../css/base.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/HomeScript.js"></script>
+    <script src="../js/Scripts.js"></script>
+    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
 
 
 </head>
@@ -16,7 +17,6 @@
 
 
 <?php
-
 include 'navbar.php';
 ?>
 

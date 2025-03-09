@@ -12,16 +12,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user && $password === $user['CustomerPassword']) {
+        // Login successful
         $_SESSION['user_name'] = $user['CustUsername'];
-        $_SESSION['login_message'] = "Login Successful! Redirecting to the main page...";
-        $_SESSION['redirect_url'] = "MainPage.php"; // Redirect to the main page
+        $_SESSION['login_message'] = "Login Successful! Redirecting to main page...";
+        $_SESSION['redirect_url'] = "MainPage.php";
+        header("Location: LoginStatus.php");
+        exit;
     } else {
-        $_SESSION['login_message'] = "Invalid Username or Password! Redirecting back to login...";
-        $_SESSION['redirect_url'] = "CustomerLogin.php"; // Redirect back to login
+        // Login failed - set error message for login page
+        $_SESSION['error_message'] = "Invalid login credentials";
+        header("Location: CustomerLogin.php");
+        exit;
     }
-
-    // Redirect to the Login Status page
-    header("Location: LoginStatus.php");
-    exit;
 }
 ?>
