@@ -1,43 +1,59 @@
-<head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/HomeScript.js"></script>
-    
-</head>
+<?php session_start();
+$login = isset($_SESSION['user_name']);
+?>
 
 
 <div class="navbar">
 
-<a href="index.php" class="logo-link">
-    <div class="logo-container">
-        <img src="../img/Logo.png" alt="Logo">
-        <p>Secret Shelf</p>
+    <a href="index.php" class="logo-link">
+        <div class="logo-container">
+            <img src="../img/Logo.png" alt="Logo">
+            <p>Secret Shelf</p>
+        </div>
+    </a>
+
+    <div class="search-container">
+
+        <input type="text" class="searchbar" placeholder="Search..." id="searchInput">
+
+        <button id="searchButton" class="search-btn">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+
     </div>
-</a>
 
-<div class="search-container">
+    <div class="nav-container">
 
-    <input type="text" class="searchbar" placeholder="Search..." id="searchInput">
+        <nav class="navtittle">
+            <a href="#Edu">Contact Us</a>
+            <a href="#Edu">Promo</a>
+            <a href="#Edu">Help</a>
+        </nav>
 
-    <button id="searchButton" class="search-btn">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </button>
+        <?php if ($login) {
+        ?>
+            <div class="user-actions">
+                <a href="cart.php" class="cart-btn">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    <?php if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0): ?>
+                        <span class="cart-count"><?= count($_SESSION['cart']) ?></span>
+                    <?php endif; ?>
+                </a>
 
-</div>
+                <?php include 'ProfileMenu.php'; ?>
+                <script src="../js/Scripts.js" ></script>
 
-<div class="nav-container">
+            </div>
+        <?php
+        } else {
+        ?>
+            <a href="CustomerLogin.php" class="Login-Btn">Login / Sign up</a>
+        <?php
+        }
+        ?>
 
-    <nav class="navtittle">
-        <a href="#Edu">Contact Us</a>
-        <a href="#Edu">Promo</a>
-        <a href="#Edu">Help</a>
-    </nav>
 
-    <a href="CustomerLogin.php" class="Login-Btn" >Login / Sign up</a>
 
-</div>
+    </div>
 
 </div>
