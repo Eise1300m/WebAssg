@@ -29,8 +29,6 @@
             <?php if (isset($_SESSION['user_name'])): ?>
                 <a href="edit_profile.php"><i class="fa fa-user-circle" aria-hidden="true"></i> Edit Profile</a>
                 <a href="order_history.php"><i class="fa fa-history" aria-hidden="true"></i> Order History</a>
-                <a href="my_wishlist.php"><i class="fa fa-heart" aria-hidden="true"></i> My Wishlist</a>
-                <a href="my_subscriptions.php"><i class="fa fa-bookmark" aria-hidden="true"></i> My Subscriptions</a>
                 <a href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
             <?php else: ?>
                 <a href="CustomerLogin.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>

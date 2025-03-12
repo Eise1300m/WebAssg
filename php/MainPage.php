@@ -21,6 +21,8 @@ try {
     <link href="../css/MainPage.css" rel="stylesheet">
     <title><?= $_title ?? 'Secret Shelf' ?></title>
     <link rel="stylesheet" href="../css/NavbarStyles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 
 </head>
