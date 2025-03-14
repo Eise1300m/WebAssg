@@ -12,10 +12,11 @@
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
 </head>
 
-<?php include_once 'navbar.php';
 
+<?php include_once 'navbar.php';
 $error_message = $_SESSION['error_message'] ?? '';
-unset($_SESSION['error_message']); ?>
+unset($_SESSION['error_message']); 
+?>
 
 <?php if (!empty($error_message)): ?>
     <div id="floating-error" class="floating-error"><?= htmlspecialchars($error_message) ?></div>

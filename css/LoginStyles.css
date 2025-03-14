@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
 @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&family=Poppins:wght@100..900&family=Roboto+Condensed:wght@537&display=swap');
 
-
-
 body {
     display: flex;
     justify-content: center;
@@ -12,14 +10,22 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     z-index: 0;
+    overflow-y: hidden;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
 }
 
 .container {
-
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centers vertically */
-    align-items: center; /* Centers horizontally */
+    justify-content: center; 
+    align-items: center; 
     padding: 20px;
     width: 500px;
     height: auto;
@@ -28,8 +34,19 @@ body {
     border: 1px solid white;
 }
 
-h1 {
+/* Responsive for large screens */
+@media screen and (min-width: 1024px) {
+    .wrapper {
+        justify-content: flex-end; /* Pushes the container to the right */
+        padding-right: 150px; /* Adjust for positioning */
+    }
 
+    .container {
+        margin: 0;
+    }
+}
+
+h1 {
     text-align: center;
     font-size: 40px;
     color: #ffffff;
@@ -39,7 +56,6 @@ h1 {
 }
 
 input {
-
     padding: 15px;
     border: 2px solid #f0e8e8c5;
     border-radius: 40px;
@@ -61,65 +77,60 @@ form {
 
 .signup-container {
     display: flex;
-    justify-content: center; /* Even spacing */
-    align-items: center; /* Align items vertically */
+    justify-content: center;
+    align-items: center;
     gap: 10px;
     font-size: 18px;
 }
 
 .signup-container a {
     font-weight: bold;
-    color: #761cb7; /* Adjust color */
+    color: #761cb7; 
     transition: color 0.3s ease;
 }
 
 .signup-container p {
     color: #2e2e2e;
 }
+
 .signup-container a:hover {
-    color: #a020f0; /* Hover effect */
+    color: #a020f0; 
 }
 
 .input-container {
     display: flex;    
     flex-direction: column;
-    justify-content: flex-start; /* Start content from the top */
+    justify-content: flex-start; 
     height: auto;
     position: relative;
     width: 80%;
     margin-bottom: 20px;
 }
 
-/* Style input */
 .input-container input {
-
     width: 80%;
-    padding: 12px 40px 12px 15px; /* Adjust padding for right icon */
+    padding: 12px 40px 12px 15px;
     border-radius: 40px;
     border: 2px solid #fffefec5;
     outline: none;
     font-size: 16px;
 }
 
-/* Position the icon on the right side */
 .input-container .material-symbols-outlined {
     position: absolute;
-    right: 15px; /* Adjust icon position */
+    right: 15px;
     top: 24px;
     transform: translateY(-50%);
     font-size: 20px;
-    pointer-events: none; /* Ensures it doesn't interfere with input */
-    color: #ffffff; /* Adjust icon color */
+    pointer-events: none;
+    color: #ffffff;
 }
 
-/* Optional: Improve input focus styling */
 .input-container input:focus {
-    border-color:rgb(53, 46, 109);
+    border-color: rgb(53, 46, 109);
 }
-
 
 .submit-but {
-
     margin-top: 30px;
     margin-bottom: 10px;
     padding: 12px;
@@ -131,7 +142,6 @@ form {
     font-size: 18px;
     color: rgb(0, 0, 0);
     transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
-
 }
 
 .submit-but:hover {
@@ -159,22 +169,20 @@ form {
 
 /* Floating Error Message Animation */
 .floating-error {
-
     position: fixed;
-    top: 150px;
+    top: 325px;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(250, 89, 89, 0.841);
     color: white;
-    padding: 20px 15px;
+    padding: 25px 20px;
     border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     z-index: 1000;
     text-align: center;
     max-width: 80%;
     animation: fadeInOut 4s ease-in-out;
-    font-size: 20px;
-
+    font-size: 30px;
 }
 
 @keyframes fadeInOut {
@@ -183,4 +191,3 @@ form {
     80% { opacity: 1; }
     100% { opacity: 0; display: none; }
 }
-

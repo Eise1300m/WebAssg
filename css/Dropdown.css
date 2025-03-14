@@ -5,9 +5,8 @@
     font-family: Arial, sans-serif;
 }
 
-body {
+.wrapbox {
     display: flex;
-    min-height: 100vh;
 }
 
 .sidebar {

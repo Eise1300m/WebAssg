@@ -33,15 +33,14 @@ $login = isset($_SESSION['user_name']);
         <?php if ($login) {
         ?>
             <div class="user-actions">
-                <a href="cart.php" class="cart-btn">
+                <a href="Cart.php" class="cart-btn">
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    <?php if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0): ?>
-                        <span class="cart-count"><?= count($_SESSION['cart']) ?></span>
-                    <?php endif; ?>
+                    <span class="cart-count"><?= isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?></span>
+                </a>
                 </a>
 
                 <?php include 'ProfileMenu.php'; ?>
-                <script src="../js/Scripts.js" ></script>
+                <script src="../js/Scripts.js"></script>
 
             </div>
         <?php

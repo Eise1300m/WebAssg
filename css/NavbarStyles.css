@@ -67,7 +67,7 @@ nav {
 .Login-Btn {
     font-family: "Roboto Condensed", serif;
     padding: 9px 25px;
-    background-color: rgb(194, 180, 245);
+    background-color: #c0bdee;
     border: none;
     border-radius: 40px;
     cursor: pointer;
@@ -78,7 +78,7 @@ nav {
 }
 
 .Login-Btn:hover {
-    background-color: rgb(234, 185, 39);
+    background-color: rgb(228, 187, 63);
 }
 
 .nav-container {
@@ -146,6 +146,131 @@ nav {
 
 }
 
+.user-actions {
+    display: flex;
+    align-items: center;
+}
+
+.cart-btn {
+    position: relative;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    padding: 15px;  /* Reduced padding */
+    border-radius: 50%;
+    transition: color 0.3s, background-color 0.3s;
+    margin-right: 10px;
+    background-color: #8585f4;
+    width: 40px;  /* Fixed width */
+    height: 40px;  /* Fixed height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-btn:hover {
+    background-color: #5252ff;
+    color: #ffffff;
+}
+
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff6b6b;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-icon {
+
+    background-color: #8585f4;
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 20px;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+
+}
+
+.profile-icon:hover {
+    background-color: #5252ff;
+}
+
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+    margin-left: 15px;
+}
+
+
+.profile-icon:hover {
+    background-color: #ffffff;
+    color: #333;
+}
+
+.profile-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    min-width: 220px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1000;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.profile-header {
+    background-color: #6a5acd;
+    color: white;
+    padding: 10px 15px;
+    font-weight: bold;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.profile-menu-items {
+    padding: 5px 0;
+}
+
+.profile-menu-items a {
+    color: #333;
+    padding: 12px 15px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.2s;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.profile-menu-items a i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.profile-menu-items a:hover {
+    background-color: #f0f0f0;
+    color: #6a5acd;
+}
+
+.show {
+    display: block;
+}
 
 
 @media (max-width: 1200px) {

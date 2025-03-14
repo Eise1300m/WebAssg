@@ -8,7 +8,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/Scripts.js"></script>
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
-    <link rel="stylesheet" href="../css/Navbar2Styles.css">
+    <link rel="stylesheet" href="../css/NavbarStyles.css">
 
 
 </head>

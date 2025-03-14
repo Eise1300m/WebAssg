@@ -16,7 +16,7 @@
 
         <div class="Bot2">
 
-            <h3>Contact Us</h3>
+            <h3 style="font-size: 25px;">Contact Us</h3>
 
             <p> Monday to Saturday: 9:00am to 6:00 </p>
             <p> (Lunch break: 1:00pm to 2:00pm) </p>
@@ -31,9 +31,3 @@
 
 
 </footer>
-
-
-
-</body>++
-
-</html>
