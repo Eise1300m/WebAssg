@@ -7,6 +7,7 @@ $(document).ready(function () {
             data: { book_id: book_id },
             success: function (response) {
                 alert(response);
+                updateCartCount();
             },
             error: function () {
                 alert("Error adding to cart");
@@ -24,63 +25,70 @@ $(document).ready(function () {
         });
     }
 
-
-        // Also update when the "Add to Cart" button is clicked
-        $(".cart-but").click(function () {
-            updateCartCount();
-        })
-
-    
-        $(".quantity").on("change", function () {
-            let bookId = $(this).data("id");
-            let quantity = $(this).val();
-    
-            $.ajax({
-                url: "UpdateCart.php",
-                method: "POST",
-                data: { book_id: bookId, quantity: quantity },
-                success: function (response) {
-                    let data = JSON.parse(response);
-                    if (data.status === "success") {
-                        location.reload(); // Refresh cart page to reflect changes
-                    }
-                }
-            });
+    // Calculate cart total
+    function calculateTotal() {
+        let total = 0;
+        $('.quantity').each(function() {
+            const price = parseFloat($(this).data('price'));
+            const quantity = parseInt($(this).val());
+            total += price * quantity;
         });
-    
-        // Remove item from cart
-        $(".quantity").on("change", function () {
-            let bookId = $(this).data("id");
-            let quantity = $(this).val();
-    
-            $.ajax({
-                url: "UpdateCart.php",
-                method: "POST",
-                data: { book_id: bookId, quantity: quantity },
-                dataType: "json",
-                success: function (response) {
-                    if (response.status === "success") {
-                        location.reload(); // Reload cart page to show new quantity
-                    }
-                }
-            });
-        });
-    
-        // Remove item from cart
-        $(".remove-item").on("click", function () {
-            let bookId = $(this).data("id");
-    
-            $.ajax({
-                url: "UpdateCart.php",
-                method: "POST",
-                data: { book_id: bookId, quantity: 0 }, // Setting quantity to 0 removes item
-                dataType: "json",
-                success: function (response) {
-                    if (response.status === "success") {
-                        location.reload();
-                    }
-                }
-            });
-        });
+        $('#cart-total').text('RM' + total.toFixed(2));
+    }
 
+    // Update item total
+    function updateItemTotal(input) {
+        const price = parseFloat($(input).data('price'));
+        const quantity = parseInt($(input).val());
+        const total = price * quantity;
+        $(input).closest('tr').find('.item-total').text('RM' + total.toFixed(2));
+    }
+
+    // Handle quantity change
+    $('.quantity').on('change', function() {
+        const bookId = $(this).data('id');
+        const quantity = $(this).val();
+        const input = $(this);
+
+        $.ajax({
+            url: "UpdateCart.php",
+            method: "POST",
+            data: { book_id: bookId, quantity: quantity },
+            dataType: "json",
+            success: function(response) {
+                if (response.status === "success") {
+                    updateItemTotal(input);
+                    calculateTotal();
+                    updateCartCount();
+                }
+            }
+        });
+    });
+
+    // Handle remove item
+    $('.remove-item').on('click', function() {
+        const bookId = $(this).data('id');
+        const row = $(this).closest('tr');
+
+        $.ajax({
+            url: "UpdateCart.php",
+            method: "POST",
+            data: { book_id: bookId, quantity: 0 },
+            dataType: "json",
+            success: function(response) {
+                if (response.status === "success") {
+                    row.fadeOut(300, function() {
+                        $(this).remove();
+                        calculateTotal();
+                        updateCartCount();
+                        
+                        // Check if cart is empty
+                        if ($('tbody tr').length === 0) {
+                            $('#cart-container').html('<p>Your cart is empty.</p>');
+                        }
+                    });
+                }
+            }
+        });
+    });
 });

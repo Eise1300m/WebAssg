@@ -14,8 +14,11 @@
 
 
 <?php include_once 'navbar.php';
+
 $error_message = $_SESSION['error_message'] ?? '';
 unset($_SESSION['error_message']); 
+
+
 ?>
 
 <?php if (!empty($error_message)): ?>
@@ -27,16 +30,16 @@ unset($_SESSION['error_message']);
 
         <h1>Login</h1>
 
-        <form method="POST" action="CustomerLoginProcess.php" id="login-form" novalidate>
+        <form method="POST" action="UserLoginProcess.php" id="login-form" novalidate>
 
             <div class="input-container">
-                <input type="text" id="CustID" name="CustUname" placeholder="Username..">
+                <input type="text" id="UserID" name="Username" placeholder="Username..">
                 <span class="material-symbols-outlined">person</span>
                 <small class="error-message" id="user-error"></small>
             </div>
 
             <div class="input-container">
-                <input type="password" id="Custpwd" name="Custpwd" placeholder="Password..">
+                <input type="password" id="Userpwd" name="Userpwd" placeholder="Password..">
                 <span class="material-symbols-outlined">lock</span>
                 <small class="error-message" id="pass-error"></small>
             </div>
@@ -46,7 +49,7 @@ unset($_SESSION['error_message']);
 
         <div class="signup-container">
             <p>Don't have an account?</p>
-            <a href="CustomerSignUp.php">Register</a>
+            <a href="UserSignUp.php">Register</a>
         </div>
     </div>
 

@@ -28,10 +28,20 @@
                 <a href="#Edu">Children</a>
             </div>
 
-            <div class="Recommendation-Container">
-                <span id="back" class="material-symbols-outlined">arrow_back_ios_new</span>
-                <img id="mainImg" src="../img/Intro3.png" alt="Featured Book">
-                <span id="next" class="material-symbols-outlined">arrow_forward_ios</span>
+            <div class="slider-wrapper">
+                <div class="Recommendation-Container">
+                    <button id="back" class="slider-btn" aria-label="Previous slide">
+                        <img src="../upload/icon/arrowback.png" alt="Previous" class="arrow-icon">
+                    </button>
+                    
+                    <div class="slider-content">
+                        <img id="mainImg" src="../img/Intro3.png" alt="Featured Book">
+                    </div>
+                    
+                    <button id="next" class="slider-btn" aria-label="Next slide">
+                        <img src="../upload/icon/arrowfoward.png" alt="Next" class="arrow-icon">
+                    </button>
+                </div>
             </div>
         </div>
 

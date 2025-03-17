@@ -156,7 +156,7 @@ form {
     padding: 3px 6px;
     width: 180px;
     background: #ffe6e6;
-    border-left: 3px solid #e74c3c;
+    border-left: 3px solid #f34f3d;
     display: inline-block;
 }
 
@@ -170,10 +170,10 @@ form {
 /* Floating Error Message Animation */
 .floating-error {
     position: fixed;
-    top: 325px;
+    top: 225px;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(250, 89, 89, 0.841);
+    background-color: rgb(245, 100, 100);
     color: white;
     padding: 25px 20px;
     border-radius: 20px;

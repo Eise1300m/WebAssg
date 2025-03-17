@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    margin: 0;
 }
 
 
@@ -31,7 +32,7 @@ body {
 
 .wrap-container {
 
-    margin: 120px auto;
+    margin: 120px auto 0 auto;
     flex: 1;  /* Expands to push footer down */
     display: flex;
     flex-direction: column;
@@ -39,7 +40,7 @@ body {
     justify-content: center;
     width: 1600px;
     height: 80%;
-    background-color: #464242;
+    background-color: #c0bdee9f;
 }
 
 .book-container {

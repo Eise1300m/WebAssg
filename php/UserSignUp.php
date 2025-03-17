@@ -1,3 +1,32 @@
+<?php
+if(session_status() == PHP_SESSION_NONE){
+    session_start();
+}
+
+$errors = $_SESSION['signup_errors'] ?? [];
+$input_data = $_SESSION['signup_data'] ?? [];
+unset($_SESSION['signup_errors'], $_SESSION['signup_data']);
+
+$signupType = $_GET['type'] ?? 'user'; // Default to 'user' if not specified
+$formAction = ($signupType === 'admin') ? 'UserSignUpProcess.php' : 'UserSignUpProcess.php';
+$roleValue = ($signupType === 'admin') ? "admin" : "customer"; // Set role value
+?>
+
+
+<?php if (!empty($errors)): ?>
+    <div id="floating-error" class="floating-error">
+        <?php 
+        // Display errors as a list if there are multiple
+        if (is_array($errors)) {
+            echo htmlspecialchars($errors[0]); // Just show the first error
+        } else {
+            echo htmlspecialchars($errors);
+        }
+        ?>
+    </div>
+<?php endif; ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,11 +56,14 @@ include 'navbar.php'
 
         <h1>Sign Up</h1>
 
-        <form id="signupForm" method="post" action="CustomerSignUpProcess.php">
+        <form id="signupForm" method="post" action="UserSignUpProcess.php">
+
+        <input type="hidden" name="role" value="<?= $roleValue ?>">
+
 
             <div class="input-container"> 
                 <span class="icon"><i class="fas fa-user"></i></span>
-                <input type="text" id="CustName" name="CustName" placeholder="Enter Username">
+                <input type="text" id="UName" name="UName" placeholder="Enter Username">
                 <span class="error-message" id="nameError"></span>
             </div>
 
@@ -65,7 +97,7 @@ include 'navbar.php'
 
         <div class="signup-container">
             <p>Already have an account ?</p>
-            <a href="CustomerLogin.php">Login</a>
+            <a href="UserLogin.php">Login</a>
         </div>
 
 

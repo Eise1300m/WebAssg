@@ -19,11 +19,8 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../css/MainPage.css" rel="stylesheet">
-
     <title><?= $_title ?? 'Secret Shelf' ?></title>
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 
 
 
@@ -37,11 +34,13 @@ try {
 
     <div class="wrapbox">
 
+
+        
         <div class="book-container">
             <?php foreach ($books as $book) { ?>
                 <div class="book-card">
                     <a href="BookPreview.php?book_id=<?php echo $book['BookNo']; ?>">
-                        <img src="<?php echo $book['BookImage']; ?>" alt="Book Image">
+                    <img src="<?php echo !empty($book['BookImage']) ? $book['BookImage'] : '../upload/bookPfp/BookCoverUnavailable.webp'; ?>" alt="Book Image">
                     </a>
                     <h3><?php echo $book['BookName']; ?></h3>
                     <p><strong>Author:</strong> <?php echo $book['Author']; ?></p>

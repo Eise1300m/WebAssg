@@ -28,7 +28,7 @@ $(document).ready(function () {
 
         $(".error-message").text(""); // Clear all previous error messages
 
-        if ($("#CustName").val() === "") {
+        if ($("#UName").val() === "") {
             $("#nameError").text("Name is required!");
             isValid = false;
         }
@@ -145,8 +145,8 @@ $(document).ready(function () {
 
         if (form) { // Ensure form exists before adding event listener
             form.addEventListener("submit", function (event) {
-                let username = document.getElementById("CustID").value.trim();
-                let password = document.getElementById("Custpwd").value.trim();
+                let username = document.getElementById("UserID").value.trim();
+                let password = document.getElementById("Userpwd").value.trim();
                 let userError = document.getElementById("user-error");
                 let passError = document.getElementById("pass-error");
                 let isValid = true;
@@ -243,4 +243,116 @@ $(document).ready(function () {
             $("#profileDropdown").removeClass("show");
         }
     })
+
+    // Profile Management Scripts
+    function initializeProfileManagement() {
+        const toggleEditBtn = document.getElementById('toggleEdit');
+        const cancelEditBtn = document.getElementById('cancelEdit');
+        const formInputs = document.querySelectorAll('.profile-form input, .profile-form textarea');
+        const formActions = document.querySelector('.form-actions');
+        const navLinks = document.querySelectorAll('.profile-nav a');
+        const sections = document.querySelectorAll('.profile-section');
+
+        if (toggleEditBtn && cancelEditBtn) { // Check if we're on the profile page
+            // Toggle edit mode
+            toggleEditBtn.addEventListener('click', function() {
+                formInputs.forEach(input => input.removeAttribute('readonly'));
+                formActions.style.display = 'flex';
+                toggleEditBtn.style.display = 'none';
+            });
+
+            // Cancel edit mode
+            cancelEditBtn.addEventListener('click', function() {
+                formInputs.forEach(input => input.setAttribute('readonly', true));
+                formActions.style.display = 'none';
+                toggleEditBtn.style.display = 'block';
+            });
+        }
+
+        // Profile Navigation
+        if (navLinks.length > 0) { // Check if we're on the profile page
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const sectionId = this.getAttribute('data-section');
+                        
+                        sections.forEach(section => {
+                            section.style.display = 'none';
+                            section.classList.remove('active');
+                        });
+                        
+                        document.getElementById(sectionId).style.display = 'block';
+                        document.getElementById(sectionId).classList.add('active');
+                        
+                        navLinks.forEach(navLink => navLink.classList.remove('active'));
+                        this.classList.add('active');
+                    }
+                });
+            });
+        }
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // ... any existing initialization code ...
+        
+        // Initialize profile management if we're on the profile page
+        initializeProfileManagement();
+
+        // Phone number validation
+        const phoneInput = document.getElementById('phone');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function(e) {
+                const phoneNumber = e.target.value;
+                const malaysianPhoneRegex = /^(\+?6?01)[0-46-9]-*[0-9]{7,8}$/;
+                
+                if (!malaysianPhoneRegex.test(phoneNumber)) {
+                    phoneInput.setCustomValidity('Please enter a valid Malaysian phone number');
+                } else {
+                    phoneInput.setCustomValidity('');
+                }
+            });
+        }
+    });
+
+    // Profile picture upload handling
+    $(document).ready(function() {
+        const profilePicInput = document.getElementById('profile-pic-input');
+        const profilePicForm = document.getElementById('profile-pic-form');
+        const uploadButton = document.getElementById('upload-pic-btn');
+        
+        if (profilePicInput) {
+            profilePicInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    
+                    // File size validation (5MB max)
+                    if (file.size > 5000000) {
+                        alert('File is too large. Maximum size is 5MB.');
+                        this.value = ''; // Clear the input
+                        return;
+                    }
+
+                    // File type validation
+                    const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                    if (!validTypes.includes(file.type)) {
+                        alert('Only JPG, PNG & GIF files are allowed.');
+                        this.value = ''; // Clear the input
+                        return;
+                    }
+
+                    // Show preview
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('profile-pic').src = e.target.result;
+                    }
+                    reader.readAsDataURL(file);
+
+                    // Show upload button
+                    uploadButton.style.display = 'inline-block';
+                }
+            });
+        }
+    });
 });

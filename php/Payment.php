@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $payment_type = $_POST['payment_type'];
     $order_id = $_SESSION['order_id'];
 
-    $stmt = $_db->prepare("UPDATE `order` SET PaymentType = ? WHERE OrderNo = ?");
+    $stmt = $_db->prepare("UPDATE `orders` SET PaymentType = ? WHERE OrderNo = ?");
     $stmt->execute([$payment_type, $order_id]);
 
     header("Location: receipt.php");

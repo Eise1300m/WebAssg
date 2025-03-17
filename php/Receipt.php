@@ -2,6 +2,8 @@
 session_start();
 require_once("connection.php");
 
+require_once("navbar.php");
+
 if (!isset($_SESSION['order_id'])) {
     header("Location: Cart.php");
     exit;
@@ -9,11 +11,11 @@ if (!isset($_SESSION['order_id'])) {
 
 $order_id = $_SESSION['order_id'];
 
-$stmt = $_db->prepare("SELECT * FROM `order` WHERE OrderNo = ?");
+$stmt = $_db->prepare("SELECT * FROM `orders` WHERE OrderNo = ?");
 $stmt->execute([$order_id]);
 $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$stmt = $_db->prepare("SELECT * FROM order_details od JOIN book b ON od.BookNo = b.BookNo WHERE od.OrderNo = ?");
+$stmt = $_db->prepare("SELECT * FROM orderdetails od JOIN book b ON od.BookNo = b.BookNo WHERE od.OrderNo = ?");
 $stmt->execute([$order_id]);
 $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -29,5 +31,5 @@ foreach ($order_items as $item) {
 }
 
 echo "</table>";
-echo "<h3>Total Price: RM" . number_format($order['OrderPrice'], 2) . "</h3>";
+echo "<h3>Total Price: RM" . number_format($order['TotalAmount'], 2) . "</h3>";
 ?>

@@ -1,4 +1,9 @@
-<?php session_start();
+<?php
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 $login = isset($_SESSION['user_name']);
 ?>
 
@@ -34,10 +39,9 @@ $login = isset($_SESSION['user_name']);
         ?>
             <div class="user-actions">
                 <a href="Cart.php" class="cart-btn">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    <img src="../upload/icon/shoppingcart.png" alt="Cart" class="cart-icon">
                     <span class="cart-count"><?= isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?></span>
-                </a>
-                </a>
+                </a>    
 
                 <?php include 'ProfileMenu.php'; ?>
                 <script src="../js/Scripts.js"></script>
@@ -46,7 +50,7 @@ $login = isset($_SESSION['user_name']);
         <?php
         } else {
         ?>
-            <a href="CustomerLogin.php" class="Login-Btn">Login / Sign up</a>
+            <a href="UserLogin.php" class="Login-Btn">Login / Sign up</a>
         <?php
         }
         ?>

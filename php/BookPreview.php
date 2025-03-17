@@ -29,7 +29,6 @@ if (isset($_GET['book_id'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="../css/BookPreviewStyle.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
     <script src="../js/order.js"></script>
     <script src="../js/Scripts.js"></script>
 
@@ -42,7 +41,9 @@ if (isset($_GET['book_id'])) {
 
 
     <!-- Back button -->
-    <button class="back-button" onclick="history.back()">← BACK</button>
+    <button class="back-button" onclick="history.back()">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
 
     <div class="wrap-container">
 

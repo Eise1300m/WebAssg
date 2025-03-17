@@ -7,7 +7,8 @@ if (!isset($_SESSION['user_name']) || empty($_SESSION['cart'])) {
     exit;
 }
 
-$user_id = $_SESSION['user_name']; // Assuming username is used as Customer ID
+$username = $_SESSION['user_name']; // Username stored in session
+date_default_timezone_set("Asia/Kuala_Lumpur"); // Change to your timezone
 $order_date = date("Y-m-d H:i:s");
 $totalQuantity = 0;
 $totalPrice = 0;
@@ -15,18 +16,29 @@ $totalPrice = 0;
 try {
     $_db->beginTransaction();
 
-    // Insert new order
-    $stmt = $_db->prepare("INSERT INTO `order` (OrderDate, TotalQuantity, OrderPrice, CustomerID) 
+    // 🔹 Step 1: Retrieve actual UserID from the users table
+    $stmt = $_db->prepare("SELECT UserID FROM users WHERE UserName = ?");
+    $stmt->execute([$username]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$user) {
+        throw new Exception("User does not exist.");
+    }
+
+    $user_id = $user['UserID']; // ✅ Now using the correct numeric UserID
+
+    // 🔹 Step 2: Insert new order using correct UserID
+    $stmt = $_db->prepare("INSERT INTO `orders` (OrderDate, TotalQuantity, TotalAmount, UserID) 
                            VALUES (?, ?, ?, ?)");
     $stmt->execute([$order_date, 0, 0, $user_id]);
 
-    // Get last inserted Order ID
+    // 🔹 Step 3: Get last inserted Order ID
     $order_id = $_db->lastInsertId();
 
-    // Insert items into `order_details`
+    // 🔹 Step 4: Insert items into `order_details`
     foreach ($_SESSION['cart'] as $book) {
         $subtotal = $book['Price'] * $book['Quantity'];
-        $stmt = $_db->prepare("INSERT INTO order_details (OrderNo, BookNo, Quantity, Price) 
+        $stmt = $_db->prepare("INSERT INTO orderdetails (OrderNo, BookNo, Quantity, Price) 
                                VALUES (?, ?, ?, ?)");
         $stmt->execute([$order_id, $book['BookNo'], $book['Quantity'], $subtotal]);
 
@@ -34,8 +46,8 @@ try {
         $totalPrice += $subtotal;
     }
 
-    // Update order total values
-    $stmt = $_db->prepare("UPDATE `order` SET TotalQuantity = ?, OrderPrice = ? WHERE OrderNo = ?");
+    // 🔹 Step 5: Update order total values
+    $stmt = $_db->prepare("UPDATE `orders` SET TotalQuantity = ?, TotalAmount = ? WHERE OrderNo = ?");
     $stmt->execute([$totalQuantity, $totalPrice, $order_id]);
 
     $_db->commit();
@@ -49,7 +61,7 @@ try {
     // Redirect to payment
     header("Location: Payment.php");
     exit;
-} catch (PDOException $e) {
+} catch (Exception $e) {
     $_db->rollBack();
     die("Checkout failed: " . $e->getMessage());
 }

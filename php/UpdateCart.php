@@ -6,21 +6,26 @@ if (!isset($_SESSION['user_name'])) {
     exit;
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $book_id = $_POST['book_id'];
-    $quantity = (int)$_POST['quantity']; // Ensure it's an integer
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
 
-    if (isset($_SESSION['cart'][$book_id])) {
-        if ($quantity > 0) {
-            $_SESSION['cart'][$book_id]['Quantity'] = $quantity; // Update quantity
-        } else {
-            unset($_SESSION['cart'][$book_id]); // Remove item if quantity is 0
-        }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $book_id = $_POST['book_id'];
+    $quantity = (int)$_POST['quantity'];
+
+    if ($quantity <= 0) {
+        // Remove item
+        unset($_SESSION['cart'][$book_id]);
+    } else {
+        // Update quantity
+        $_SESSION['cart'][$book_id]['Quantity'] = $quantity;
     }
 
-    // Calculate updated total items
-    $total_items = array_sum(array_column($_SESSION['cart'], 'Quantity'));
-
-    echo json_encode(["status" => "success", "cart_count" => $total_items]);
+    echo json_encode([
+        'status' => 'success',
+        'cart_count' => count($_SESSION['cart'])
+    ]);
+    exit;
 }
 ?>

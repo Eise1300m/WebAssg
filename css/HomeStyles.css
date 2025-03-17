@@ -22,21 +22,30 @@ body {
 .IndexBodybackground {
     background-color: rgb(255, 255, 255);
     width: 70%;
-    /* max-width: 1200px; */
     padding: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin: 20px auto; /* Center horizontally */
+    margin: 20px auto; 
 }
-/* Desktop-optimized nav */
+
+
+.up {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+}
 
 .nav2 {
-    margin-top: 20px;
+    width: 100%;
+    max-width: 800px;
     display: flex;
-    position: absolute;
-    left: 480px;
-    top: 120px;
-    width: auto;
+    justify-content: center;
     gap: 20px;
+    margin-bottom: 30px;
+    position: relative;
+    left: 0;
+    top: 0;
     padding: 10px;
 }
 
@@ -49,18 +58,14 @@ body {
     text-align: center;
     text-decoration: none;
     font-size: 21px;
-    border-bottom: 3px solid transparent;
     background-color: #c0bdee;
-    transition: all 0.5s ease-out, opacity 0.5s ease-out;
     border-radius: 40px;
-    font-family: "Big Shoulders", sans-serif;
-    font-weight: 500;
-    font-style: normal;
+    transition: all 0.3s ease;
     color: #343333;
 }
 
 .nav2 a:hover {
-    background-color: rgb(190, 169, 105);
+    background-color: rgb(224, 189, 82);
 }
 
 .nav2 a.active {
@@ -68,52 +73,82 @@ body {
 }
 
 /* Desktop-optimized recommendation container */
+.slider-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
 .Recommendation-Container {
-    display: flex;
     position: relative;
-    margin-left: 285px;
+    width: 100%;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    padding: 40px;
+    gap: 20px;
     background-color: rgba(205, 205, 221, 0.8);
-    margin-top: 180px;
-    width: 70%;
+    padding: 40px;
+    border-radius: 10px;
+    margin: 0 auto;
 }
 
-#mainImg {
-    width: 900px;
-    height: auto;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.597);
+.slider-content {
+    width: 100%;
+    max-width: 800px;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-#desc {
-    width: 40%;
-    color: rgba(65, 61, 61, 0.822);
-    text-align: justify;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    letter-spacing: 1px;
-    line-height: 1.5;
-    word-spacing: 5px;
-    margin-left: 20px;
-    background-color: transparent;
+.slider-content img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
-#back, #next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.7);
-    padding: 20px;
+.slider-btn {
+    background: rgba(59, 59, 59, 0.1);
+    border: none;
     border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-
+    transition: all 0.3s ease;
+    padding: 0;
+    overflow: hidden;
 }
 
-#back {
-    left: 10%;
+.slider-btn .arrow-icon {
+    width: 35px;
+    height: 35px;
+    filter: brightness(0) invert(1);
+    object-fit: contain;
 }
 
-#next {
-    right: 10%;
+/* Specific styling for back button to center the arrow */
+#back .arrow-icon {
+    margin-left: 4px; /* Adjust this value as needed to center the back arrow */
+}
+
+/* Optional: if you need to adjust the forward arrow */
+#next .arrow-icon {
+    margin-left: -2px; /* Adjust if needed */
+}
+
+.slider-btn:hover {
+    background: rgba(36, 36, 36, 0.2);
+    transform: scale(1.1);
+}
+
+.material-symbols-outlined {
+    font-size: 24px;
+    color: #333;
 }
 
 /* Desktop-optimized category sections */
@@ -168,15 +203,30 @@ figcaption {
     color: white;
 }
 
-.material-symbols-outlined {
-    padding: 20px;
-    border-radius: 40px;
-    background-color: rgba(20, 19, 19, 0.459);
-    cursor: pointer;
-}
-
-
+/* Responsive adjustments */
 @media (max-width: 768px) {
+    .nav2 {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .nav2 a {
+        width: calc(50% - 10px);
+        font-size: 18px;
+    }
+
+    .Recommendation-Container {
+        padding: 20px;
+    }
+
+    .slider-btn {
+        width: 30px;
+        height: 30px;
+    }
+
+    .material-symbols-outlined {
+        font-size: 20px;
+    }
 
     .Category-part {
         width: 90%;
@@ -205,4 +255,27 @@ figcaption {
     #next {
         right: 2%;
     }
+}
+
+@media (min-width: 1200px) {
+    .slider-wrapper {
+        padding: 0;
+    }
+}
+
+/* Add margin to buttons to space them from the main image */
+#back {
+    margin-right: 10px;
+}
+
+#next {
+    margin-left: 10px;
+}
+
+/* Add specific positioning for the buttons */
+#back, #next {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
