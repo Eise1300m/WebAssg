@@ -68,7 +68,7 @@ INSERT INTO `book` (`BookNo`, `BookName`, `BookPrice`, `Description`, `Author`, 
 (8, 'Me Before You', 5.99, 'Me Before You is the story of Louisa Clark, a young woman who becomes the caretaker of Will Traynor, a quadriplegic man who is both charming and brash. Their relationship transforms both their lives as they confront challenges, personal growth, and the complexities of love and choice.', 'Jojo Moyes', NULL, 101),
 (9, 'Love, Theoretically', 5.99, 'Love, Theoretically follows the many lives of theoretical physicist Elsie Hannaway, who balances her career in academia with a secret job as a fake girlfriend. Her worlds collide when she encounters Jack Smith, a physicist who challenges her professional and personal boundaries, leading to unexpected developments in her life and career.', 'Ali Hazelwood', NULL, 101),
 (10, 'Love and Other Words', 10.99, 'Love and Other Words tells a story of two teens, Macy Sorensen and Elliot Petropoulos, bonding through all the angst and fury of life\'s pubescent horrors and wonders. Their deep connection, forged over a shared love of books and words, faces challenges as they grow older and confront past mistakes. The novel alternates between past and present, unraveling the complexities of first love and second chances.', 'Christina Lauren', NULL, 101);
-
+/
 -- --------------------------------------------------------
 
 --

@@ -183,34 +183,41 @@ nav {
 }
 
 .profile-icon {
-    background-color: #8585f4;
-    color: white;
-    padding: 15px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    text-decoration: none;
-    font-size: 20px;
-    transition: background-color 0.3s;
+    background-color: rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
     cursor: pointer;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
 }
 
 .profile-icon:hover {
-    background-color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.profile-icon .fa-user {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.user-profile-pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .profile-dropdown {
     position: relative;
     display: inline-block;
     margin-left: 15px;
-}
-
-.profile-icon:hover {
-    background-color: #ffffff;
-    color: #333;
 }
 
 .profile-dropdown-content {
@@ -223,19 +230,27 @@ nav {
     z-index: 1000;
     border-radius: 8px;
     overflow: hidden;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 .profile-header {
     background-color: #6a5acd;
     color: white;
-    padding: 10px 15px;
+    padding: 12px 15px;
     font-weight: bold;
     font-family: 'Roboto Condensed', sans-serif;
+    margin: 0; /* Ensure no margin */
+}
+
+.profile-header p {
+    margin: 0; /* Remove any margin from paragraph */
+    padding: 0; /* Remove any padding */
+    line-height: normal; /* Normalize line height */
 }
 
 .profile-menu-items {
     padding: 5px 0;
+    margin: 0; /* Ensure no margin */
 }
 
 .profile-menu-items a {
@@ -245,6 +260,8 @@ nav {
     display: block;
     transition: background-color 0.2s;
     font-family: 'Roboto Condensed', sans-serif;
+    margin: 0; /* Ensure no margin */
+    line-height: normal; /* Normalize line height */
 }
 
 .profile-menu-items a i {

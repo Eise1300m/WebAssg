@@ -175,7 +175,7 @@ form {
 
 .floating-error {
     position: fixed;
-    top: 325px;
+    top: 250px;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(250, 89, 89, 0.841);

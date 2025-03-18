@@ -62,8 +62,8 @@
     margin-top: 10px;
 }
 
-.change-avatar-btn,
-.upload-avatar-btn {
+.change-avatar-btn, .upload-avatar-btn {
+
     background: rgba(255, 255, 255, 0.2);
     border: none;
     padding: 8px 16px;
@@ -71,10 +71,10 @@
     color: white;
     cursor: pointer;
     transition: background 0.3s ease;
+
 }
 
-.change-avatar-btn:hover,
-.upload-avatar-btn:hover {
+.change-avatar-btn:hover, .upload-avatar-btn:hover {
     background: rgba(255, 255, 255, 0.3);
 }
 
@@ -100,8 +100,7 @@
     transition: background 0.3s ease;
 }
 
-.profile-nav a:hover,
-.profile-nav a.active {
+.profile-nav a:hover, .profile-nav a.active {
     background: rgba(255, 255, 255, 0.1);
 }
 
@@ -131,8 +130,7 @@
     color: rgba(255, 255, 255, 0.9);
 }
 
-.form-group input,
-.form-group textarea {
+.form-group input, .form-group textarea {
     width: 100%;
     padding: 0.75rem;
     border-radius: 6px;
@@ -141,8 +139,7 @@
     color: white;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
+.form-group input:focus, .form-group textarea:focus {
     outline: none;
     border-color: rgba(255, 255, 255, 0.5);
 }
@@ -154,8 +151,7 @@
     margin-top: 2rem;
 }
 
-.save-btn,
-.cancel-btn {
+.save-btn, .cancel-btn {
     padding: 0.75rem 1.5rem;
     border-radius: 6px;
     border: none;

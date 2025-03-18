@@ -1,3 +1,28 @@
+<?php
+// Ensure we have session data
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Get user data for profile picture if logged in
+$userProfilePic = '../upload/icon/UnknownUser.jpg'; // Default image
+$isAdmin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
+
+if (isset($_SESSION['user_name'])) {
+    // Get profile picture from database
+    require_once("connection.php");
+    $username = $_SESSION['user_name'];
+    
+    $stmt = $_db->prepare("SELECT ProfilePic FROM users WHERE Username = ?");
+    $stmt->execute([$username]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($user && !empty($user['ProfilePic'])) {
+        $userProfilePic = $user['ProfilePic'];
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,9 +42,12 @@
 
 <!-- Profile dropdown menu -->
 <div class="profile-dropdown">
-
     <div class="profile-icon" id="profileIcon">
-        <i class="fa fa-user" aria-hidden="true"></i>
+        <?php if ($userProfilePic != '../upload/icon/UnknownUser.jpg'): ?>
+            <img src="<?php echo htmlspecialchars($userProfilePic); ?>" alt="Profile" class="user-profile-pic">
+        <?php else: ?>
+            <i class="fa fa-user" aria-hidden="true"></i>
+        <?php endif; ?>
     </div>
     <div class="profile-dropdown-content" id="profileDropdown">
         <div class="profile-header">
@@ -27,12 +55,17 @@
         </div>
         <div class="profile-menu-items">
             <?php if (isset($_SESSION['user_name'])): ?>
-                <a href="UserEditProfile.php"><i class="fa fa-user-circle" aria-hidden="true"></i> Edit Profile</a>
-                <a href="UserOrderHistory.php"><i class="fa fa-history" aria-hidden="true"></i> Order History</a>
+                <?php if ($isAdmin): // Admin menu items ?>
+                    <a href="AdminProfile.php"><i class="fa fa-user-circle" aria-hidden="true"></i> Admin Profile</a>
+                    <a href="AdminMainPage.php"><i class="fa fa-dashboard" aria-hidden="true"></i> Dashboard</a>
+                <?php else: // Customer menu items ?>
+                    <a href="UserEditProfile.php"><i class="fa fa-user-circle" aria-hidden="true"></i> Edit Profile</a>
+                    <a href="UserOrderHistory.php"><i class="fa fa-history" aria-hidden="true"></i> Order History</a>
+                <?php endif; ?>
                 <a href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
             <?php else: ?>
-                <a href="CustomerLogin.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
-                <a href="CustomerRegister.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>
+                <a href="UserLogin.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+                <a href="UserRegister.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>
             <?php endif; ?>
         </div>
     </div>

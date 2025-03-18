@@ -9,19 +9,23 @@ if (!isset($_SESSION['user_name'])) {
 
 $username = $_SESSION['user_name'];
 
-$stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
-$stmt->execute([$username]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$user) {
-    die("User not found.");
-}
+    // Modify the fetch mode to ensure we get an associative array
+    $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
+    $stmt->execute([$username]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    // Debug to check what we're getting
 
-$user_id = $user['UserID'];
-
-$stmt = $_db->prepare("SELECT * FROM address WHERE UserID = ?");
-$stmt->execute([$user_id]);
-$address = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$user) {
+        die("User not found.");
+    }
+    
+    $user_id = $user['UserID'];
+    
+    $stmt = $_db->prepare("SELECT * FROM address WHERE UserID = ?");
+    $stmt->execute([$user_id]);
+    $address = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $updateMessage = "";
 
@@ -55,6 +59,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
     $stmt = $_db->prepare("SELECT * FROM address WHERE UserID = ?");
     $stmt->execute([$user_id]);
     $address = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// Handle profile picture upload
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
+    $file = $_FILES["profile_pic"];
+    
+    if ($file["error"] === UPLOAD_ERR_OK) {
+        $fileName = $file["name"];
+        $fileTmpName = $file["tmp_name"];
+        $fileSize = $file["size"];
+        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        $allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+
+        if (!in_array($fileExt, $allowedExtensions)) {
+            $updateMessage = "❌ Invalid file type! Only JPG, PNG & GIF files are allowed.";
+        } elseif ($fileSize > 5000000) { // 5MB max
+            $updateMessage = "❌ File is too large! Maximum size is 5MB.";
+        } else {
+            // Set the correct upload directory for customers
+            $uploadDir = "../upload/customerPfp/";
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            // Create unique filename using user ID and timestamp
+            $newFileName = $user['UserID'] . "_" . time() . "." . $fileExt;
+            $uploadPath = $uploadDir . $newFileName;
+
+            // Delete old profile picture if exists
+            if (!empty($user['ProfilePic']) && 
+                file_exists($user['ProfilePic']) && 
+                strpos($user['ProfilePic'], 'customerPfp') !== false) {
+                unlink($user['ProfilePic']);
+            }
+
+            if (move_uploaded_file($fileTmpName, $uploadPath)) {
+                $stmt = $_db->prepare("UPDATE users SET ProfilePic = ? WHERE UserID = ?");
+                if ($stmt->execute([$uploadPath, $user['UserID']])) {
+                    $updateMessage = "✅ Profile picture updated successfully!";
+                    
+                    // Refresh user data
+                    $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
+                    $stmt->execute([$username]);
+                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                } else {
+                    $updateMessage = "❌ Failed to update database.";
+                }
+            } else {
+                $updateMessage = "❌ Failed to upload file.";
+            }
+        }
+    } else {
+        $updateMessage = "❌ Upload failed: " . $file["error"];
+    }
 }
 
 ?>
@@ -124,7 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
                             <label for="username">Username</label>
                             <div class="input-with-icon">
                                 <input type="text" id="username" name="username"
-                                    value="<?php echo htmlspecialchars($user['Username']); ?>" readonly>
+                                    value="<?php echo isset($user['Username']) ? htmlspecialchars($user['Username']) : ''; ?>" readonly>
                                 <img src="../upload/icon/lock.png" alt="Lock" title="Cannot be changed" class="input-icon">
                             </div>
                         </div>
@@ -133,7 +191,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
                             <label for="email">Email Address</label>
                             <div class="input-with-icon">
                                 <input type="email" id="email" name="email"
-                                    value="<?php echo htmlspecialchars($user['Email']); ?>" readonly>
+                                    value="<?php echo isset($user['Email']) ? htmlspecialchars($user['Email']) : ''; ?>" readonly>
                                 <img src="../upload/icon/lock.png" alt="Lock" title="Cannot be changed" class="input-icon">
                             </div>
                         </div>
@@ -142,7 +200,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
                             <label for="phone">Phone Number</label>
                             <div class="input-with-icon">
                                 <input type="tel" id="phone" name="phone"
-                                    value="<?php echo htmlspecialchars($user['ContactNo']); ?>"
+                                    value="<?php echo isset($user['ContactNo']) ? htmlspecialchars($user['ContactNo']) : ''; ?>"
                                     pattern="^(\+?6?01)[0-46-9]-*[0-9]{7,8}$"
                                     placeholder="01x-xxxxxxxx"
                                     required>
@@ -259,8 +317,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
                             <button type="reset" class="cancel-btn">Cancel</button>
                         </div>
                     </div>
-        </form>
-    </div>
+                </form>
+            </div>
         </div>
     </main>
 

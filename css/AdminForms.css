@@ -1,0 +1,127 @@
+/* Form Sections */
+.admin-form-section {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.section-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 0.75rem;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon input {
+    width: 100%;
+    padding: 0.75rem;
+    padding-right: 2.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.input-with-icon input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.input-with-icon input[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+.input-icon {
+    position: absolute;
+    right: 0.75rem;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
+
+.input-hint {
+    display: block;
+    margin-top: 0.5rem;
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+/* Form Actions */
+.admin-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Buttons */
+.admin-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.admin-btn.primary {
+    background: #007bff;
+    color: #fff;
+}
+
+.admin-btn.primary:hover {
+    background: #0056b3;
+}
+
+.admin-btn.secondary {
+    background: #6c757d;
+    color: #fff;
+}
+
+.admin-btn.secondary:hover {
+    background: #5a6268;
+}
+
+/* Avatar Upload */
+.avatar-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+#upload-pic-btn {
+    background: #28a745;
+}
+
+#upload-pic-btn:hover {
+    background: #218838;
+} 

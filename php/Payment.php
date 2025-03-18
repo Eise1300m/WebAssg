@@ -22,7 +22,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <form method="post">
     <h2>Select Payment Method</h2>
     <label><input type="radio" name="payment_type" value="Credit Card" required> Credit Card</label><br>
-    <label><input type="radio" name="payment_type" value="PayPal" required> PayPal</label><br>
-    <label><input type="radio" name="payment_type" value="Bank Transfer" required> Bank Transfer</label><br>
+    <label><input type="radio" name="payment_type" value="Debit Card" required> Debit Card</label><br>
+    <label><input type="radio" name="payment_type" value="E-wallet" required> Ewallet</label><br>
+    <label><input type="radio" name="payment_type" value="Cash" required> Cash</label><br>
+
     <button type="submit">Confirm Payment</button>
 </form>

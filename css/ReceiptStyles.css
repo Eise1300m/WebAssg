@@ -1,0 +1,231 @@
+/* Receipt Styles */
+.receipt-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.receipt-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.receipt-header h1 {
+    margin: 0;
+    font-size: 28px;
+    color: #a777e3;
+}
+
+.receipt-header p {
+    margin: 5px 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.order-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.order-details, .customer-details {
+    flex: 1;
+    min-width: 300px;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #6e8efb;
+    border-left: 3px solid #6e8efb;
+    padding-left: 10px;
+}
+
+.info-row {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.info-label {
+    font-weight: bold;
+    display: inline-block;
+    width: 140px;
+}
+
+.shipping-address {
+    margin-bottom: 30px;
+}
+
+.address-content {
+    line-height: 1.6;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 5px;
+}
+
+.order-items {
+    margin-bottom: 30px;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.order-table th {
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.order-table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.order-table tr:last-child td {
+    border-bottom: none;
+}
+
+.book-info {
+    display: flex;
+    align-items: center;
+}
+
+.book-thumbnail {
+    width: 40px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.order-total {
+    text-align: right;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.print-button {
+    display: block;
+    width: 200px;
+    margin: 30px auto 0;
+    padding: 12px 0;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.print-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.thank-you {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 18px;
+    color: #a777e3;
+}
+
+.continue-shopping {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: all 0.3s;
+}
+
+.continue-shopping:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Print styles */
+@media print {
+    .navbar, .profile-dropdown, footer, .print-button, .continue-shopping {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .receipt-container {
+        box-shadow: none;
+        margin: 0;
+        padding: 20px;
+        background: white !important;
+        backdrop-filter: none;
+    }
+    
+    .receipt-header h1, .section-title {
+        color: #333 !important;
+    }
+    
+    .order-table th {
+        background: #eee !important;
+        color: #333 !important;
+    }
+    
+    .order-table td {
+        border-bottom: 1px solid #ddd !important;
+    }
+    
+    .order-total {
+        background: #f5f5f5 !important;
+        color: #333 !important;
+    }
+    
+    .thank-you {
+        color: #333 !important;
+    }
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    .receipt-container {
+        padding: 15px;
+    }
+    
+    .order-details, .customer-details {
+        flex: 100%;
+    }
+    
+    .info-label {
+        width: 120px;
+    }
+    
+    .book-info span {
+        font-size: 14px;
+    }
+} 

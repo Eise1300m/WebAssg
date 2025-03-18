@@ -20,6 +20,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../css/MainPage.css" rel="stylesheet">
     <title><?= $_title ?? 'Secret Shelf' ?></title>
+    <link href="../css/NavbarStyles.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 

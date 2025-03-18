@@ -1,0 +1,303 @@
+/* Admin Orders Styling */
+.orders-list {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.order-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-container select {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 30px;
+    padding: 10px 20px;
+    color: white;
+    outline: none;
+    width: 200px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url('../upload/icon/dropdown.png');
+    background-repeat: no-repeat;
+    background-position: calc(100% - 15px) center;
+    background-size: 12px;
+}
+
+.admin-stats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.admin-stat-card {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.stat-icon img {
+    width: 25px;
+    height: 25px;
+}
+
+.stat-info h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: normal;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.stat-info p {
+    margin: 5px 0 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Table styling */
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.orders-table th {
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.orders-table td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #f0f0f0;
+    vertical-align: middle;
+}
+
+.orders-table tr:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.orders-table tr:last-child td {
+    border-bottom: none;
+}
+
+.payment-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    color: white;
+}
+
+.payment-cash {
+    background: rgba(76, 175, 80, 0.3);
+}
+
+.payment-credit-card {
+    background: rgba(33, 150, 243, 0.3);
+}
+
+.payment-debit-card {
+    background: rgba(0, 188, 212, 0.3);
+}
+
+.payment-e-wallet {
+    background: rgba(156, 39, 176, 0.3);
+}
+
+.payment-bank-transfer {
+    background: rgba(255, 152, 0, 0.3);
+}
+
+.view-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.view-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Order Details Modal Styling */
+.order-details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.order-details-header h3 {
+    margin: 0 0 5px 0;
+    font-size: 22px;
+    color: white;
+}
+
+.order-details-header p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.order-details-section {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.order-details-section:last-of-type {
+    border-bottom: none;
+}
+
+.order-details-section h3 {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    color: white;
+    padding-left: 10px;
+    border-left: 3px solid #a777e3;
+}
+
+.order-details-section p {
+    margin: 5px 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.order-item-details {
+    display: flex;
+    align-items: center;
+}
+
+.order-item-image {
+    width: 40px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.item-author {
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+}
+
+.order-item-price {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.order-total {
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.order-total p {
+    margin: 5px 0;
+    text-align: right;
+}
+
+.payment-method {
+    display: inline-block;
+    padding: 3px 8px;
+    background: rgba(106, 142, 251, 0.3);
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.order-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.order-actions button {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.order-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.loading {
+    text-align: center;
+    padding: 40px 0;
+    color: white;
+}
+
+.no-items {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Modal sizing */
+.modal-content {
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Animation for modal content */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#orderDetailsContent {
+    animation: fadeIn 0.3s ease-out;
+} 

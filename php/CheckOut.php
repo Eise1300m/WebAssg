@@ -14,10 +14,12 @@ $totalQuantity = 0;
 $totalPrice = 0;
 
 try {
-    $_db->beginTransaction();
-
-    // 🔹 Step 1: Retrieve actual UserID from the users table
-    $stmt = $_db->prepare("SELECT UserID FROM users WHERE UserName = ?");
+    // Retrieve UserID and check if address exists
+    $stmt = $_db->prepare("SELECT u.UserID, COUNT(a.AddressID) as address_count 
+                           FROM users u 
+                           LEFT JOIN address a ON u.UserID = a.UserID 
+                           WHERE u.Username = ?
+                           GROUP BY u.UserID");
     $stmt->execute([$username]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -25,17 +27,27 @@ try {
         throw new Exception("User does not exist.");
     }
 
+    // Check if user has an address
+    if ($user['address_count'] == 0) {
+        // No address found, redirect to profile page with message
+        $_SESSION['checkout_message'] = "Please add a shipping address before checkout.";
+        header("Location: UserEditProfile.php");
+        exit;
+    }
+
     $user_id = $user['UserID']; // ✅ Now using the correct numeric UserID
 
-    // 🔹 Step 2: Insert new order using correct UserID
-    $stmt = $_db->prepare("INSERT INTO `orders` (OrderDate, TotalQuantity, TotalAmount, UserID) 
-                           VALUES (?, ?, ?, ?)");
-    $stmt->execute([$order_date, 0, 0, $user_id]);
+    $_db->beginTransaction();
 
-    // 🔹 Step 3: Get last inserted Order ID
+    // Insert new order using correct UserID
+    $stmt = $_db->prepare("INSERT INTO `orders` (OrderDate, TotalQuantity, TotalAmount, PaymentType, UserID) 
+                           VALUES (?, ?, ?, ?, ?)");
+    $stmt->execute([$order_date, 0, 0, 'Pending', $user_id]);
+
+    // Get last inserted Order ID
     $order_id = $_db->lastInsertId();
 
-    // 🔹 Step 4: Insert items into `order_details`
+    // Insert items into orderdetails
     foreach ($_SESSION['cart'] as $book) {
         $subtotal = $book['Price'] * $book['Quantity'];
         $stmt = $_db->prepare("INSERT INTO orderdetails (OrderNo, BookNo, Quantity, Price) 
@@ -46,7 +58,7 @@ try {
         $totalPrice += $subtotal;
     }
 
-    // 🔹 Step 5: Update order total values
+    // Update order total values
     $stmt = $_db->prepare("UPDATE `orders` SET TotalQuantity = ?, TotalAmount = ? WHERE OrderNo = ?");
     $stmt->execute([$totalQuantity, $totalPrice, $order_id]);
 
@@ -62,7 +74,9 @@ try {
     header("Location: Payment.php");
     exit;
 } catch (Exception $e) {
-    $_db->rollBack();
+    if ($_db->inTransaction()) {
+        $_db->rollBack();
+    }
     die("Checkout failed: " . $e->getMessage());
 }
 ?>
