@@ -27,17 +27,13 @@
         </div>
         <div class="profile-menu-items">
             <?php if (isset($_SESSION['user_name'])): ?>
-                <a href="UserEditProfile.php"><i class="fa fa-user-circle" aria-hidden="true"></i> Edit Profile</a>
-                <a href="UserOrderHistory.php"><i class="fa fa-history" aria-hidden="true"></i> Order History</a>
+                <a href="AdminProfile.php"><i class="fa fa-user-circle" aria-hidden="true"></i> Edit Profile</a>
+                <a href="AdminMainPage.php"><i class="fa fa-history" aria-hidden="true"></i> Dashboard</a>
                 <a href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
             <?php else: ?>
-                <a href="CustomerLogin.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
-                <a href="CustomerRegister.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>
+                <a href="UserLogin.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+                <a href="UserRegister.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>
             <?php endif; ?>
         </div>
     </div>
 </div>
-
-<!-- Include scripts at the end for better performance -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../js/Scripts.js"></script> <!-- Include the script for dropdown functionality -->

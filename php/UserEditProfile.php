@@ -9,26 +9,25 @@ if (!isset($_SESSION['user_name'])) {
 
 $username = $_SESSION['user_name'];
 
+// Fetch user data from the database
+$stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
+$stmt->execute([$username]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Modify the fetch mode to ensure we get an associative array
-    $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
-    $stmt->execute([$username]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    // Debug to check what we're getting
+if (!$user) {
+    die("User not found.");
+}
 
-    if (!$user) {
-        die("User not found.");
-    }
-    
-    $user_id = $user['UserID'];
-    
-    $stmt = $_db->prepare("SELECT * FROM address WHERE UserID = ?");
-    $stmt->execute([$user_id]);
-    $address = $stmt->fetch(PDO::FETCH_ASSOC);
+$user_id = $user['UserID'];
+
+// Fetch address data
+$stmt = $_db->prepare("SELECT * FROM address WHERE UserID = ?");
+$stmt->execute([$user_id]);
+$address = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $updateMessage = "";
 
+// Update address
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
     $new_street = trim($_POST["street"]);
     $new_city = trim($_POST["city"]);
@@ -38,16 +37,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
 
     if (!empty($new_street) && !empty($new_city) && !empty($new_state) && !empty($new_postal) && !empty($new_country)) {
         if ($address) {
-            // Address exists → UPDATE it
-            $stmt = $_db->prepare("UPDATE address 
-                                   SET Street = ?, City = ?, State = ?, PostalCode = ?, Country = ? 
-                                   WHERE UserID = ?");
+            $stmt = $_db->prepare("UPDATE address SET Street = ?, City = ?, State = ?, PostalCode = ?, Country = ? WHERE UserID = ?");
             $stmt->execute([$new_street, $new_city, $new_state, $new_postal, $new_country, $user_id]);
             $updateMessage = "✅ Address updated successfully!";
         } else {
-            // Address does NOT exist → INSERT new address
-            $stmt = $_db->prepare("INSERT INTO address (UserID, Street, City, State, PostalCode, Country) 
-                                   VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt = $_db->prepare("INSERT INTO address (UserID, Street, City, State, PostalCode, Country) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->execute([$user_id, $new_street, $new_city, $new_state, $new_postal, $new_country]);
             $updateMessage = "✅ Address added successfully!";
         }
@@ -55,10 +49,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
         $updateMessage = "❌ All address fields are required!";
     }
 
-    // Refresh address data after update
     $stmt = $_db->prepare("SELECT * FROM address WHERE UserID = ?");
     $stmt->execute([$user_id]);
     $address = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// Update contact number
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_contact"])) {
+    $new_phone = trim($_POST["phone"]);
+
+    if (!empty($new_phone)) {
+        $stmt = $_db->prepare("UPDATE users SET ContactNo = ? WHERE UserID = ?");
+        $stmt->execute([$new_phone, $user_id]);
+        $updateMessage = "✅ Phone number updated successfully!";
+        
+        $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
+        $stmt->execute([$username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    } else {
+        $updateMessage = "❌ Phone number is required!";
+    }
 }
 
 // Handle profile picture upload
@@ -74,23 +84,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
 
         if (!in_array($fileExt, $allowedExtensions)) {
             $updateMessage = "❌ Invalid file type! Only JPG, PNG & GIF files are allowed.";
-        } elseif ($fileSize > 5000000) { // 5MB max
+        } elseif ($fileSize > 5000000) {
             $updateMessage = "❌ File is too large! Maximum size is 5MB.";
         } else {
-            // Set the correct upload directory for customers
             $uploadDir = "../upload/customerPfp/";
             if (!file_exists($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
 
-            // Create unique filename using user ID and timestamp
             $newFileName = $user['UserID'] . "_" . time() . "." . $fileExt;
             $uploadPath = $uploadDir . $newFileName;
 
-            // Delete old profile picture if exists
-            if (!empty($user['ProfilePic']) && 
-                file_exists($user['ProfilePic']) && 
-                strpos($user['ProfilePic'], 'customerPfp') !== false) {
+            if (!empty($user['ProfilePic']) && file_exists($user['ProfilePic']) && strpos($user['ProfilePic'], 'customerPfp') !== false) {
                 unlink($user['ProfilePic']);
             }
 
@@ -99,7 +104,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                 if ($stmt->execute([$uploadPath, $user['UserID']])) {
                     $updateMessage = "✅ Profile picture updated successfully!";
                     
-                    // Refresh user data
                     $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
                     $stmt->execute([$username]);
                     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -114,7 +118,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
         $updateMessage = "❌ Upload failed: " . $file["error"];
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -146,19 +149,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
         <div class="profile-content">
             <div class="profile-sidebar">
                 <div class="profile-avatar">
-                    <img src="<?php echo !empty($user['ProfilePic']) ? htmlspecialchars($user['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>" 
-                         alt="Profile Picture" id="profile-pic">
+                    <img src="<?php echo htmlspecialchars($user['ProfilePic']); ?>" alt="Profile Picture" id="profile-pic">
                     <form method="POST" action="" enctype="multipart/form-data" id="profile-pic-form">
-                        <input type="file" name="profile_pic" id="profile-pic-input" 
-                               style="display: none;" 
-                               accept="image/jpeg,image/png,image/gif">
+                        <input type="file" name="profile_pic" id="profile-pic-input" style="display: none;" accept="image/jpeg,image/png,image/gif">
                         <div class="avatar-buttons">
-                            <button type="button" class="change-avatar-btn" onclick="document.getElementById('profile-pic-input').click()">
-                                Select Picture
-                            </button>
-                            <button type="submit" class="upload-avatar-btn" id="upload-pic-btn" style="display: none;">
-                                Upload Picture
-                            </button>
+                            <button type="button" class="change-avatar-btn" onclick="document.getElementById('profile-pic-input').click()">Select Picture</button>
+                            <button type="submit" class="upload-avatar-btn" id="upload-pic-btn" style="display: none;">Upload Picture</button>
                         </div>
                     </form>
                 </div>
@@ -181,8 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                         <div class="form-group">
                             <label for="username">Username</label>
                             <div class="input-with-icon">
-                                <input type="text" id="username" name="username"
-                                    value="<?php echo isset($user['Username']) ? htmlspecialchars($user['Username']) : ''; ?>" readonly>
+                                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['Username'] ?? ''); ?>" readonly>
                                 <img src="../upload/icon/lock.png" alt="Lock" title="Cannot be changed" class="input-icon">
                             </div>
                         </div>
@@ -190,8 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                         <div class="form-group">
                             <label for="email">Email Address</label>
                             <div class="input-with-icon">
-                                <input type="email" id="email" name="email"
-                                    value="<?php echo isset($user['Email']) ? htmlspecialchars($user['Email']) : ''; ?>" readonly>
+                                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['Email'] ?? ''); ?>" readonly>
                                 <img src="../upload/icon/lock.png" alt="Lock" title="Cannot be changed" class="input-icon">
                             </div>
                         </div>
@@ -199,11 +193,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
                             <div class="input-with-icon">
-                                <input type="tel" id="phone" name="phone"
-                                    value="<?php echo isset($user['ContactNo']) ? htmlspecialchars($user['ContactNo']) : ''; ?>"
-                                    pattern="^(\+?6?01)[0-46-9]-*[0-9]{7,8}$"
-                                    placeholder="01x-xxxxxxxx"
-                                    required>
+                                <input type="tel" id="phone" name="phone" value="<?php echo htmlspecialchars($user['ContactNo'] ?? ''); ?>" pattern="^(\+?6?01)[0-46-9]-*[0-9]{7,8}$" placeholder="01x-xxxxxxxx" required>
                                 <img src="../upload/icon/edit.png" alt="Edit" title="Click to edit" class="input-icon">
                             </div>
                             <small class="input-hint">Malaysian format: 01x-xxxxxxxx</small>
@@ -221,45 +211,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                             <div class="form-group">
                                 <label for="street">Street Address</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="street" name="street"
-                                        value="<?php echo htmlspecialchars($address['Street']); ?>"
-                                        required>
+                                    <input type="text" id="street" name="street" value="<?php echo htmlspecialchars($address['Street']); ?>" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="city">City</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="city" name="city"
-                                        value="<?php echo htmlspecialchars($address['City']); ?>"
-                                        required>
+                                    <input type="text" id="city" name="city" value="<?php echo htmlspecialchars($address['City']); ?>" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="state">State</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="state" name="state"
-                                        value="<?php echo htmlspecialchars($address['State']); ?>"
-                                        required>
+                                    <input type="text" id="state" name="state" value="<?php echo htmlspecialchars($address['State']); ?>" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="postal">Postal Code</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="postal" name="postal"
-                                        value="<?php echo htmlspecialchars($address['PostalCode']); ?>"
-                                        required>
+                                    <input type="text" id="postal" name="postal" value="<?php echo htmlspecialchars($address['PostalCode']); ?>" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="country">Country</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="country" name="country"
-                                        value="<?php echo htmlspecialchars($address['Country']); ?>"
-                                        required>
+                                    <input type="text" id="country" name="country" value="<?php echo htmlspecialchars($address['Country']); ?>" required>
                                 </div>
                             </div>
 
@@ -272,40 +252,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                             <div class="form-group">
                                 <label for="street">Street Address</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="street" name="street" placeholder="Enter your street"
-                                        required>
+                                    <input type="text" id="street" name="street" placeholder="Enter your street" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="city">City</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="city" name="city" placeholder="Enter your city"
-                                        required>
+                                    <input type="text" id="city" name="city" placeholder="Enter your city" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="state">State</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="state" name="state" placeholder="Enter your state"
-                                        required>
+                                    <input type="text" id="state" name="state" placeholder="Enter your state" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="postal">Postal Code</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="postal" name="postal" placeholder="Enter postal code"
-                                        required>
+                                    <input type="text" id="postal" name="postal" placeholder="Enter postal code" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="country">Country</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="country" name="country" placeholder="Enter your country"
-                                        required>
+                                    <input type="text" id="country" name="country" placeholder="Enter your country" required>
                                 </div>
                             </div>
                         <?php endif; ?>

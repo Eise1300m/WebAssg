@@ -30,7 +30,7 @@ if (isset($_SESSION['signup_errors'])) {
 
 <body>
 
-    <?php include 'navbar.php'; ?>
+    <?php include 'navbaradmin.php'; ?>
 
     <div class="container">
         <h1>Admin Sign Up</h1>
@@ -78,5 +78,6 @@ if (isset($_SESSION['signup_errors'])) {
     </div>
 
 </body>
+
 
 </html>

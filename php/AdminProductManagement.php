@@ -40,7 +40,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="../js/Scripts.js"></script>
 </head>
 <body>
-    <?php include_once("navbar.php") ?>
+    <?php include_once("navbaradmin.php") ?>
 
     <main class="admin-container">
         <div class="admin-header">
@@ -129,6 +129,8 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/Scripts.js"></script>
     <?php include 'footer.php'; ?>
 </body>
 </html> 

@@ -15,8 +15,14 @@ $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ? AND Role = 'admin'
 $stmt->execute([$username]);
 $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// Debugging output
 if (!$admin) {
-    die("Admin not found.");
+    die("Admin not found or not an admin.");
+}
+
+// Check if Username key exists
+if (!isset($admin['Username'])) {
+    die("Username key is missing in the admin data.");
 }
 ?>
 
@@ -30,12 +36,11 @@ if (!$admin) {
     <link rel="stylesheet" href="../css/AdminStyles.css">
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/Scripts.js"></script>
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
 </head>
 <body>
-    <?php include_once("navbar.php") ?>
+
+    <?php require_once("navbaradmin.php") ?>
 
     <main class="admin-container">
         <div class="admin-header">
@@ -83,6 +88,7 @@ if (!$admin) {
         </div>
     </main>
 
+    
     <?php include 'footer.php'; ?>
 </body>
 </html>

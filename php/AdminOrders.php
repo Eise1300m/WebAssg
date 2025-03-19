@@ -29,13 +29,11 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/AdminScripts.js"></script>
-    <script src="../js/Scripts.js"></script>
     <link rel="stylesheet" href="../css/AdminOrders.css">
 </head>
 <body>
-    <?php include_once("navbar.php") ?>
+    <?php include_once("navbaradmin.php") ?>
 
     <main class="admin-container">
         <div class="admin-header">
@@ -94,6 +92,8 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/AdminScripts.js"></script>
     <?php include 'footer.php'; ?>
 </body>
 </html> 

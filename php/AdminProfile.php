@@ -123,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
 </head>
 <body>
-    <?php include_once("navbar.php") ?>
+    <?php include_once("navbaradmin.php") ?>
 
     <main class="admin-container">
         <div class="admin-header">
@@ -222,7 +222,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
     </main>
 
     <?php include 'footer.php'; ?>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/Scripts.js"></script>
+
 </body>
 </html> 
