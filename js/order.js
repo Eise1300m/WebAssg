@@ -129,8 +129,51 @@ $(document).ready(function () {
         });
     };
 
-    // Review functionality
-    initializeReviewStars();
+    // Payment option handling for checkout page
+    if ($('#payment-form').length > 0) {
+        // Get all payment options
+        const paymentOptions = $('.payment-option');
+        
+        // Make payment options more obvious when selected
+        paymentOptions.each(function() {
+            $(this).on('click', function() {
+                // First, reset all options to unselected state
+                paymentOptions.each(function() {
+                    $(this).css({
+                        'borderColor': '#e0e0e0',
+                        'backgroundColor': 'transparent'
+                    });
+                });
+                
+                // Then highlight the selected option
+                $(this).css({
+                    'borderColor': '#47186e',
+                    'backgroundColor': '#f5f0ff'
+                });
+                
+                // Set the radio input as checked
+                const radio = $(this).find('input[type="radio"]');
+                radio.prop('checked', true);
+            });
+        });
+        
+        // Form validation on submit
+        $('#payment-form').on('submit', function(e) {
+            // Get the clicked button
+            const clickedBtn = e.originalEvent ? e.originalEvent.submitter : null;
+            
+            // Only validate if confirming payment (not cancelling)
+            if (clickedBtn && clickedBtn.name === 'confirm_payment') {
+                const paymentSelected = $('input[name="payment_type"]:checked').length > 0;
+                
+                if (!paymentSelected) {
+                    e.preventDefault();
+                    alert('Please select a payment method.');
+                    return false;
+                }
+            }
+        });
+    }
 
     // Print receipt
     $("#print-receipt").on("click", function() {
@@ -139,65 +182,13 @@ $(document).ready(function () {
 });
 
 // Initialize review stars
-function initializeReviewStars() {
-    const starLabels = document.querySelectorAll('.stars-container label');
-    
-    if (!starLabels.length) return; // Exit if no stars on page
-    
-    starLabels.forEach(label => {
-        label.addEventListener('mouseenter', function() {
-            // Change to solid star icon on hover
-            this.querySelector('i').classList.remove('far');
-            this.querySelector('i').classList.add('fas');
-            
-            // Do the same for stars to the right
-            let nextLabel = this;
-            while (nextLabel = nextLabel.nextElementSibling) {
-                if (nextLabel.tagName === 'LABEL') {
-                    nextLabel.querySelector('i').classList.remove('far');
-                    nextLabel.querySelector('i').classList.add('fas');
-                }
-            }
-        });
-        
-        label.addEventListener('mouseleave', function() {
-            // Reset all stars to outline unless checked
-            document.querySelectorAll('.stars-container label i').forEach(icon => {
-                if (!icon.parentElement.previousElementSibling.checked) {
-                    icon.classList.remove('fas');
-                    icon.classList.add('far');
-                }
+
+        // Highlight selected payment option
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Select the radio button when clicking anywhere in the option
+                const radio = this.querySelector('input[type="radio"]');
+                radio.checked = true;
             });
-            
-            // Keep solid stars for checked rating
-            const checkedInput = document.querySelector('.stars-container input:checked');
-            if (checkedInput) {
-                let currentLabel = checkedInput.nextElementSibling;
-                currentLabel.querySelector('i').classList.remove('far');
-                currentLabel.querySelector('i').classList.add('fas');
-                
-                while (currentLabel = currentLabel.nextElementSibling) {
-                    if (currentLabel.tagName === 'LABEL') {
-                        currentLabel.querySelector('i').classList.remove('far');
-                        currentLabel.querySelector('i').classList.add('fas');
-                    }
-                }
-            }
         });
-    });
     
-    // Initialize stars based on existing review
-    const checkedInput = document.querySelector('.stars-container input:checked');
-    if (checkedInput) {
-        let currentLabel = checkedInput.nextElementSibling;
-        currentLabel.querySelector('i').classList.remove('far');
-        currentLabel.querySelector('i').classList.add('fas');
-        
-        while (currentLabel = currentLabel.nextElementSibling) {
-            if (currentLabel.tagName === 'LABEL') {
-                currentLabel.querySelector('i').classList.remove('far');
-                currentLabel.querySelector('i').classList.add('fas');
-            }
-        }
-    }
-}

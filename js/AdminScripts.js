@@ -86,6 +86,9 @@ $(document).ready(function() {
             }
         });
     });
+
+    // Function to toggle subcategories
+
 });
 
 function initializeAdminForms() {

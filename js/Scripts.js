@@ -573,72 +573,7 @@ $(document).ready(function () {
         initializeBookPreview();
     });
 
-    /** =================== BOOK REVIEWS FUNCTIONALITY =================== **/
 
-    // Sort reviews
-    window.sortReviews = function(sortBy) {
-        const reviewsList = document.getElementById('reviewsList');
-        if (!reviewsList) return;
-        
-        const reviews = Array.from(reviewsList.querySelectorAll('.review-item'));
-        if (reviews.length <= 1) return;
-        
-        reviews.sort((a, b) => {
-            if (sortBy === 'newest') {
-                return parseInt(b.dataset.date) - parseInt(a.dataset.date);
-            } else if (sortBy === 'oldest') {
-                return parseInt(a.dataset.date) - parseInt(b.dataset.date);
-            } else if (sortBy === 'highest') {
-                return parseInt(b.dataset.rating) - parseInt(a.dataset.rating);
-            } else if (sortBy === 'lowest') {
-                return parseInt(a.dataset.rating) - parseInt(b.dataset.rating);
-            }
-            return 0;
-        });
-        
-        // Remove all current reviews
-        reviews.forEach(review => review.remove());
-        
-        // Add sorted reviews back
-        reviews.forEach(review => reviewsList.appendChild(review));
-    };
-
-    // Initialize reviews functionality
-    function initializeReviews() {
-        // Set up "Load More" functionality
-        const reviewItems = document.querySelectorAll('.review-item');
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
-        
-        if (reviewItems.length > 3 && loadMoreBtn) {
-            // Hide reviews beyond the first 3
-            reviewItems.forEach((item, index) => {
-                if (index >= 3) {
-                    item.style.display = 'none';
-                }
-            });
-            
-            let visibleCount = 3;
-            
-            loadMoreBtn.addEventListener('click', function() {
-                // Show next 3 reviews
-                for (let i = visibleCount; i < visibleCount + 3 && i < reviewItems.length; i++) {
-                    reviewItems[i].style.display = 'block';
-                    // Add fade-in animation
-                    reviewItems[i].style.animation = 'fadeIn 0.5s';
-                }
-                
-                visibleCount += 3;
-                
-                // Hide button if all reviews are shown
-                if (visibleCount >= reviewItems.length) {
-                    loadMoreBtn.style.display = 'none';
-                }
-            });
-        }
-        
-        // Initialize with newest first sorting
-        sortReviews('newest');
-    }
 
     // Add CSS animation for fade-in effect
     document.addEventListener('DOMContentLoaded', function() {

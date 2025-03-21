@@ -4,30 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $_title ?? 'Secret Shelf / Login' ?></title>
+    <title><?= $_title ?? 'Secret Shelf' ?></title>
     <link rel="stylesheet" href="../css/HomeStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/Scripts.js"></script>
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <!-- <link rel="stylesheet" href="../css/Dropdown.css"> -->
+    <script src="../js/Bookscript.js" defer></script>
 </head>
 
 <body>
     
     <?php include_once("navbar.php") ?>
 
+    <!-- Include the dropdown navigation here -->
+    <?php include_once("DropDownNav.php"); ?>
+
     <div class="IndexBodybackground">
         
         <div class="up">
-            <div class="nav2">
-                <a href="../php/MainPage.php">All</a>
-                <a href="#Edu">Education</a>
-                <a href="#Cm">Comic</a>
-                <a href="#Nl">Novel</a>
-                <a href="#Edu">Children</a>
-            </div>
-
             <div class="slider-wrapper">
                 <div class="Recommendation-Container">
                     <button id="back" class="slider-btn" aria-label="Previous slide">
@@ -47,7 +44,6 @@
 
         <div class="down">
             <div class="Category-part">
-
                 <div class="Category-Section">
                     <p>Best-seller</p>
                     <div class="cat-img">
@@ -94,13 +90,12 @@
                         <span class="material-symbols-outlined">add</span>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
     <?php include 'footer.php'; ?>
 
-    </body>
+</body>
 
 </html>

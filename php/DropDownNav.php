@@ -4,56 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/Dropdown.css">
-
-
+    <script src="../js/Bookscript.js" defer></script>
 </head>
 
 <body>
-    <div class="sidebar">
-        <div class="category category-1" onclick="toggleSubcategory(this)">Novel</div>
-        <div class="subcategory-list">
-            <div class="subcategory">Romance</div>
-            <div class="subcategory">Mystery & Thriller</div>
-            <div class="subcategory">Science Fiction</div>
-            <div class="subcategory">Fantasy</div>
-            <div class="subcategory">Horror</div>
+    <div class="category-nav">
+        <div class="category-item">
+            <a href="MainPage.php">All >></a>
+        </div>
+        <div class="category-item">
+            <a href="MainPage.php?category=Novel">Novel</a>
+            <div class="subcategory-container">
+                <div class="subcategory"><a href="MainPage.php?category=Novel&subcategory=Romance">Romance</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Novel&subcategory=Mystery">Mystery & Thriller</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Novel&subcategory=SciFi">Science Fiction</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Novel&subcategory=Fantasy">Fantasy</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Novel&subcategory=Horror">Horror</a></div>
+            </div>
         </div>
         
-        <div class="category category-2" onclick="toggleSubcategory(this)">Comic</div>
-        <div class="subcategory-list">
-            <div class="subcategory">Superhero</div>
-            <div class="subcategory">Horror</div>
-            <div class="subcategory">Romance</div>
-            <div class="subcategory">Comedy</div>
-            <div class="subcategory">Adventure</div>
+        <div class="category-item">
+            <a href="MainPage.php?category=Comic">Comic</a>
+            <div class="subcategory-container">
+                <div class="subcategory"><a href="MainPage.php?category=Comic&subcategory=Superhero">Superhero</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Comic&subcategory=Horror">Horror</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Comic&subcategory=Romance">Romance</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Comic&subcategory=Comedy">Comedy</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Comic&subcategory=Adventure">Adventure</a></div>
+            </div>
         </div>
         
-        <div class="category category-3" onclick="toggleSubcategory(this)">Education</div>
-        <div class="subcategory-list">
-            <div class="subcategory">Mathematics</div>
-            <div class="subcategory">History</div>
-            <div class="subcategory">Language Learning</div>
-            <div class="subcategory">Computer Science</div>
-            <div class="subcategory">Business & Economics</div>
-            <div class="subcategory">Psychology</div>
+        <div class="category-item">
+            <a href="MainPage.php?category=Children">Children</a>
+            <div class="subcategory-container">
+                <div class="subcategory"><a href="MainPage.php?category=Children&subcategory=Pictures">Pictures</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Children&subcategory=FairyTales">Fairy Tales</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Children&subcategory=Educational">Educational Stories</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Children&subcategory=Moral">Moral Stories</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Children&subcategory=Animal">Animal Stories</a></div>
+            </div>
         </div>
-        
-        <div class="category category-4" onclick="toggleSubcategory(this)">Children</div>
-        <div class="subcategory-list">
-            <div class="subcategory">Pictures</div>
-            <div class="subcategory">Fairy Tales</div>
-            <div class="subcategory">Educational Stories</div>
-            <div class="subcategory">Moral Stories</div>
-            <div class="subcategory">Animal Stories</div>
+
+        <div class="category-item">
+            <a href="MainPage.php?category=Education">Education</a>
+            <div class="subcategory-container">
+                <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Mathematics">Mathematics</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Science">Science</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=History">History</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Language">Language Learning</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Computer">Computer Science</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Business">Business & Economics</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Engineering">Engineering</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Psychology">Psychology</a></div>
+            </div>
         </div>
     </div>
 
-    <script>
-        function toggleSubcategory(element) {
-            element.classList.toggle('active');
-            const subcategoryList = element.nextElementSibling;
-            subcategoryList.classList.toggle('open');
-        }
-    </script>
+
 </body>
 </html>
