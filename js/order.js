@@ -29,7 +29,7 @@ $(document).ready(function () {
     // Calculate cart total
     function calculateTotal() {
         let total = 0;
-        $('.quantity').each(function() {
+        $('.quantity').each(function () {
             const price = parseFloat($(this).data('price'));
             const quantity = parseInt($(this).val());
             total += price * quantity;
@@ -46,7 +46,7 @@ $(document).ready(function () {
     }
 
     // Handle quantity change
-    $('.quantity').on('change', function() {
+    $('.quantity').on('change', function () {
         const bookId = $(this).data('id');
         const quantity = $(this).val();
         const input = $(this);
@@ -56,7 +56,7 @@ $(document).ready(function () {
             method: "POST",
             data: { book_id: bookId, quantity: quantity },
             dataType: "json",
-            success: function(response) {
+            success: function (response) {
                 if (response.status === "success") {
                     updateItemTotal(input);
                     calculateTotal();
@@ -67,7 +67,7 @@ $(document).ready(function () {
     });
 
     // Handle remove item
-    $('.remove-item').on('click', function() {
+    $('.remove-item').on('click', function () {
         const bookId = $(this).data('id');
         const row = $(this).closest('tr');
 
@@ -76,13 +76,13 @@ $(document).ready(function () {
             method: "POST",
             data: { book_id: bookId, quantity: 0 },
             dataType: "json",
-            success: function(response) {
+            success: function (response) {
                 if (response.status === "success") {
-                    row.fadeOut(300, function() {
+                    row.fadeOut(300, function () {
                         $(this).remove();
                         calculateTotal();
                         updateCartCount();
-                        
+
                         // Check if cart is empty
                         if ($('tbody tr').length === 0) {
                             $('#cart-container').html('<p>Your cart is empty.</p>');
@@ -94,13 +94,13 @@ $(document).ready(function () {
     });
 
     // Book Preview quantity control
-    window.incrementQuantity = function() {
+    window.incrementQuantity = function () {
         const input = document.getElementById('quantity');
         const value = parseInt(input.value) || 1;
         input.value = value + 1;
     };
 
-    window.decrementQuantity = function() {
+    window.decrementQuantity = function () {
         const input = document.getElementById('quantity');
         const value = parseInt(input.value) || 1;
         if (value > 1) {
@@ -109,21 +109,21 @@ $(document).ready(function () {
     };
 
     // Add to cart from book preview
-    window.addToCart = function(bookId) {
+    window.addToCart = function (bookId) {
         const quantity = document.getElementById('quantity').value;
-        
+
         $.ajax({
             url: "Addtocart.php",
             method: "POST",
-            data: { 
+            data: {
                 book_id: bookId,
                 quantity: quantity
             },
-            success: function(response) {
+            success: function (response) {
                 alert(response);
                 updateCartCount();
             },
-            error: function() {
+            error: function () {
                 alert("Error adding to cart");
             }
         });
@@ -131,39 +131,46 @@ $(document).ready(function () {
 
     // Payment option handling for checkout page
     if ($('#payment-form').length > 0) {
-        // Get all payment options
-        const paymentOptions = $('.payment-option');
-        
         // Make payment options more obvious when selected
-        paymentOptions.each(function() {
-            $(this).on('click', function() {
-                // First, reset all options to unselected state
-                paymentOptions.each(function() {
-                    $(this).css({
-                        'borderColor': '#e0e0e0',
-                        'backgroundColor': 'transparent'
-                    });
-                });
-                
-                // Then highlight the selected option
-                $(this).css({
-                    'borderColor': '#47186e',
-                    'backgroundColor': '#f5f0ff'
-                });
-                
-                // Set the radio input as checked
-                const radio = $(this).find('input[type="radio"]');
-                radio.prop('checked', true);
+        $('.payment-option').on('click', function() {
+            // First, reset all options to unselected state
+            $('.payment-option').css({
+                'borderColor': '#e0e0e0',
+                'backgroundColor': 'transparent'
+            });
+            
+            // Then highlight the selected option
+            $(this).css({
+                'borderColor': '#47186e',
+                'backgroundColor': '#f5f0ff'
+            });
+            
+            // Set the radio input as checked
+            $(this).find('input[type="radio"]').prop('checked', true);
+        });
+
+        // Also handle when radio button is directly clicked
+        $('input[name="payment_type"]').on('change', function() {
+            // Reset all options
+            $('.payment-option').css({
+                'borderColor': '#e0e0e0',
+                'backgroundColor': 'transparent'
+            });
+            
+            // Highlight container of selected radio
+            $(this).closest('.payment-option').css({
+                'borderColor': '#47186e',
+                'backgroundColor': '#f5f0ff'
             });
         });
-        
+
         // Form validation on submit
         $('#payment-form').on('submit', function(e) {
             // Get the clicked button
-            const clickedBtn = e.originalEvent ? e.originalEvent.submitter : null;
+            const clickedButton = $(document.activeElement);
             
             // Only validate if confirming payment (not cancelling)
-            if (clickedBtn && clickedBtn.name === 'confirm_payment') {
+            if (clickedButton.attr('name') === 'confirm_payment') {
                 const paymentSelected = $('input[name="payment_type"]:checked').length > 0;
                 
                 if (!paymentSelected) {
@@ -179,16 +186,27 @@ $(document).ready(function () {
     $("#print-receipt").on("click", function() {
         window.print();
     });
+
+    // Checkout alert auto-dismiss
+    setTimeout(function() {
+        var checkoutAlert = $('#checkout-alert');
+        if (checkoutAlert.length) {
+            checkoutAlert.css('animation', 'fadeOut 2s forwards');
+            setTimeout(function() {
+                checkoutAlert.hide();
+            }, 2000);
+        }
+    }, 8000);
 });
 
 // Initialize review stars
 
-        // Highlight selected payment option
-        document.querySelectorAll('.payment-option').forEach(option => {
-            option.addEventListener('click', function() {
-                // Select the radio button when clicking anywhere in the option
-                const radio = this.querySelector('input[type="radio"]');
-                radio.checked = true;
-            });
-        });
-    
+// Highlight selected payment option
+document.querySelectorAll('.payment-option').forEach(option => {
+    option.addEventListener('click', function () {
+        // Select the radio button when clicking anywhere in the option
+        const radio = this.querySelector('input[type="radio"]');
+        radio.checked = true;
+    });
+});
+

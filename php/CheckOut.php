@@ -225,10 +225,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         
                         <div class="payment-option">
-                            <input type="radio" id="cash" name="payment_type" value="Cash">
-                            <label for="cash">
+                            <input type="radio" id="banktransfer" name="payment_type" value="Bank Transfer">
+                            <label for="banktransfer">
                                 <span class="checkmark"></span>
-                                <span class="payment-option-name">Cash</span>
+                                <span class="payment-option-name">Bank Transfer</span>
                             </label>
                         </div>
                     </div>

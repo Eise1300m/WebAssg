@@ -304,3 +304,71 @@ input[readonly] {
     text-align: center;
     background: rgba(255, 255, 255, 0.1);
 }
+
+.checkout-alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: 90%;
+    max-width: 600px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 15px 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    animation: slideDown 0.5s ease-out;
+}
+
+.checkout-alert i.fa-exclamation-circle {
+    font-size: 1.5rem;
+    margin-right: 12px;
+    color: #dc3545;
+}
+
+.checkout-alert span {
+    flex-grow: 1;
+    font-weight: 500;
+}
+
+.checkout-alert .close-btn {
+    background: none;
+    border: none;
+    color: #721c24;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0;
+    margin-left: 10px;
+}
+
+@keyframes slideDown {
+    0% { top: -50px; opacity: 0; }
+    100% { top: 20px; opacity: 1; }
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes slideDown {
+    0% {
+        top: -50px;
+        opacity: 0;
+    }
+    100% {
+        top: 20px;
+        opacity: 1;
+    }
+}
+
+/* Auto-dismiss after 10 seconds */
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}

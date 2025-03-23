@@ -19,7 +19,7 @@ $login = isset($_SESSION['user_name']);
     <div class="search-container">
         <input type="text" class="searchbar" placeholder="Search..." id="searchInput">
         <button id="searchButton" class="search-btn">
-            <i class="fa fa-search" aria-hidden="true"></i>
+            <img src="../upload/icon/search.png" alt="Search" class="search-icon">
         </button>
     </div>
 

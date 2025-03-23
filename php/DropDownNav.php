@@ -17,7 +17,7 @@
             <div class="subcategory-container">
                 <div class="subcategory"><a href="MainPage.php?category=Novel&subcategory=Romance">Romance</a></div>
                 <div class="subcategory"><a href="MainPage.php?category=Novel&subcategory=Mystery">Mystery & Thriller</a></div>
-                <div class="subcategory"><a href="MainPage.php?category=Novel&subcategory=SciFi">Science Fiction</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Novel&subcategory=ScienceFiction">Science Fiction</a></div>
                 <div class="subcategory"><a href="MainPage.php?category=Novel&subcategory=Fantasy">Fantasy</a></div>
                 <div class="subcategory"><a href="MainPage.php?category=Novel&subcategory=Horror">Horror</a></div>
             </div>
@@ -48,11 +48,11 @@
         <div class="category-item">
             <a href="MainPage.php?category=Education">Education</a>
             <div class="subcategory-container">
-                <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Mathematics">Mathematics</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Mathematic">Mathematics</a></div>
                 <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Science">Science</a></div>
                 <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=History">History</a></div>
                 <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Language">Language Learning</a></div>
-                <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Computer">Computer Science</a></div>
+                <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=ComputerScience">Computer Science</a></div>
                 <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Business">Business & Economics</a></div>
                 <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Engineering">Engineering</a></div>
                 <div class="subcategory"><a href="MainPage.php?category=Education&subcategory=Psychology">Psychology</a></div>

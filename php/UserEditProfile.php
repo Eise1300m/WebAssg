@@ -2,6 +2,13 @@
 session_start();
 require_once("connection.php");
 
+// Capture checkout message at the very beginning
+$checkoutMessage = "";
+if (isset($_SESSION['checkout_message'])) {
+    $checkoutMessage = $_SESSION['checkout_message'];
+    unset($_SESSION['checkout_message']); // Clear the message after retrieving it
+}
+
 if (!isset($_SESSION['user_name'])) {
     header("Location: UserLogin.php");
     exit;
@@ -135,9 +142,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/Scripts.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="../js/order.js"></script>
 </head>
 
 <body>
+    <?php if (!empty($checkoutMessage)): ?>
+    <!-- Using a different ID to avoid conflicts with any existing code -->
+    <div class="checkout-alert" id="floating-checkout-alert">
+        <i class="fas fa-exclamation-circle"></i>
+        <span><?php echo htmlspecialchars($checkoutMessage); ?></span>
+        <button onclick="document.getElementById('floating-checkout-alert').style.display='none'" class="close-btn">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <script>
+    // Immediately executing script for this alert
+    (function() {
+        // Auto-dismiss after 8 seconds
+        setTimeout(function() {
+            var alert = document.getElementById('floating-checkout-alert');
+            if (alert) {
+                alert.style.animation = 'fadeOut 1s forwards';
+                setTimeout(function() {
+                    alert.style.display = 'none';
+                }, 1000);
+            }
+        }, 8000);
+        
+        // For debugging - log to console if message exists
+        console.log("Checkout message: <?php echo addslashes($checkoutMessage); ?>");
+    })();
+    </script>
+    <?php endif; ?>
+
     <?php include_once("navbar.php") ?>
 
     <main class="profile-container">
