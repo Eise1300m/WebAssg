@@ -1,3 +1,10 @@
+<?php
+session_start();
+// Store the referring page URL if coming from MainPage
+if (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'MainPage.php') !== false) {
+    $_SESSION['return_to'] = $_SERVER['HTTP_REFERER'];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

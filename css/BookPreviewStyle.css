@@ -1,184 +1,557 @@
 * {
     box-sizing: border-box;
     margin: 0;
+    font-family: 'Roboto', sans-serif;
 }
 
-
 body {
-    justify-content: center; /* Centers horizontally */
-    align-items: center; /* Centers vertically */
-    height: 100vh; /* Takes full viewport height */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     margin: 0;
     background-color: #f5f5f5;
+    color: #333;
 }
 
 .back-button {
     position: absolute;
     top: 130px;
     left: 25px;
-    padding: 20px 26px;
-    background-color: #ddd;
+    padding: 12px 20px;
+    background-color: #6c63ff;
+    color: white;
     border: none;
     border-radius: 25px;
     cursor: pointer;
     font-weight: bold;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .back-button:hover {
-    background-color: #c9c6c4;
+    background-color: #5a52d5;
+    transform: translateY(-2px);
+}
 
+.back-button img {
+    width: 20px; 
+    height: 20px;
+    filter: brightness(0) invert(1);
 }
 
 .wrap-container {
-
-    margin: 120px auto 0 auto;
-    flex: 1;  /* Expands to push footer down */
+    margin: 120px auto 60px auto;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    width: 1600px;
-    height: 80%;
-    background-color: #c0bdee9f;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 1600px;
+    background-color: transparent;
+    padding: 0 20px;
+    gap: 40px;
 }
 
 .book-container {
-
     display: flex;
     align-items: center;
     background-color: white;
     border-radius: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(108, 99, 255, 0.1);
     overflow: hidden;
-    width: 1200px;
-    height: 600px;
-
+    width: 100%;
+    max-width: 1200px;
+    min-height: 600px;
+    transition: transform 0.3s ease;
 }
+
 
 @media (max-width: 768px) {
     .book-container {
         flex-direction: column;
+        height: auto;
+    }
+    
+    .book-details {
+        margin-left: 0 !important;
+        padding: 20px;
+    }
+    
+    .inner-position {
+        flex-direction: column;
+        padding: 20px;
     }
 }
 
 .book-image {
-
-    /* margin-left: 30px; */
-    border: 2px solid rgb(95, 94, 94);
+    border: none;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     overflow: hidden;
+    margin: 0 20px;
+    transition: transform 0.3s ease;
+}
+
+.book-image:hover {
+    transform: scale(1.03);
 }
 
 .inner-position {
-
     height: 100%;
     width: 100%;
     display: flex;
-    align-items: center; /* Vertically centers items */
-    justify-content: center; /* Horizontally centers items */
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    gap: 40px;
 }
 
 .book-image img {
     display: block;
+    object-fit: cover;
 }
 
 .book-details {
-    
     display: flex;
     flex-direction: column;
-    margin-left: 40px;
-    margin-top: 25px;
-    justify-content: flex-end;
-    width: 800px;
-
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    max-width: 800px;
 }
 
 .book-info {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 .book-info div {
-    margin-bottom: 10px;
-    font-size: 16px;
+    margin-bottom: 15px;
+    font-size: 18px;
 }
 
 .book-info div:first-child {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
+    color: #6c63ff;
+    margin-bottom: 20px;
+}
+
+.book-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.stars {
+    color: #ffc107;
+    font-size: 18px;
 }
 
 .description-section {
     flex: 1;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
 }
 
 .description-tab {
     font-weight: bold;
-    padding: 10px 0;
-    border-bottom: 2px solid #eee;
-    margin-bottom: 10px;
+    padding: 0 0 15px 0;
+    border-bottom: 2px solid #6c63ff;
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #6c63ff;
 }
 
 .description-content {
-    line-height: 1.6;
+    line-height: 1.8;
+    font-size: 16px;
+    color: #555;
 }
 
 .controls-container {
     display: flex;
-    flex-direction: column;
-    /* Stack elements vertically */
-    align-items: flex-end;
-    /* Align to the right */
-    margin-top: 50px;
-    /* Push to the bottom */
-    margin-right: 20px;
-    row-gap: 20px;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+    margin-top: 20px;
 }
 
 .controls-wrapper {
     display: flex;
     justify-content: flex-end;
-    /* Aligns items to the right */
     margin-top: auto;
+    width: 100%;
 }
-
 
 .quantity-control {
     display: flex;
     align-items: center;
-    margin-right: 17px;
 }
 
 .quantity-button {
-    width: 30px;
-    height: 30px;
-    border: 1px solid #ddd;
-    background-color: #f5f5f5;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.quantity-input {
-    width: 40px;
-    height: 28px;
-    text-align: center;
-    border: 1px solid #ddd;
-    margin: 0 5px;
-}
-
-.add-to-cart {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
+    width: 35px;
+    height: 35px;
     border: none;
-    border-radius: 4px;
+    background-color: #6c63ff;
+    color: white;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
+    border-radius: 4px;
     transition: background-color 0.3s;
 }
 
+.quantity-button:hover {
+    background-color: #5a52d5;
+}
+
+.quantity-input {
+    width: 50px;
+    height: 35px;
+    text-align: center;
+    border: 1px solid #ddd;
+    margin: 0 8px;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+.add-to-cart {
+    padding: 12px 24px;
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.2);
+}
+
 .add-to-cart:hover {
-    background-color: #45a049;
+    background-color: #5a52d5;
+    transform: translateY(-2px);
+}
+
+.add-to-cart img {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+}
+
+/* Floating message style (consistent with MainPage.php) */
+.floating-message {
+    position: fixed;
+    top: 120px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    color: white;
+    font-weight: 500;
+    opacity: 0;
+    animation: fadeInOut 3s forwards;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    15% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    85% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+}
+
+.floating-message.success {
+    background-color: #4CAF50;
+}
+
+.floating-message.error {
+    background-color: #f54f3c;
+}
+
+/* Cart button styling to match MainPage.php */
+.cart-but {
+    padding: 12px 24px;
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.2);
+}
+
+.cart-but:hover {
+    background-color: #5a52d5;
+    transform: translateY(-2px);
+}
+
+.cart-but img {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+}
+
+/* Star icon styling */
+.star-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 2px;
+}
+
+.stars {
+    display: flex;
+    align-items: center;
+}
+
+/* Button icon styling */
+.btn-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.write-review-btn {
+    padding: 12px 24px;
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.2);
+    min-width: 180px;
+    position: relative;
+    overflow: hidden;
+}
+
+.write-review-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.write-review-btn:hover {
+    background-color: #5a52d5;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(108, 99, 255, 0.3);
+}
+
+.write-review-btn:hover::before {
+    left: 100%;
+}
+
+.write-review-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(108, 99, 255, 0.3);
+}
+
+.btn-icon {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+    transition: transform 0.3s ease;
+}
+
+
+/* Make it responsive */
+@media (max-width: 768px) {
+    .write-review-btn {
+        width: 100%;
+        margin-top: 15px;
+    }
+}
+
+/* Remove any old message popup styles that might conflict */
+.message-popup {
+    display: none;
+}
+
+/* Enhanced Reviews Section Styles */
+.reviews-section {
+    width: 100%;
+    max-width: 1200px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(108, 99, 255, 0.1);
+    padding: 40px;
+    margin-bottom: 60px;
+    transition: transform 0.3s ease;
+}
+
+.reviews-section:hover {
+    transform: translateY(-5px);
+}
+
+.reviews-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.reviews-title h2 {
+    font-size: 24px;
+    color: #6c63ff;
+    margin: 0;
+}
+
+.rating-summary {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.average-rating {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+}
+
+.review-count {
+    color: #777;
+}
+
+.review-item {
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.review-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.reviewer-name {
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+}
+
+.review-date {
+    color: #777;
+    font-size: 14px;
+}
+
+.review-rating {
+    margin-bottom: 15px;
+}
+
+.review-rating .fas {
+    color: #ffc107;
+}
+
+.review-rating .far {
+    color: #e0e0e0;
+}
+
+.review-text {
+    line-height: 1.8;
+    color: #555;
+}
+
+.no-reviews {
+    text-align: center;
+    padding: 40px 0;
+    color: #777;
+    font-style: italic;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.no-reviewsMsg {
+    color: #777;
+    font-style: italic;
+}
+
+/* Animation for reviews loading */
+/* @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+} */
+
+.review-item {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.review-item:nth-child(2) { animation-delay: 0.1s; }
+.review-item:nth-child(3) { animation-delay: 0.2s; }
+.review-item:nth-child(4) { animation-delay: 0.3s; }
+.review-item:nth-child(5) { animation-delay: 0.4s; }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .reviews-title {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .write-review-btn {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .review-date {
+        margin-top: 5px;
+    }
 }

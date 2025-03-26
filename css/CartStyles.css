@@ -1,57 +1,340 @@
-
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     font-family: 'Roboto Condensed', sans-serif;
-    }
-    
-.quantity {
-    width: 60px;
-    padding: 5px;
-    text-align: center;
+
 }
 
-.item-total, .price {
+
+.cart-page-wrapper {
+    background-color: #f0f0f0e8;
+    height: 100%;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+
+
+
+}
+
+/* Cart Layout */
+.cart-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cart-content {
+    display: flex;
+    gap: 30px;
+}
+
+/* Cart Items Section */
+.cart-items {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.cart-header {
+    border-bottom: 2px solid #47186e;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.cart-header h2 {
+    color: #47186e;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.item-count {
+    background-color: #47186e;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+}
+
+/* Individual Cart Item */
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 15px;
+}
+
+.item-section {
+    flex: 1;
+}
+
+.item-section h3 {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+/* Book Details */
+.book-details {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 250px;
+}
+
+.book-details img {
+    width: 80px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* Price Display */
+.item-total,
+.price {
     font-family: monospace;
     white-space: nowrap;
 }
 
-#cart-total {
-    font-weight: bold;
-    font-size: 1.1em;
+/* Quantity Controls */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    border-radius: 4px;
+    width: fit-content;
 }
 
-.remove-item {
-    background-color: #ff4444;
-    color: white;
-    border: none;
-    padding: 5px 10px;
+.quantity-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    color: #333;
+    font-weight: bold;
+    width: 30px;
+    height: 30px;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.2s ease;
+}
+
+.quantity-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.quantity-input {
+    width: 40px;
+    text-align: center;
+    border: none;
+    font-size: 1em;
+}
+
+/* Remove Item Button */
+.remove-item {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 4px;
 }
 
 .remove-item:hover {
-    background-color: #cc0000;
+    background-color: #ee7474;
 }
 
-.checkout-form {
-    margin-top: 20px;
-    text-align: right;
+.remove-item img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0.7);
 }
 
-#checkout {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.remove-item:hover img {
+    filter: brightness(0.5);
+}
+
+/* Continue Shopping Link */
+.continue-shopping-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+.continue-shopping-top:hover {
+    background-color: #e5e5e5;
+    transform: translateX(-5px);
+}
+
+.back-icon {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0.3);
+}
+
+/* Order Summary Section */
+.order-summary {
+    width: 300px;
+    background: #e9eaf3;
+    padding: 25px;
+    border-radius: 8px;
+    height: fit-content;
+    border: 1px solid #dad9d9;
+}
+
+.order-summary h2 {
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.summary-details {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    color: #333;
+    position: relative;
+}
+
+.shipping-line {
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #ddd;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
     font-size: 1.1em;
-    transition: background-color 0.3s;
+    margin-top: 10px;
 }
 
-#checkout:hover {
-    background-color: #45a049;
-} 
+/* Checkout Button */
+.checkout-btn {
+    background-color: #47186e;
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.checkout-btn:hover {
+    background-color: #371359;
+    transform: translateY(-2px);
+}
+
+/* Floating Messages */
+.floating-message {
+    position: fixed;
+    top: 120px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 8px;
+    z-index: 9999;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.3s ease-out;
+}
+
+.floating-message.success {
+    background-color: #4CAF50;
+}
+
+.floating-message.error {
+    background-color: #f44336;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .cart-content {
+        flex-direction: column;
+    }
+
+    .order-summary {
+        width: 100%;
+    }
+
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .item-section {
+        width: 100%;
+    }
+
+    .book-details {
+        width: 100%;
+    }
+}
+
+/* Add these styles */
+.quantity-error {
+    color: #f44336;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
+.quantity-section {
+    position: relative;
+}
+
+.error-active {
+    display: block;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

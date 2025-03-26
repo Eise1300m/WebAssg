@@ -65,6 +65,7 @@ try {
     <link href="../css/NavbarStyles.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/Dropdown.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
 
 
 
@@ -89,13 +90,28 @@ try {
         <div class="book-container">
             <?php foreach ($books as $book) { ?>
                 <div class="book-card">
-                    <a href="BookPreview.php?book_id=<?php echo $book['BookNo']; ?>">
-                        <img src="<?php echo !empty($book['BookImage']) ? $book['BookImage'] : '../upload/bookPfp/BookCoverUnavailable.webp'; ?>" alt="<?php echo htmlspecialchars($book['BookName']); ?>">
-                    </a>
-                    <h3><?php echo htmlspecialchars($book['BookName']); ?></h3>
-                    <p><strong>Author:</strong> <?php echo htmlspecialchars($book['Author']); ?></p>
-                    <p><strong>Price:</strong> RM <?php echo number_format($book['BookPrice'], 2); ?></p>
-                    <button class="cart-but" data-book-id="<?php echo $book['BookNo']; ?>">Add to Cart</button>
+                    <div class="book-image">
+                        <a href="BookPreview.php?book_id=<?php echo $book['BookNo']; ?>">
+                            <img src="<?php echo !empty($book['BookImage']) ? $book['BookImage'] : '../upload/bookPfp/BookCoverUnavailable.webp'; ?>" alt="<?php echo htmlspecialchars($book['BookName']); ?>">
+                        </a>
+                    </div>
+                    <div class="book-details">
+                        <h3 class="book-title" title="<?php echo htmlspecialchars($book['BookName']); ?>"><?php echo htmlspecialchars($book['BookName']); ?></h3>
+                        <p class="book-author" title="<?php echo htmlspecialchars($book['Author']); ?>"><strong>Author:</strong> <?php echo htmlspecialchars($book['Author']); ?></p>
+                        <p class="book-price"><strong>Price:</strong> RM <?php echo number_format($book['BookPrice'], 2); ?></p>
+                        
+                        <?php if (isset($_SESSION['user_name'])): ?>
+                            <button class="cart-but" data-book-id="<?php echo $book['BookNo']; ?>">
+                                <img src="../upload/icon/shoppingcart.png" alt="Cart">
+                                Add to Cart
+                            </button>
+                        <?php else: ?>
+                            <button class="cart-but" onclick="window.location.href='UserLogin.php'">
+                                <img src="../upload/icon/shoppingcart.png" alt="Cart">
+                                Login to Add
+                            </button>
+                        <?php endif; ?>
+                    </div>
                 </div>
             <?php } ?>
         </div>

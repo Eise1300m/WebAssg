@@ -1,0 +1,124 @@
+2025-03-23 14:09:11 - Request: Array
+(
+    [book_id] => 233
+    [quantity] => 1
+)
+
+2025-03-23 14:09:53 - Request: Array
+(
+    [book_id] => 233
+    [quantity] => 1
+)
+
+2025-03-23 14:11:26 - Request: Array
+(
+    [book_id] => 233
+    [quantity] => 1
+)
+
+2025-03-23 14:11:30 - Request: Array
+(
+    [book_id] => 233
+    [quantity] => 1
+)
+
+2025-03-23 14:12:27 - Request: Array
+(
+    [book_id] => 233
+    [quantity] => 1
+)
+
+2025-03-23 14:12:34 - Request: Array
+(
+    [book_id] => 233
+    [quantity] => 3
+)
+
+2025-03-26 05:27:37 - Request: Array
+(
+    [book_id] => 1
+)
+
+2025-03-26 05:27:53 - Request: Array
+(
+    [book_id] => 1
+)
+
+2025-03-26 05:27:57 - Request: Array
+(
+    [book_id] => 1
+)
+
+2025-03-26 05:28:03 - Request: Array
+(
+    [book_id] => 1
+)
+
+2025-03-26 05:28:12 - Request: Array
+(
+    [book_id] => 10
+)
+
+2025-03-26 05:28:20 - Request: Array
+(
+    [book_id] => 10
+    [quantity] => 1
+)
+
+2025-03-26 05:30:40 - Request: Array
+(
+    [book_id] => 1
+)
+
+2025-03-26 05:32:26 - Request: Array
+(
+    [book_id] => 1
+)
+
+2025-03-26 05:32:33 - Request: Array
+(
+    [book_id] => 1
+    [quantity] => 1
+)
+
+2025-03-26 05:32:41 - Request: Array
+(
+    [book_id] => 10
+)
+
+2025-03-26 05:33:46 - Request: Array
+(
+    [book_id] => 10
+)
+
+2025-03-26 05:33:49 - Request: Array
+(
+    [book_id] => 10
+)
+
+2025-03-26 05:33:52 - Request: Array
+(
+    [book_id] => 9
+)
+
+2025-03-26 05:34:14 - Request: Array
+(
+    [book_id] => 2
+    [quantity] => 1
+)
+
+2025-03-26 05:34:18 - Request: Array
+(
+    [book_id] => 9
+)
+
+2025-03-26 05:37:33 - Request: Array
+(
+    [book_id] => 10
+)
+
+2025-03-26 05:39:02 - Request: Array
+(
+    [book_id] => 1
+)
+

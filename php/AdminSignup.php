@@ -31,6 +31,11 @@ if (isset($_SESSION['signup_errors'])) {
 <body>
 
     <?php include 'navbaradmin.php'; ?>
+    
+    <!-- Back button to AdminMainPage.php -->
+    <a class="back-button" onclick="window.history.back()">
+        <img src = "../upload/icon/back.png" alt="Back" class="back-icon"> Back to Dashboard
+    </a>
 
     <div class="container">
         <h1>Admin Sign Up</h1>

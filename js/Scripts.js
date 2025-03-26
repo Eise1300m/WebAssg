@@ -226,23 +226,20 @@ $(document).ready(function () {
     const profileIcon = document.getElementById('profileIcon');
     const profileDropdown = document.getElementById('profileDropdown');
 
-    $("#profileIcon").click(function(e) {
-        console.log("Profile icon clicked");  // Debugging
-
-        $("#profileDropdown").toggleClass("show");
-        e.stopPropagation();
+    $(document).ready(function() {
+        // Profile dropdown toggle
+        $("#profileIcon").click(function(e) {
+            e.stopPropagation();
+            $("#profileDropdown").toggleClass("show");
+        });
+        
+        // Close dropdown when clicking elsewhere
+        $(document).click(function(e) {
+            if (!$(e.target).closest('.profile-dropdown').length) {
+                $("#profileDropdown").removeClass("show");
+            }
+        });
     });
-    
-    // Close dropdown when clicking elsewhere
-    $(document).click(function(e) {
-        console.log("Profile icon vlose");  // Debugging
-        if ($("#profileDropdown").hasClass("show") && 
-            !$("#profileDropdown").is(e.target) && 
-            $("#profileDropdown").has(e.target).length === 0 &&
-            !$("#profileIcon").is(e.target)) {
-            $("#profileDropdown").removeClass("show");
-        }
-    })
 
     // Profile Management Scripts
     function initializeProfileManagement() {

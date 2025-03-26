@@ -66,6 +66,7 @@ if (!isset($admin['Username'])) {
                         <img src="../upload/icon/lock.png" alt="Security" class="nav-icon">
                         Admin Security
                     </a>
+
                 </nav>
             </div>
 
@@ -82,6 +83,12 @@ if (!isset($admin['Username'])) {
                         <img src="../upload/icon/shoppingcart.png" alt="Orders" class="card-icon">
                         <h3>Order Management</h3>
                         <p>View and manage customer orders</p>
+                    </div>
+
+                    <div class="admin-card" onclick="window.location.href='AdminSignUp.php'">
+                        <img src="../upload/icon/registration.png" alt="SignUp" class="card-icon">
+                        <h3>Admin Registeration</h3>
+                        <p>View and manage admin registeration</p>
                     </div>
                 </div>
             </div>

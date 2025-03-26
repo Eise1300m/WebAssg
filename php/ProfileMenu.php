@@ -9,17 +9,17 @@
     <script src="../js/Scripts.js"></script>
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <link rel="stylesheet" href="../css/NavbarStyles.css">
-
-
 </head>
 
-
+<?php
+// Always use default profile picture
+$profile_pic = '../upload/icon/UnknownUser.jpg';
+?>
 
 <!-- Profile dropdown menu -->
 <div class="profile-dropdown">
-
     <div class="profile-icon" id="profileIcon">
-        <i class="fa fa-user" aria-hidden="true"></i>
+        <img src="<?= htmlspecialchars($profile_pic) ?>" alt="Profile" class="user-profile-pic">
     </div>
     <div class="profile-dropdown-content" id="profileDropdown">
         <div class="profile-header">
@@ -31,8 +31,8 @@
                 <a href="UserOrderHistory.php"><i class="fa fa-history" aria-hidden="true"></i> Order History</a>
                 <a href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
             <?php else: ?>
-                <a href="CustomerLogin.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
-                <a href="CustomerRegister.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>
+                <a href="UserLogin.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+                <a href="UserSignUp.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>
             <?php endif; ?>
         </div>
     </div>

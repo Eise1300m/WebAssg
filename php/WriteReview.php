@@ -82,20 +82,21 @@ if (isset($_GET['book_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Write a Review - <?php echo $book['BookName']; ?></title>
-    <link rel="stylesheet" href="../css/HomeStyles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="stylesheet" href="../css/WriteReviewStyle.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
-    <script src="../js/review.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/Scripts.js"></script>
 </head>
 <body>
     <?php include_once("navbar.php") ?>
     
     <div class="review-container">
         <div class="review-header">
-            <img src="<?php echo $book['BookImage'] ?: '../img/no-cover.png'; ?>" 
+            <img src="<?php echo $book['BookImage'] ?: '../upload/bookPfp/bookcoverunavailable.png'; ?>" 
                  alt="<?php echo htmlspecialchars($book['BookName']); ?>" 
                  class="book-thumbnail">
             <div class="book-info">
@@ -146,5 +147,65 @@ if (isset($_GET['book_id'])) {
     </div>
     
     <?php include_once('footer.php') ?>
+
+    <script>
+    // Add JavaScript to enhance star rating interaction
+    document.addEventListener('DOMContentLoaded', function() {
+        // Change the star icon from regular to solid when selected or hovered
+        const starLabels = document.querySelectorAll('.stars-container label');
+        const starInputs = document.querySelectorAll('.stars-container input');
+        
+        starLabels.forEach(label => {
+            // Change to solid star on hover
+            label.addEventListener('mouseenter', function() {
+                this.querySelector('i').classList.replace('far', 'fas');
+                let prevSibling = this.previousElementSibling;
+                
+                // Also change all siblings to the right
+                while (prevSibling && prevSibling.tagName === 'LABEL') {
+                    prevSibling.querySelector('i').classList.replace('far', 'fas');
+                    prevSibling = prevSibling.previousElementSibling;
+                }
+            });
+            
+            // Return to default state on mouseout
+            label.addEventListener('mouseleave', function() {
+                resetStars();
+            });
+        });
+        
+        // Keep the selected stars solid
+        starInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                resetStars();
+            });
+        });
+        
+        // Function to reset stars based on the selected rating
+        function resetStars() {
+            let selectedRating = 0;
+            
+            starInputs.forEach(input => {
+                if (input.checked) {
+                    selectedRating = parseInt(input.value);
+                }
+            });
+            
+            starLabels.forEach(label => {
+                const starValue = parseInt(label.getAttribute('for').replace('star', ''));
+                const starIcon = label.querySelector('i');
+                
+                if (starValue <= selectedRating) {
+                    starIcon.classList.replace('far', 'fas');
+                } else {
+                    starIcon.classList.replace('fas', 'far');
+                }
+            });
+        }
+        
+        // Initialize the stars based on any pre-selected rating
+        resetStars();
+    });
+    </script>
 </body>
 </html>

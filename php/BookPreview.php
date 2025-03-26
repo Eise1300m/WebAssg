@@ -47,21 +47,20 @@ if (isset($_GET['book_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $book['BookName']; ?> - Preview</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/BookPreviewStyle.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <link href="../css/NavbarStyles.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/ReviewsStyle.css">
-    <script src="../js/order.js"></script>
     <script src="../js/Scripts.js"></script>
+    <script src="../js/order.js"></script>
 </head>
 
-<?php include_once("navbar.php") ?>
-
 <body>
+    <?php include_once("navbar.php") ?>
+
     <!-- Back button -->
     <button class="back-button" onclick="history.back()">
-        <i class="fas fa-arrow-left"></i> Back
+        <img src="../upload/icon/back.png" alt="Back"> Back
     </button>
 
     <div class="wrap-container">
@@ -70,28 +69,30 @@ if (isset($_GET['book_id'])) {
             <div class="inner-position">
                 <div class="book-image">
                     <?php if (!empty($book['BookImage'])): ?>
-                        <img src="<?php echo $book['BookImage']; ?>" alt="Book cover" style="width: 260px; height: 400px; object-fit: cover; ">
+                        <img src="<?php echo $book['BookImage']; ?>" alt="Book cover" style="width: 260px; height: 400px;">
+                    <?php else: ?>
+                        <img src="../upload/bookPfp/bookcoverunavailable.png" alt="Cover not available" style="width: 260px; height: 400px;">
                     <?php endif; ?>
                 </div>
 
                 <div class="book-details">
                     <div class="book-info">
-                        <div>Book Name: <?php echo $book['BookName']; ?></div>
+                        <div><?php echo $book['BookName']; ?></div>
                         <div>Author: <?php echo $book['Author']; ?></div>
                         <div>Price: RM <?php echo number_format($book['BookPrice'], 2); ?></div>
                         
-                        <!-- Added Rating Display -->
+                        <!-- Rating Display -->
                         <?php if ($review_count > 0): ?>
                         <div class="book-rating">
                             <div class="stars">
                                 <?php 
                                 for ($i = 1; $i <= 5; $i++) {
                                     if ($i <= $average_rating) {
-                                        echo '<i class="fas fa-star"></i>';
+                                        echo '<img src="../upload/icon/star-filled.png" alt="Star" class="star-icon">';
                                     } else if ($i - 0.5 <= $average_rating) {
-                                        echo '<i class="fas fa-star-half-alt"></i>';
+                                        echo '<img src="../upload/icon/star-half.png" alt="Half star" class="star-icon">';
                                     } else {
-                                        echo '<i class="far fa-star"></i>';
+                                        echo '<img src="../upload/icon/star-empty.png" alt="Empty star" class="star-icon">';
                                     }
                                 }
                                 ?>
@@ -111,12 +112,12 @@ if (isset($_GET['book_id'])) {
                     <div class="controls-wrapper">
                         <div class="controls-container">
                             <div class="quantity-control">
-                                <button class="quantity-button" onclick="decrementQuantity()">-</button>
+                                <button type="button" class="quantity-button" onclick="decrementQuantity()">-</button>
                                 <input type="text" id="quantity" class="quantity-input" value="1" readonly>
-                                <button class="quantity-button" onclick="incrementQuantity()">+</button>
+                                <button type="button" class="quantity-button" onclick="incrementQuantity()">+</button>
                             </div>
-                            <button class="add-to-cart" onclick="addToCart(<?php echo $book_id; ?>)">
-                                <i class="fas fa-shopping-cart" style="margin-right: 5px;"></i> Add to Cart
+                            <button type="button" class="cart-but" data-book-id="<?php echo $book['BookNo']; ?>" data-quantity-id="quantity">
+                                <img src="../upload/icon/shoppingcart.png" alt="Cart"> Add to Cart
                             </button>
                         </div>
                     </div>
@@ -124,7 +125,7 @@ if (isset($_GET['book_id'])) {
             </div>
         </div>
         
-        <!-- New Review Section -->
+        <!-- Reviews Section -->
         <div class="reviews-section">
             <div class="reviews-title">
                 <h2>Customer Reviews</h2>
@@ -135,28 +136,27 @@ if (isset($_GET['book_id'])) {
                         <?php 
                         for ($i = 1; $i <= 5; $i++) {
                             if ($i <= $average_rating) {
-                                echo '<i class="fas fa-star"></i>';
-                            } else if ($i - 0.5 <= $average_rating) {
-                                echo '<i class="fas fa-star-half-alt"></i>';
+                                echo '<img src="../upload/icon/star-filled.png" alt="Star" class="star-icon">';
+                            
                             } else {
-                                echo '<i class="far fa-star"></i>';
+                                echo '<img src="../upload/icon/star-empty.png" alt="Empty star" class="star-icon">';
                             }
                         }
                         ?>
                     </div>
                     <span class="review-count">(<?php echo $review_count; ?> reviews)</span>
                     <?php else: ?>
-                    <span>No reviews yet</span>
+                    <span class="no-reviewsMsg">No reviews yet</span>
                     <?php endif; ?>
                 </div>
                 
                 <?php if (isset($_SESSION['user_name'])): ?>
                 <button class="write-review-btn" onclick="location.href='WriteReview.php?book_id=<?php echo $book_id; ?>'">
-                    Write a Review
+                    <img src="../upload/icon/edit.png" alt="Edit" class="btn-icon"> Write a Review
                 </button>
                 <?php else: ?>
                 <button class="write-review-btn" onclick="location.href='UserLogin.php?redirect=BookPreview.php?book_id=<?php echo $book_id; ?>'">
-                    Login to Write a Review
+                    <img src="../upload/icon/login.png" alt="Login" class="btn-icon"> Login to Write a Review
                 </button>
                 <?php endif; ?>
             </div>
@@ -171,7 +171,11 @@ if (isset($_GET['book_id'])) {
                     <div class="review-rating">
                         <?php 
                         for ($i = 1; $i <= 5; $i++) {
-                            echo $i <= $review['Rating'] ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
+                            if ($i <= $review['Rating']) {
+                                echo '<img src="../upload/icon/star-filled.png" alt="Star" class="star-icon">';
+                            } else {
+                                echo '<img src="../upload/icon/star-empty.png" alt="Empty star" class="star-icon">';
+                            }
                         }
                         ?>
                     </div>

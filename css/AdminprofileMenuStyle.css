@@ -1,0 +1,121 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+
+}
+
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+    z-index: 200;
+}
+
+.admin-profile {
+    margin-bottom: 2rem;
+}
+
+.admin-profile h3 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.admin-profile p {
+    color: #e0e0e0;
+    margin-bottom: 1rem;
+}
+
+/* Profile Dropdown Styling */
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+    z-index: 200;
+}
+
+.profile-icon {
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-icon:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Smaller, standardized profile picture */
+.user-profile-pic {
+    width: 35px;  /* Reduced from 40px */
+    height: 35px; /* Reduced from 40px */
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px; /* Adjusted to account for smaller profile pic */
+    background-color: #fff;
+    min-width: 220px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    overflow: hidden;
+}
+
+.profile-header {
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.profile-header p {
+    margin: 0;
+}
+
+.profile-menu-items {
+    padding: 10px 0;
+}
+
+.profile-menu-items a {
+    color: #333;
+    padding: 12px 15px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.profile-menu-items a:hover {
+    background-color: #d6d6d6;
+}
+
+.profile-menu-items .nav-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+}
+
+.profile-menu-items i {
+    margin-right: 10px;
+    width: 18px;
+    text-align: center;
+}
+
+/* Show dropdown when profile icon is clicked (handled by JavaScript) */
+.show {
+    display: block;
+}
+
+/* Ensures profile pics stay consistent even when dimensions vary */
+.profile-icon img {
+    object-position: center;
+    width: 35px;
+    height: 35px;
+
+}

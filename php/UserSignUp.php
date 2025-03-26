@@ -1,5 +1,5 @@
 <?php
-if(session_status() == PHP_SESSION_NONE){
+if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
@@ -15,7 +15,7 @@ $roleValue = ($signupType === 'admin') ? "admin" : "customer"; // Set role value
 
 <?php if (!empty($errors)): ?>
     <div id="floating-error" class="floating-error">
-        <?php 
+        <?php
         // Display errors as a list if there are multiple
         if (is_array($errors)) {
             echo htmlspecialchars($errors[0]); // Just show the first error
@@ -52,16 +52,20 @@ include 'navbar.php'
 
 <body>
 
+    <a class="back-button" onclick="window.history.back()">
+        <img src="../upload/icon/back.png" alt="Back" class="back-icon"> Back 
+    </a>
+
     <div class="container">
 
         <h1>Sign Up</h1>
 
         <form id="signupForm" method="post" action="UserSignUpProcess.php">
 
-        <input type="hidden" name="role" value="<?= $roleValue ?>">
+            <input type="hidden" name="role" value="<?= $roleValue ?>">
 
 
-            <div class="input-container"> 
+            <div class="input-container">
                 <span class="icon"><i class="fas fa-user"></i></span>
                 <input type="text" id="UName" name="UName" placeholder="Enter Username">
                 <span class="error-message" id="nameError"></span>

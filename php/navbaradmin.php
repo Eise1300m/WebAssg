@@ -24,6 +24,6 @@ $isAdmin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
     </div>
 
     <div class="nav-container">
-        <?php include 'AdminProfileMenu.php'; ?>
+        <?php require_once 'AdminProfileMenu.php'; ?>
     </div>
 </div>
