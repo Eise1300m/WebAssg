@@ -73,7 +73,7 @@ if (!isset($admin['Username'])) {
             <div class="admin-main">
                 <div class="admin-cards">
                     <div class="admin-card" onclick="window.location.href='AdminProductManagement.php'">
-                        <img src="../upload/icon/edit.png" alt="Products" class="card-icon">
+                        <img src="../upload/icon/product.png" alt="Products" class="card-icon">
                         <h3>Product Management</h3>
                         <p>Add, edit, or remove books from inventory</p>
                     </div>
@@ -90,12 +90,18 @@ if (!isset($admin['Username'])) {
                         <h3>Admin Registeration</h3>
                         <p>View and manage admin registeration</p>
                     </div>
+
+                    <div class="admin-card" onclick="window.location.href='AdminDeliveryRequests.php'">
+                        <div class="notification-badge" id="pendingOrdersCount"></div>
+                        <img src="../upload/icon/delivery.png" alt="Delivery" class="card-icon">
+                        <h3>Delivery Requests</h3>
+                        <p>Manage preparing and delivering orders</p>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     
-    <?php include 'footer.php'; ?>
 </body>
 </html>

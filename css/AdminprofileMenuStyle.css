@@ -114,7 +114,6 @@
 
 /* Ensures profile pics stay consistent even when dimensions vary */
 .profile-icon img {
-    object-position: center;
     width: 35px;
     height: 35px;
 

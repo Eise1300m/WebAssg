@@ -105,7 +105,7 @@ $address = $stmt->fetch(PDO::FETCH_ASSOC);
             <div class="address-content">
                 <?php echo htmlspecialchars($address['Street']); ?><br>
                 <?php echo htmlspecialchars($address['City']) . ', ' . htmlspecialchars($address['State']) . ' ' . htmlspecialchars($address['PostalCode']); ?><br>
-                <?php echo htmlspecialchars($address['Country']); ?>
+        
             </div>
         </div>
         <?php endif; ?>
@@ -118,39 +118,79 @@ $address = $stmt->fetch(PDO::FETCH_ASSOC);
                         <th>Product</th>
                         <th>Quantity</th>
                         <th>Price</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($order_items as $item): ?>
+                    <?php 
+                    // Get book details from the book table
+                    foreach ($order_items as $item): 
+                        $stmt = $_db->prepare("SELECT BookName, BookPrice, BookImage FROM book WHERE BookNo = ?");
+                        $stmt->execute([$item['BookNo']]);
+                        $book = $stmt->fetch(PDO::FETCH_ASSOC);
+                        $itemTotal = $book['BookPrice'] * $item['Quantity'];
+                    ?>
                     <tr>
                         <td>
                             <div class="book-info">
-                                <img src="<?php echo $item['BookImage'] ?: '../img/no-cover.png'; ?>" 
-                                     alt="<?php echo htmlspecialchars($item['BookName']); ?>" 
+                                <img src="<?php echo $book['BookImage'] ?: '../img/no-cover.png'; ?>" 
+                                     alt="<?php echo htmlspecialchars($book['BookName']); ?>" 
                                      class="book-thumbnail">
-                                <span><?php echo htmlspecialchars($item['BookName']); ?></span>
+                                <span><?php echo htmlspecialchars($book['BookName']); ?></span>
                             </div>
                         </td>
                         <td><?php echo $item['Quantity']; ?></td>
-                        <td>RM <?php echo number_format($item['Price'], 2); ?></td>
+                        <td>RM <?php echo number_format($book['BookPrice'], 2); ?></td>
+                        <td>RM <?php echo number_format($itemTotal, 2); ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
             
-            <div class="order-total">
-                <div>Total Items: <?php echo $order['TotalQuantity']; ?></div>
-                <div>Total Amount: RM <?php echo number_format($order['TotalAmount'], 2); ?></div>
+            <div class="price-breakdown">
+                <div class="section-title">Price Details</div>
+                <div class="breakdown-details">
+                    <?php
+                    if (isset($_SESSION['order_details'])):
+                        $orderDetails = $_SESSION['order_details'];
+                    ?>
+                    <div class="breakdown-row">
+                        <span>Subtotal:</span>
+                        <span>RM <?php echo number_format($orderDetails['subtotal'], 2); ?></span>
+                    </div>
+                    
+                    <?php if ($orderDetails['is_first_order']): ?>
+                    <div class="breakdown-row discount">
+                        <span>First Order Discount (20%):</span>
+                        <span>-RM <?php echo number_format($orderDetails['discount'], 2); ?></span>
+                    </div>
+                    <?php endif; ?>
+
+                    <div class="breakdown-row">
+                        <span>Shipping Fee:</span>
+                        <span>RM <?php echo number_format($orderDetails['shipping'], 2); ?></span>
+                    </div>
+                    
+                    <div class="breakdown-row total">
+                        <span>Total Amount:</span>
+                        <span>RM <?php echo number_format($orderDetails['total'], 2); ?></span>
+                    </div>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
         
         <button class="print-button" id="print-receipt">
-            <i class="fas fa-print"></i> Print Receipt
+            <img src="../upload/icon/print.png" alt="Print" class="button-icon" style="width: 20px; height: 20px;">
+            Print Receipt
         </button>
         
         <div class="thank-you">
             <p>Thank you for shopping with us!</p>
-            <a href="index.php" class="continue-shopping">Continue Shopping</a>
+            <a href="MainPage.php" class="continue-shopping-btn">
+                <img src="../upload/icon/shoppingbag.png" alt="Shopping Bag">
+                Continue Shopping
+            </a>
         </div>
     </div>
 

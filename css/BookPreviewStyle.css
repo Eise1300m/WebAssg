@@ -15,7 +15,7 @@ body {
 
 .back-button {
     position: absolute;
-    top: 130px;
+    top: 150px;
     left: 25px;
     padding: 12px 20px;
     background-color: #6c63ff;
@@ -57,6 +57,9 @@ body {
 }
 
 .book-container {
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     background-color: white;
@@ -64,11 +67,23 @@ body {
     box-shadow: 0 10px 30px rgba(108, 99, 255, 0.1);
     overflow: hidden;
     width: 100%;
-    max-width: 1200px;
     min-height: 600px;
     transition: transform 0.3s ease;
 }
 
+.book-title {
+    font-size: 32px;
+    margin-bottom: 16px; 
+}
+
+.book-description {
+    font-size: 16px;
+    line-height: 24px; 
+}
+
+.price-tag {
+    font-size: 24px;
+}
 
 @media (max-width: 768px) {
     .book-container {
@@ -88,40 +103,36 @@ body {
 }
 
 .book-image {
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-    margin: 0 20px;
-    transition: transform 0.3s ease;
-}
-
-.book-image:hover {
-    transform: scale(1.03);
-}
-
-.inner-position {
-    height: 100%;
-    width: 100%;
+    flex-shrink: 0;
+    width: 300px; /* Fixed container width */
+    height: 450px; /* Fixed container height */
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px;
-    gap: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    
 }
 
 .book-image img {
-    display: block;
-    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* This will maintain aspect ratio */
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .book-details {
+    flex: 1;
+    min-width: 750px; 
+    height: auto;
+    
+}
+
+.inner-position {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    width: 100%;
-    max-width: 800px;
+    gap: 32px;
 }
 
 .book-info {
@@ -553,5 +564,15 @@ body {
     
     .review-date {
         margin-top: 5px;
+    }
+
+    .inner-position {
+        flex-direction: column;
+    }
+
+    .book-image {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
     }
 }

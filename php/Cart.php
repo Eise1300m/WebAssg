@@ -51,7 +51,7 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
         <div class="cart-container">
             <a class="continue-shopping-top" onclick="history.back()">
                 <img src="../upload/icon/arrowback.png" alt="Back" class="back-icon">
-                Continue Shopping
+                Back
             </a>
             
             <div class="cart-content">
@@ -127,6 +127,7 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
                             <span>Subtotal</span>
                             <span>RM<?= number_format($subtotal, 2) ?></span>
                         </div>
+                        <?php if (!empty($cart)): ?>
                         <div class="summary-row">
                             <span>Shipping</span>
                             <span id="shipping-cost" data-value="<?= $shipping ?>">RM<?= number_format($shipping, 2) ?></span>
@@ -136,7 +137,14 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
                             <span>Total</span>
                             <span>RM<?= number_format($subtotal + $shipping, 2) ?></span>
                         </div>
-                        <button onclick="window.location.href='CheckOut.php'" class="checkout-btn" <?= empty($cart) ? 'disabled' : '' ?>>
+                        <?php else: ?>
+                        <div class="summary-total">
+                            <span>Total</span>
+                            <span>RM0.00</span>
+                        </div>
+                        <?php endif; ?>
+                        
+                        <button onclick="checkCartAndProceed()" class="checkout-btn" <?= empty($cart) ? 'disabled' : '' ?>>
                             Proceed To Checkout
                         </button>
                     </div>
@@ -154,6 +162,6 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
     $_SESSION['cart_shipping'] = $shipping;
     ?>
 
-    <?php include_once('footer.php') ?>
+ 
 </body>
 </html>

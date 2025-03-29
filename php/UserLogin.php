@@ -23,7 +23,7 @@ if (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'MainPag
 <?php include_once 'navbar.php';
 
 $error_message = $_SESSION['error_message'] ?? '';
-unset($_SESSION['error_message']); 
+unset($_SESSION['error_message']);
 
 
 ?>
@@ -33,6 +33,11 @@ unset($_SESSION['error_message']);
 <?php endif; ?>
 
 <body>
+
+    <a class="back-button" onclick="window.history.back()">
+        <img src="../upload/icon/back.png" alt="Back" class="back-icon"> Back
+    </a>
+
     <div class="container">
 
         <h1>Login</h1>

@@ -13,10 +13,10 @@ if (!isset($_SESSION['user_name'])) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $book_id = $_POST['book_id'];
-    // Get quantity from POST and ensure it's at least 1
+    // Get quantity ensure aleast 1
     $quantity = isset($_POST['quantity']) ? max(1, intval($_POST['quantity'])) : 1;
     
-    // Check if book exists in database
+    // Get book details from database
     $stmt = $_db->prepare("SELECT BookNo, BookName, BookPrice, BookImage FROM book WHERE BookNo = ?");
     $stmt->execute([$book_id]);
     $book = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Initialize cart if not set
+    // Initialize cart 
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }

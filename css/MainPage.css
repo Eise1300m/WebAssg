@@ -219,6 +219,30 @@ body {
     background-color: #f44336;
 }
 
+.discount-alert {
+    background-color: #e8f5e9;
+    border: 1px solid #81c784;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.discount-alert h3 {
+    color: #2e7d32;
+    margin: 0 0 10px 0;
+}
+
+.discount-breakdown {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.discount-breakdown p {
+    margin: 5px 0;
+}
+
 @keyframes fadeInOut {
     0% {
         opacity: 0;
@@ -237,6 +261,7 @@ body {
         transform: translateX(50px);
     }
 }
+
 
 
 

@@ -11,7 +11,13 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
 $dateFilter = isset($_GET['filter-date']) ? $_GET['filter-date'] : 'all';
 $paymentFilter = isset($_GET['filter-payment']) ? $_GET['filter-payment'] : 'all';
 
+// Pagination settings
+$orders_per_page = 10;
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($current_page - 1) * $orders_per_page;
+
 // Base query
+$count_query = "SELECT COUNT(*) as total FROM orders o JOIN users u ON o.UserID = u.UserID WHERE 1=1";
 $query = "
     SELECT o.*, u.Username, u.Email 
     FROM orders o 
@@ -24,6 +30,7 @@ $params = [];
 
 // Date filter
 if ($dateFilter !== 'all') {
+    $count_query .= " AND DATE(o.OrderDate) = CURDATE()";
     switch ($dateFilter) {
         case 'today':
             $query .= " AND DATE(o.OrderDate) = CURDATE()";
@@ -39,11 +46,19 @@ if ($dateFilter !== 'all') {
 
 // Payment method filter
 if ($paymentFilter !== 'all') {
+    $count_query .= " AND o.PaymentType = ?";
     $query .= " AND o.PaymentType = ?";
     $params[] = $paymentFilter;
 }
 
-$query .= " ORDER BY o.OrderDate DESC";
+// Get total number of orders
+$stmt = $_db->prepare($count_query);
+$stmt->execute($params);
+$total_orders = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+$total_pages = ceil($total_orders / $orders_per_page);
+
+// Add pagination to main query
+$query .= " ORDER BY o.OrderDate DESC LIMIT $orders_per_page OFFSET $offset";
 
 // Execute the filtered query
 $stmt = $_db->prepare($query);
@@ -84,6 +99,7 @@ $paymentMethods = $stmt->fetchAll(PDO::FETCH_COLUMN);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/Scripts.js"></script>
+    <script src="../js/AdminScripts.js"></script>
 </head>
 <body>
     <?php include_once("navbaradmin.php") ?>
@@ -103,7 +119,7 @@ $paymentMethods = $stmt->fetchAll(PDO::FETCH_COLUMN);
             <div class="admin-stats">
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="fas fa-shopping-cart"></i>
+                        <img src="../upload/icon/shoppingcart.png" alt="Total Orders">
                     </div>
                     <div class="stat-info">
                         <span>Total Orders</span>
@@ -113,7 +129,7 @@ $paymentMethods = $stmt->fetchAll(PDO::FETCH_COLUMN);
                 
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="fas fa-money-bill-wave"></i>
+                        <img src="../upload/icon/sales.png" alt="Total Sales">
                     </div>
                     <div class="stat-info">
                         <span>Total Sales</span>
@@ -123,7 +139,7 @@ $paymentMethods = $stmt->fetchAll(PDO::FETCH_COLUMN);
                 
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="fas fa-users"></i>
+                        <img src="../upload/icon/customer.png" alt="Total Customers">
                     </div>
                     <div class="stat-info">
                         <span>Total Customers</span>
@@ -160,11 +176,11 @@ $paymentMethods = $stmt->fetchAll(PDO::FETCH_COLUMN);
                             </div>
                             
                             <button type="submit" class="filter-btn">
-                                <i class="fas fa-filter"></i> Apply Filter
+                                <img src="../upload/icon/filter.png" style="width: 20px; height: 20px;"> Apply Filter
                             </button>
                             
                             <a href="AdminOrders.php" class="reset-btn">
-                                <i class="fas fa-undo"></i> Reset
+                                <img src="../upload/icon/reset.png" style="width: 20px; height: 20px;"> Reset
                             </a>
                         </form>
                     </div>
@@ -204,8 +220,19 @@ $paymentMethods = $stmt->fetchAll(PDO::FETCH_COLUMN);
                                     </td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button onclick="viewOrderDetails(<?php echo $order['OrderNo']; ?>)" class="view-btn">
-                                                <i class="fas fa-eye"></i> View
+                                            <button class="view-details" onclick="viewOrderDetails(<?php echo $order['OrderNo']; ?>)">
+                                                <img src="../upload/icon/view.png" alt="View" class="action-icon" style="width: 13px; height: 13px;">
+                                                View
+                                            </button>
+                                            <button class="status-btn <?php echo strtolower($order['OrderStatus']); ?>"
+                                                    data-order-id="<?php echo $order['OrderNo']; ?>"
+                                                    onclick="updateOrderStatus(<?php echo $order['OrderNo']; ?>, '<?php echo $order['OrderStatus']; ?>')"
+                                                    <?php echo $order['OrderStatus'] === 'Complete' ? 'disabled' : ''; ?>>
+                                                <img src="../upload/icon/<?php echo $order['OrderStatus'] === 'Complete' ? 'check.png' : 'package.png'; ?>" 
+                                                     alt="Status" 
+                                                     class="status-icon" 
+                                                     style="width: 13px; height: 13px;">
+                                                <?php echo $order['OrderStatus']; ?>
                                             </button>
                                         </div>
                                     </td>
@@ -216,13 +243,62 @@ $paymentMethods = $stmt->fetchAll(PDO::FETCH_COLUMN);
                     </table>
                 </div>
                 
-                <!-- Pagination (can be implemented if needed) -->
+                <!-- Pagination -->
                 <div class="pagination">
-                    <a href="#" class="page-link disabled"><i class="fas fa-chevron-left"></i></a>
-                    <a href="#" class="page-link active">1</a>
-                    <a href="#" class="page-link">2</a>
-                    <a href="#" class="page-link">3</a>
-                    <a href="#" class="page-link"><i class="fas fa-chevron-right"></i></a>
+                    <?php if ($total_pages > 1): ?>
+                        <!-- Previous page -->
+                        <a href="<?php 
+                            echo $current_page > 1 ? 
+                                '?page=' . ($current_page - 1) . 
+                                '&filter-date=' . $dateFilter . 
+                                '&filter-payment=' . $paymentFilter 
+                                : '#'; 
+                            ?>" 
+                            class="page-link <?php echo $current_page <= 1 ? 'disabled' : ''; ?>">
+                            <img src="../upload/icon/arrowback.png" alt="Previous" class="arrow">
+                        </a>
+
+                        <!-- Page numbers -->
+                        <?php
+                        // Calculate range of pages to show
+                        $start_page = max(1, $current_page - 2);
+                        $end_page = min($total_pages, $current_page + 2);
+
+                        // Show first page if not in range
+                        if ($start_page > 1) {
+                            echo '<a href="?page=1&filter-date=' . $dateFilter . '&filter-payment=' . $paymentFilter . '" class="page-link">1</a>';
+                            if ($start_page > 2) {
+                                echo '<span class="page-link dots">...</span>';
+                            }
+                        }
+
+                        // Show page numbers
+                        for ($i = $start_page; $i <= $end_page; $i++) {
+                            echo '<a href="?page=' . $i . '&filter-date=' . $dateFilter . '&filter-payment=' . $paymentFilter . '" 
+                                    class="page-link ' . ($current_page == $i ? 'active' : '') . '">' . $i . '</a>';
+                        }
+
+                        // Show last page if not in range
+                        if ($end_page < $total_pages) {
+                            if ($end_page < $total_pages - 1) {
+                                echo '<span class="page-link dots">...</span>';
+                            }
+                            echo '<a href="?page=' . $total_pages . '&filter-date=' . $dateFilter . '&filter-payment=' . $paymentFilter . '" class="page-link">' . $total_pages . '</a>';
+                        }
+                        ?>
+
+                        <!-- Next page -->
+                        <a href="<?php 
+                            echo $current_page < $total_pages ? 
+                                '?page=' . ($current_page + 1) . 
+                                '&filter-date=' . $dateFilter . 
+                                '&filter-payment=' . $paymentFilter 
+                                : '#'; 
+                            ?>" 
+                            class="page-link <?php echo $current_page >= $total_pages ? 'disabled' : ''; ?>">
+                            <img src="../upload/icon/arrowfoward.png" alt="Next" class="arrow">
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -242,40 +318,7 @@ $paymentMethods = $stmt->fetchAll(PDO::FETCH_COLUMN);
         </div>
     </div>
 
-    <script>
-        // View Order Details
-        function viewOrderDetails(orderId) {
-            $('#orderModal').show();
-            $('#orderDetailsContent').html('<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading order details...</div>');
-            
-            // Fetch order details via AJAX
-            $.ajax({
-                url: 'fetchOrderDetails.php',
-                method: 'GET',
-                data: { order_id: orderId },
-                success: function(data) {
-                    $('#orderDetailsContent').html(data);
-                },
-                error: function() {
-                    $('#orderDetailsContent').html('<div class="error-message">Error loading order details. Please try again.</div>');
-                }
-            });
-        }
-
-        // Close Order Modal
-        function closeOrderModal() {
-            $('#orderModal').hide();
-        }
-
-        // Close modal when clicking outside of it
-        $(window).click(function(event) {
-            if ($(event.target).is('#orderModal')) {
-                closeOrderModal();
-            }
-        });
-    </script>
 
     <script src="../js/Scripts.js"></script>
-    <?php include 'footer.php'; ?>
 </body>
 </html> 

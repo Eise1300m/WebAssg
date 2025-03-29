@@ -307,6 +307,51 @@ $(document).ready(function () {
             }, 2000);
         }
     }, 8000);
+
+    // Handle checkout button click
+    $('.checkout-btn').on('click', function(e) {
+        e.preventDefault();
+        checkCartAndProceed();
+    });
+
+    // ==========================================
+    // Order Collection functionality
+    // ==========================================
+    
+    // Handle collection confirmation
+    $('.collect-btn').on('click', function() {
+        const orderNo = $(this).data('order-id');
+        if (confirm('Have you received your order? This action cannot be undone.')) {
+            $.ajax({
+                url: 'updateOrderStatus.php',
+                type: 'POST',
+                data: {
+                    order_id: orderNo,
+                    status: 'Collected'
+                },
+                success: function(response) {
+                    try {
+                        const result = typeof response === 'string' ? JSON.parse(response) : response;
+                        if (result.success) {
+                            showFloatingMessage('Thank you for confirming your collection!', 'success');
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            showFloatingMessage(result.message || 'Error updating order status', 'error');
+                        }
+                    } catch (e) {
+                        console.error('Error:', e);
+                        showFloatingMessage('Error processing response', 'error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Ajax error:', xhr.responseText);
+                    showFloatingMessage('Error connecting to server', 'error');
+                }
+            });
+        }
+    });
 });
 
 // ==========================================
@@ -315,18 +360,14 @@ $(document).ready(function () {
 
 // Message display function
 function showFloatingMessage(message, type) {
-    // Remove existing messages
-    $('.floating-message, .message-popup').remove();
-    
-    // Create new message element
+    console.log('Showing message:', message, 'Type:', type);
     const messageDiv = $('<div>')
-        .addClass('floating-message ' + type)
+        .addClass('floating-message')
+        .addClass(type)
         .text(message);
     
-    // Add to body
     $('body').append(messageDiv);
     
-    // Remove after delay
     setTimeout(function() {
         messageDiv.fadeOut(300, function() {
             $(this).remove();
@@ -365,4 +406,17 @@ function animateReviewItems() {
             item.style.transform = 'translateY(0)';
         }, 100 + (index * 100));
     });
+}
+
+// Update or add the checkCartAndProceed function
+function checkCartAndProceed() {
+    const cartItems = $('.cart-item').length;
+    
+    if (cartItems === 0) {
+        showFloatingMessage("Your cart is empty. Please add items before proceeding to checkout.", "error");
+        return;
+    }
+    
+    // If cart has items, proceed to checkout
+    window.location.href = 'CheckOut.php';
 }

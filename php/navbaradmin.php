@@ -16,12 +16,6 @@ $isAdmin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
         </div>
     </a>
 
-    <div class="search-container">
-        <input type="text" class="searchbar" placeholder="Search..." id="searchInput">
-        <button id="searchButton" class="search-btn">
-            <i class="fa fa-search" aria-hidden="true"></i>
-        </button>
-    </div>
 
     <div class="nav-container">
         <?php require_once 'AdminProfileMenu.php'; ?>

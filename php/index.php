@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
-    <!-- <link rel="stylesheet" href="../css/Dropdown.css"> -->
     <script src="../js/Bookscript.js" defer></script>
 </head>
 

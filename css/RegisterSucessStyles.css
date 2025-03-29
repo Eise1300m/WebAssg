@@ -1,54 +1,121 @@
-
-body{
-
+body {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 90vh;
+    min-height: 100vh;
+    margin: 0;
+    background-image: url(../img/3086.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    background-image: url(../img/3086.jpg);
-
-
+    background-position: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.container{
-
-    background-color: rgb(239, 239, 229);
-    width: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    width: 90%;
+    max-width: 450px;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     text-align: center;
-    height: 200px;
-    padding-top: 10px;
-    border: 3px solid rgba(216, 201, 201, 0.779);
-    padding-bottom: 20px;
-    border-radius: 40px;
-    box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.459);
-
+    transform: translateY(-20px);
+    animation: slideUp 0.5s ease forwards;
 }
 
-
-button{
-
-    margin-top: 15px; 
-    padding: 10px;
-    border: 2px solid rgb(170, 226, 169);
-    background-color: rgba(161, 200, 161, 0.6);
-    border-radius: 50px;
-    cursor: pointer; /* Added for better UX */
-    transition: all 0.3s ease 0s;
-    width: 40%;
+@keyframes slideUp {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
 }
 
-button:hover{
-    background-color: rgb(158, 203, 158);
-
+.success-icon {
+    margin-bottom: 20px;
+    animation: scaleIn 0.5s ease;
 }
-.container p {
 
-    margin: 6px 0; 
-    font-size: 20px;
+.check-icon {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.success-message h1 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.success-message p {
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.action-button {
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #47186e 0%, #6523aa 100%);
+    color: white;
+}
+
+.button-icon {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1); /* Makes the icon white */
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(71, 24, 110, 0.2);
+    background: linear-gradient(135deg, #6523aa 0%, #47186e 100%);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .container {
+        padding: 30px 20px;
+        width: 85%;
+    }
+
+    .success-message h1 {
+        font-size: 24px;
+    }
+
+    .success-message p {
+        font-size: 16px;
+    }
+
+    button {
+        width: 100%;
+        justify-content: center;
+    }
 }

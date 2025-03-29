@@ -40,6 +40,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/Scripts.js"></script>
+    <script src="../js/order.js"></script>
 </head>
 
 <body>
@@ -75,13 +76,30 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <div class="order-card">
                                 <div class="order-header">
                                     <h3>Order #<?php echo $order_count; ?></h3>
-                                    <span class="order-date"><?php echo $order['OrderDate']; ?></span>
+                                    <span class="order-date"><?php echo date('F j, Y', strtotime($order['OrderDate'])); ?></span>
                                 </div>
                                 <div class="order-details">
                                     <p><strong>Total Items:</strong> <?php echo $order['TotalQuantity']; ?></p>
                                     <p><strong>Total Price:</strong> RM <?php echo number_format($order['TotalAmount'], 2); ?></p>
-                                    <a href="UserOrderHistoryDetails.php?order_id=<?php echo $order['OrderNo']; ?>"
-                                        class="view-details-btn">View Details</a>
+                                    <p><strong>Status:</strong>
+                                        <span class="order-status <?php echo strtolower($order['OrderStatus']); ?>">
+                                            <?php echo $order['OrderStatus']; ?>
+                                        </span>
+                                    </p>
+                                    <div class="order-actions">
+                                        <!-- In your order card section -->
+                                        <?php if ($order['OrderStatus'] === 'Delivering'): ?>
+                                            <button class="collect-btn" data-order-id="<?php echo htmlspecialchars($order['OrderNo']); ?>">
+                                                <img src="../upload/icon/check.png" alt="Collect" style="width: 20px; height: 20px; filter: invert(1);">
+                                                Confirm Collection
+                                            </button>
+                                        <?php endif; ?>
+                                        <a href="UserOrderHistoryDetails.php?order_id=<?php echo $order['OrderNo']; ?>"
+                                            class="view-details-btn">
+                                            <img src="../upload/icon/view.png" alt="View" style="width: 20px; height: 20px; filter: invert(1);">
+                                            View Details
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                     <?php

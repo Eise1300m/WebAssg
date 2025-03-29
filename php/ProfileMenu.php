@@ -27,9 +27,9 @@ $profile_pic = '../upload/icon/UnknownUser.jpg';
         </div>
         <div class="profile-menu-items">
             <?php if (isset($_SESSION['user_name'])): ?>
-                <a href="UserEditProfile.php"><i class="fa fa-user-circle" aria-hidden="true"></i> Edit Profile</a>
-                <a href="UserOrderHistory.php"><i class="fa fa-history" aria-hidden="true"></i> Order History</a>
-                <a href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+                <a href="UserEditProfile.php"><img src="../upload/icon/edit.png" alt="Edit Profile" style="width: 20px; height: 20px; filter: invert(1);"> Edit Profile</a>
+                <a href="UserOrderHistory.php"><img src="../upload/icon/history.png" alt="Order History" style="width: 20px; height: 20px; filter: invert(1);"> Order History</a>
+                <a href="logout.php"><img src="../upload/icon/logout.png" alt="Logout" style="width: 20px; height: 20px; filter: invert(1);"> Logout</a>
             <?php else: ?>
                 <a href="UserLogin.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
                 <a href="UserSignUp.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>

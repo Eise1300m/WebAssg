@@ -15,12 +15,6 @@ $totalPrice = 0;
 $payment_error = isset($_SESSION['payment_error']) ? $_SESSION['payment_error'] : '';
 unset($_SESSION['payment_error']);
 
-// Calculate cart totals without saving to database yet
-foreach ($_SESSION['cart'] as $book) {
-    $totalQuantity += $book['Quantity'];
-    $totalPrice += $book['Price'] * $book['Quantity'];
-}
-
 // Get user information for checkout
 try {
     // Retrieve UserID and check if address exists
@@ -54,6 +48,49 @@ try {
 } catch (Exception $e) {
     die("Checkout preparation failed: " . $e->getMessage());
 }
+
+// After retrieving user information and before calculating totals, add this code:
+$isFirstOrder = true;
+try {
+    $checkOrderStmt = $_db->prepare("SELECT COUNT(*) as order_count FROM orders WHERE UserID = ?");
+    $checkOrderStmt->execute([$user_id]);
+    $orderCount = $checkOrderStmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($orderCount['order_count'] > 0) {
+        $isFirstOrder = false;
+    }
+} catch (Exception $e) {
+    // Handle error silently, default to no discount if check fails
+    $isFirstOrder = false;
+}
+
+// Get shipping fee from Cart session
+$shipping = isset($_SESSION['cart_shipping']) ? $_SESSION['cart_shipping'] : 5.00;
+$subtotalPrice = isset($_SESSION['cart_subtotal']) ? $_SESSION['cart_subtotal'] : 0;
+
+// Calculate total quantity from cart items
+$totalQuantity = 0;
+foreach ($_SESSION['cart'] as $item) {
+    $totalQuantity += $item['Quantity'];
+}
+
+// Calculate discount if first order
+if ($isFirstOrder) {
+    $discount = $subtotalPrice * 0.20;
+    $totalPrice = ($subtotalPrice - $discount) + $shipping;
+} else {
+    $totalPrice = $subtotalPrice + $shipping;
+}
+
+// Store these values in session for Receipt.php
+$_SESSION['order_details'] = [
+    'subtotal' => $subtotalPrice,
+    'shipping' => $shipping,
+    'discount' => $isFirstOrder ? $discount : 0,
+    'total' => $totalPrice,
+    'is_first_order' => $isFirstOrder,
+    'total_quantity' => $totalQuantity
+];
 
 // Process payment submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -127,6 +164,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="stylesheet" href="../css/Paymentstyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/Scripts.js"></script>
+
+>
+
 </head>
 <body>
     <?php include_once("navbar.php") ?>
@@ -144,6 +185,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
         
         <div class="payment-body">
+            
+            
             <div class="order-summary">
                 <h2 class="section-title">Order Summary</h2>
                 
@@ -166,7 +209,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p><?php echo htmlspecialchars($address['City']) . ', ' . 
                               htmlspecialchars($address['State']) . ' ' . 
                               htmlspecialchars($address['PostalCode']); ?></p>
-                    <p><?php echo htmlspecialchars($address['Country']); ?></p>
                 </div>
                 <?php endif; ?>
                 
@@ -189,8 +231,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <?php endforeach; ?>
                 </div>
                 
-                <div class="order-total">
-                    <p>Total: RM <?php echo number_format($totalPrice, 2); ?></p>
+                <div class="price-breakdown">
+                    <?php if ($isFirstOrder): ?>
+                        <p>
+                            <span>Subtotal:</span>
+                            <span>RM <?php echo number_format($_SESSION['cart_subtotal'], 2); ?></span>
+                        </p>
+                        <p class="discount-amount">
+                            <span>Discount (20% for first order):</span>
+                            <span>-RM <?php echo number_format($discount, 2); ?></span>
+                        </p>
+                        <p class="shipping-fee">
+                            <span>Shipping Fee:</span>
+                            <span>RM <?php echo number_format($shipping, 2); ?></span>
+                        </p>
+                        <p class="final-total">
+                            <span>Total:</span>
+                            <span>RM <?php echo number_format($totalPrice, 2); ?></span>
+                        </p>
+                    <?php else: ?>
+                        <p>
+                            <span>Subtotal:</span>
+                            <span>RM <?php echo number_format($_SESSION['cart_subtotal'], 2); ?></span>
+                        </p>
+                        <p class="shipping-fee">
+                            <span>Shipping Fee:</span>
+                            <span>RM <?php echo number_format($shipping, 2); ?></span>
+                        </p>
+                        <p class="final-total">
+                            <span>Total:</span>
+                            <span>RM <?php echo number_format($totalPrice, 2); ?></span>
+                        </p>
+                    <?php endif; ?>
                 </div>
             </div>
             
@@ -217,7 +289,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         
                         <div class="payment-option">
-                            <input type="radio" id="ewallet" name="payment_type" value="E-wallet">
+                            <input type="radio" id="ewallet" name="payment_type" value="ewallet">
                             <label for="ewallet">
                                 <span class="checkmark"></span>
                                 <span class="payment-option-name">E-Wallet</span>

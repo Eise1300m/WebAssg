@@ -69,9 +69,9 @@ if (isset($_GET['book_id'])) {
             <div class="inner-position">
                 <div class="book-image">
                     <?php if (!empty($book['BookImage'])): ?>
-                        <img src="<?php echo $book['BookImage']; ?>" alt="Book cover" style="width: 260px; height: 400px;">
+                        <img src="<?php echo $book['BookImage']; ?>" alt="Book cover">
                     <?php else: ?>
-                        <img src="../upload/bookPfp/bookcoverunavailable.png" alt="Cover not available" style="width: 260px; height: 400px;">
+                        <img src="../upload/bookPfp/bookcoverunavailable.png" alt="Cover not available">
                     <?php endif; ?>
                 </div>
 

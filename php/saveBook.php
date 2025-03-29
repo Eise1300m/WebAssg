@@ -11,19 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $bookId = isset($_POST['book_id']) ? $_POST['book_id'] : null;
     $bookName = $_POST['book_name'];
     $bookPrice = $_POST['book_price'];
-    $categoryId = $_POST['category'];
-    
-    // Get subcategory (assuming the first subcategory in the selected category)
-    $stmt = $_db->prepare("SELECT SubcategoryNo FROM subcategory WHERE CategoryNo = ? LIMIT 1");
-    $stmt->execute([$categoryId]);
-    $subcategory = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if (!$subcategory) {
-        echo "Error: No subcategory found for this category.";
-        exit();
-    }
-    
-    $subcategoryId = $subcategory['SubcategoryNo'];
+    $description = $_POST['book_description'];
+    $subcategoryId = $_POST['subcategory'];
     
     // Handle image upload
     $uploadImage = false;
@@ -47,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
         
-        $uploadDir = "../upload/books/";
+        $uploadDir = "../upload/bookPfp/";
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
@@ -79,19 +68,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 
                 // Update with new image
-                $stmt = $_db->prepare("UPDATE book SET BookName = ?, BookPrice = ?, SubcategoryNo = ?, BookImage = ? WHERE BookNo = ?");
-                $stmt->execute([$bookName, $bookPrice, $subcategoryId, $imagePath, $bookId]);
+                $stmt = $_db->prepare("UPDATE book SET BookName = ?, BookPrice = ?, Description = ?, SubcategoryNo = ?, BookImage = ? WHERE BookNo = ?");
+                $stmt->execute([$bookName, $bookPrice, $description, $subcategoryId, $imagePath, $bookId]);
             } else {
                 // Update without changing the image
-                $stmt = $_db->prepare("UPDATE book SET BookName = ?, BookPrice = ?, SubcategoryNo = ? WHERE BookNo = ?");
-                $stmt->execute([$bookName, $bookPrice, $subcategoryId, $bookId]);
+                $stmt = $_db->prepare("UPDATE book SET BookName = ?, BookPrice = ?, Description = ?, SubcategoryNo = ? WHERE BookNo = ?");
+                $stmt->execute([$bookName, $bookPrice, $description, $subcategoryId, $bookId]);
             }
             
             echo "Book updated successfully!";
         } else {
             // Add new book
-            $stmt = $_db->prepare("INSERT INTO book (BookName, BookPrice, SubcategoryNo, BookImage) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$bookName, $bookPrice, $subcategoryId, $uploadImage ? $imagePath : null]);
+            $stmt = $_db->prepare("INSERT INTO book (BookName, BookPrice, Description, SubcategoryNo, BookImage) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$bookName, $bookPrice, $description, $subcategoryId, $uploadImage ? $imagePath : null]);
             
             echo "Book added successfully!";
         }

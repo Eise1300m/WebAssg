@@ -50,10 +50,23 @@ $allSubcategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Count books for stats
 $bookCount = count($books);
+
+// Add this after your existing database queries, before the HTML
+$subcategoriesMap = [];
+foreach ($allSubcategories as $sub) {
+    if (!isset($subcategoriesMap[$sub['CategoryNo']])) {
+        $subcategoriesMap[$sub['CategoryNo']] = [];
+    }
+    $subcategoriesMap[$sub['CategoryNo']][] = [
+        'id' => $sub['SubcategoryNo'],
+        'name' => $sub['SubcategoryName']
+    ];
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -66,7 +79,11 @@ $bookCount = count($books);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../css/AdminProductStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/Scripts.js"></script>
+    <script src="../js/AdminScripts.js"></script>
+
 </head>
+
 <body>
     <?php include_once("navbaradmin.php") ?>
 
@@ -80,31 +97,31 @@ $bookCount = count($books);
             <a href="AdminMainPage.php" class="admin-nav-back">
                 <img src="../upload/icon/back.png" alt="Back"> Back to Dashboard
             </a>
-            
+
             <div class="admin-stats">
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="fas fa-book"></i>
+                        <img src="../upload/icon/book.png" style="width: 30px; height: 30px;" alt="Total Books">
                     </div>
                     <div class="stat-info">
                         <span>Total Books</span>
                         <h3><?php echo $bookCount; ?></h3>
                     </div>
                 </div>
-                
+
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="fas fa-list"></i>
+                        <img src="../upload/icon/list.png" style="width: 30px; height: 30px;" alt="Total Categories">
                     </div>
                     <div class="stat-info">
                         <span>Categories</span>
                         <h3><?php echo count($categories); ?></h3>
                     </div>
                 </div>
-                
+
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="fas fa-tag"></i>
+                        <img src="../upload/icon/subcat.png" style="width: 30px; height: 30px;" alt="Total Subcategories">
                     </div>
                     <div class="stat-info">
                         <span>Subcategories</span>
@@ -112,13 +129,13 @@ $bookCount = count($books);
                     </div>
                 </div>
             </div>
-            
+
             <div class="product-management">
                 <div class="product-actions">
                     <button class="add-product-btn" onclick="showAddProductForm()">
                         Add New Book
                     </button>
-                    
+
                     <div class="filter-container">
                         <form id="filterForm" method="get" class="filter-form">
                             <div class="filter-group">
@@ -132,7 +149,7 @@ $bookCount = count($books);
                                     <?php endforeach; ?>
                                 </select>
                             </div>
-                            
+
                             <div class="filter-group">
                                 <label for="subcategory-filter">Subcategory</label>
                                 <select id="subcategory-filter" name="subcategory">
@@ -140,13 +157,13 @@ $bookCount = count($books);
                                     <!-- This will be populated via JavaScript based on category selection -->
                                 </select>
                             </div>
-                            
+
                             <button type="submit" class="filter-btn">
-                                <i class="fas fa-filter"></i> Apply Filter
+                                <img src="../upload/icon/filter.png" style="width: 20px; height: 20px;"> Apply Filter
                             </button>
-                            
+
                             <a href="AdminProductManagement.php" class="reset-btn">
-                                <i class="fas fa-undo"></i> Reset
+                                <img src="../upload/icon/reset.png" style="width: 20px; height: 20px;"> Reset
                             </a>
                         </form>
                     </div>
@@ -167,33 +184,33 @@ $bookCount = count($books);
                         </thead>
                         <tbody>
                             <?php if (empty($books)): ?>
-                            <tr>
-                                <td colspan="7" class="no-results">No books found matching your criteria.</td>
-                            </tr>
+                                <tr>
+                                    <td colspan="7" class="no-results">No books found matching your criteria.</td>
+                                </tr>
                             <?php else: ?>
                                 <?php foreach ($books as $book): ?>
-                                <tr>
-                                    <td><?php echo $book['BookNo']; ?></td>
-                                    <td>
-                                        <img src="<?php echo $book['BookImage'] ?: '../img/no-cover.png'; ?>" 
-                                             alt="<?php echo htmlspecialchars($book['BookName']); ?>"
-                                             class="book-thumbnail">
-                                    </td>
-                                    <td><?php echo htmlspecialchars($book['BookName']); ?></td>
-                                    <td>RM <?php echo number_format($book['BookPrice'], 2); ?></td>
-                                    <td><span class="category-badge"><?php echo htmlspecialchars($book['CategoryName']); ?></span></td>
-                                    <td><span class="subcategory-badge"><?php echo htmlspecialchars($book['SubcategoryName']); ?></span></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <button class="edit-btn" onclick="editBook(<?php echo $book['BookNo']; ?>)">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </button>
-                                            <button class="delete-btn" onclick="confirmDeleteBook(<?php echo $book['BookNo']; ?>)">
-                                                <i class="fas fa-trash"></i> Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td><?php echo $book['BookNo']; ?></td>
+                                        <td>
+                                            <img src="<?php echo $book['BookImage'] ?: '../img/no-cover.png'; ?>"
+                                                alt="<?php echo htmlspecialchars($book['BookName']); ?>"
+                                                class="book-thumbnail">
+                                        </td>
+                                        <td><?php echo htmlspecialchars($book['BookName']); ?></td>
+                                        <td>RM <?php echo number_format($book['BookPrice'], 2); ?></td>
+                                        <td><span class="category-badge"><?php echo htmlspecialchars($book['CategoryName']); ?></span></td>
+                                        <td><span class="subcategory-badge"><?php echo htmlspecialchars($book['SubcategoryName']); ?></span></td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <button class="edit-btn" onclick="editBook(<?php echo $book['BookNo']; ?>)">
+                                                    <img src="../upload/icon/edit.png" style="width: 20px; height: 20px;"> Edit
+                                                </button>
+                                                <button class="delete-btn" onclick="confirmDeleteBook(<?php echo $book['BookNo']; ?>)">
+                                                    <img src="../upload/icon/delete.png" style="width: 20px; height: 20px;"> Delete
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </tbody>
@@ -217,10 +234,10 @@ $bookCount = count($books);
                     </div>
                     <div class="form-group">
                         <label for="book_price">Price (RM)</label>
-                        <input type="number" id="book_price" name="book_price" required>
+                        <input type="number" id="book_price" name="book_price" step="0.01" required>
                     </div>
                 </div>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="category">Category</label>
@@ -235,12 +252,17 @@ $bookCount = count($books);
                     </div>
                     <div class="form-group">
                         <label for="subcategory">Subcategory</label>
-                        <select id="subcategory" name="subcategory" required disabled>
+                        <select id="subcategory" name="subcategory" required>
                             <option value="">-- Select Category First --</option>
                         </select>
                     </div>
                 </div>
-                
+
+                <div class="form-group">
+                    <label for="book_description">Description</label>
+                    <textarea id="book_description" name="book_description" rows="4"></textarea>
+                </div>
+
                 <div class="form-group">
                     <label for="book_image">Book Image</label>
                     <input type="file" id="book_image" name="book_image" accept="image/*">
@@ -248,12 +270,7 @@ $bookCount = count($books);
                         <img id="image-preview" alt="Book preview">
                     </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="book_description">Description</label>
-                    <textarea id="book_description" name="book_description" rows="4"></textarea>
-                </div>
-                
+
                 <div class="form-actions">
                     <button type="button" class="cancel-btn" onclick="closeProductModal()">Cancel</button>
                     <button type="submit" class="save-btn">Save Book</button>
@@ -262,28 +279,15 @@ $bookCount = count($books);
         </div>
     </div>
 
-    <!-- Store subcategories as JSON for JavaScript use -->
-    <script>
-        const subcategoriesByCategory = <?php
-            $subcategoriesMap = [];
-            foreach ($allSubcategories as $sub) {
-                if (!isset($subcategoriesMap[$sub['CategoryNo']])) {
-                    $subcategoriesMap[$sub['CategoryNo']] = [];
-                }
-                $subcategoriesMap[$sub['CategoryNo']][] = [
-                    'id' => $sub['SubcategoryNo'],
-                    'name' => $sub['SubcategoryName']
-                ];
-            }
-            echo json_encode($subcategoriesMap);
-        ?>;
-        
-        // Store current subcategory filter for preservation
-        const currentSubcategoryFilter = "<?php echo $subcategoryFilter; ?>";
-    </script>
+    <div id="subcategories-data"
+        data-subcategories='<?php echo json_encode($subcategoriesMap); ?>'
+        data-current-subcategory='<?php echo $subcategoryFilter; ?>'>
+    </div>
 
+    <!-- Remove inline script references and keep only external ones -->
     <script src="../js/Scripts.js"></script>
     <script src="../js/AdminScripts.js"></script>
     <?php include 'footer.php'; ?>
 </body>
-</html> 
+
+</html>

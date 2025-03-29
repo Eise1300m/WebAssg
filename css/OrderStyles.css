@@ -3,10 +3,16 @@
 }
 
 .order-card {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
     padding: 20px;
     margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.order-card:hover {
+    transform: translateY(-2px);
 }
 
 .order-header {
@@ -14,32 +20,53 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.order-header h3 {
+    color: #fff;
+    margin: 0;
 }
 
 .order-date {
     color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
 }
 
 .order-details {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: 10px;
 }
 
+.order-details p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.order-details strong {
+    color: #fff;
+    margin-right: 8px;
+}
+
 .view-details-btn {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(106, 142, 251, 0.2);
+    color: #fff;
     padding: 8px 16px;
-    border-radius: 4px;
+    border-radius: 8px;
     text-decoration: none;
-    align-self: flex-start;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(106, 142, 251, 0.3);
     margin-top: 10px;
-    transition: background 0.3s ease;
+    width: fit-content;
 }
 
 .view-details-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(106, 142, 251, 0.3);
+    transform: translateY(-2px);
 }
 
 .order-details-section {
@@ -72,7 +99,7 @@
 
 .book-card img {
     width: 250px;
-    height:auto;
+    height: 350px;
     object-fit: cover;
     border-radius: 4px;
     margin-bottom: 10px;
@@ -106,8 +133,10 @@
 
 .no-orders {
     text-align: center;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
     color: rgba(255, 255, 255, 0.7);
-    padding: 40px 0;
 }
 
 @media (max-width: 768px) {
@@ -152,4 +181,168 @@
 
 .nav-btn.prev {
     flex-direction: row-reverse;
+}
+
+.order-status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.order-status.delivering {
+    background-color: #d3d34aba;
+    color: #232020;
+}
+
+.order-status.collected {
+    background-color: #90EE90;
+    color: #000;
+}
+
+.order-status.completed {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.order-status.preparing {
+    background-color: #87cfeb99;
+    color: #000;
+}
+
+.order-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.collect-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.collect-btn:hover {
+    background-color: #45a049;
+}
+
+/* Add these styles if not already present */
+.floating-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 5px;
+    z-index: 1000;
+    animation: slideIn 0.5s ease-out;
+}
+
+.floating-message.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.floating-message.error {
+    background-color: #f44336;
+    color: white;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Status Timeline Styles */
+.status-timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    padding: 20px 0;
+    position: relative;
+}
+
+.status-timeline::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e0e0e0;
+    z-index: 1;
+}
+
+.status-step {
+    position: relative;
+    z-index: 2;
+    background: white;
+    padding: 0 10px;
+    text-align: center;
+}
+
+.status-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    margin: 0 auto 5px;
+    border: 3px solid white;
+}
+
+.status-step.active .status-dot {
+    background: #4CAF50;
+}
+
+.status-label {
+    font-size: 12px;
+    color: #666;
+}
+
+.status-step.active .status-label {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+/* Status Badge Styles */
+.order-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.order-status.preparing {
+    background: #87CEEB;
+    color: #000;
+}
+
+.order-status.delivering {
+    background: #ffd700;
+    color: #000;
+}
+
+.order-status.collected {
+    background: #90EE90;
+    color: #000;
+}
+
+.order-status.complete {
+    background: #4CAF50;
+    color: white;
 } 

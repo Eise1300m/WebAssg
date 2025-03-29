@@ -40,16 +40,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
     $new_city = trim($_POST["city"]);
     $new_state = trim($_POST["state"]);
     $new_postal = trim($_POST["postal"]);
-    $new_country = trim($_POST["country"]);
 
-    if (!empty($new_street) && !empty($new_city) && !empty($new_state) && !empty($new_postal) && !empty($new_country)) {
+    if (!empty($new_street) && !empty($new_city) && !empty($new_state) && !empty($new_postal)) {
         if ($address) {
-            $stmt = $_db->prepare("UPDATE address SET Street = ?, City = ?, State = ?, PostalCode = ?, Country = ? WHERE UserID = ?");
-            $stmt->execute([$new_street, $new_city, $new_state, $new_postal, $new_country, $user_id]);
+            $stmt = $_db->prepare("UPDATE address SET Street = ?, City = ?, State = ?, PostalCode = ? WHERE UserID = ?");
+            $stmt->execute([$new_street, $new_city, $new_state, $new_postal, $user_id]);
             $updateMessage = "✅ Address updated successfully!";
         } else {
-            $stmt = $_db->prepare("INSERT INTO address (UserID, Street, City, State, PostalCode, Country) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$user_id, $new_street, $new_city, $new_state, $new_postal, $new_country]);
+            $stmt = $_db->prepare("INSERT INTO address (UserID, Street, City, State, PostalCode) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$user_id, $new_street, $new_city, $new_state, $new_postal]);
             $updateMessage = "✅ Address added successfully!";
         }
     } else {
@@ -146,35 +145,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
 </head>
 
 <body>
-    <?php if (!empty($checkoutMessage)): ?>
-    <!-- Using a different ID to avoid conflicts with any existing code -->
-    <div class="checkout-alert" id="floating-checkout-alert">
-        <i class="fas fa-exclamation-circle"></i>
-        <span><?php echo htmlspecialchars($checkoutMessage); ?></span>
-        <button onclick="document.getElementById('floating-checkout-alert').style.display='none'" class="close-btn">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    
-    <script>
-    // Immediately executing script for this alert
-    (function() {
-        // Auto-dismiss after 8 seconds
-        setTimeout(function() {
-            var alert = document.getElementById('floating-checkout-alert');
-            if (alert) {
-                alert.style.animation = 'fadeOut 1s forwards';
-                setTimeout(function() {
-                    alert.style.display = 'none';
-                }, 1000);
-            }
-        }, 8000);
-        
-        // For debugging - log to console if message exists
-        console.log("Checkout message: <?php echo addslashes($checkoutMessage); ?>");
-    })();
-    </script>
-    <?php endif; ?>
 
     <?php include_once("navbar.php") ?>
 
@@ -274,12 +244,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="country">Country</label>
-                                <div class="input-with-icon">
-                                    <input type="text" id="country" name="country" value="<?php echo htmlspecialchars($address['Country']); ?>" required>
-                                </div>
-                            </div>
+
 
                         <?php else: ?>
                             <p class="no-address-message">
@@ -315,12 +280,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="country">Country</label>
-                                <div class="input-with-icon">
-                                    <input type="text" id="country" name="country" placeholder="Enter your country" required>
-                                </div>
-                            </div>
                         <?php endif; ?>
 
                         <div class="form-actions">

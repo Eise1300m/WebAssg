@@ -21,9 +21,19 @@ $redirectPage = ($userRole === 'admin') ? 'AdminMainPage.php' : 'index.php';
 
 <body>
     <div class="container">
-        <p>Sign Up Successful</p>
-        <p>Click here to login</p><br>
-        <button onclick="window.location.href='<?= $redirectPage ?>';" id="login-btn">Login</button>
+        <div class="success-icon">
+            <img src="../upload/icon/check.png" alt="Success" class="check-icon">
+        </div>
+        <div class="success-message">
+            <h1>Welcome to Secret Shelf!</h1>
+            <p>Your registration was successful</p>
+        </div>
+        <div class="action-button">
+            <button onclick="window.location.href='UserLogin.php';" id="login-btn">
+                <img src="../upload/icon/login.png" alt="Login" class="button-icon">
+                Login Now
+            </button>
+        </div>
     </div>
 </body>
 
