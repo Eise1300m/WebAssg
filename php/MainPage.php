@@ -5,33 +5,35 @@ require_once("connection.php");
 $category = isset($_GET['category']) ? $_GET['category'] : null;
 $subcategory = isset($_GET['subcategory']) ? $_GET['subcategory'] : null;
 
+// Update the search functionality
+$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
+
 try {
-    // Base query
+    // Modify the base query to include search functionality
     $query = "SELECT b.* 
               FROM book b
               JOIN subcategory s ON b.SubcategoryNo = s.SubcategoryNo
-              JOIN category c ON s.CategoryNo = c.CategoryNo";
+              JOIN category c ON s.CategoryNo = c.CategoryNo
+              WHERE 1=1";
     
-    // Add WHERE clauses if filters are present
-    $params = [];
-    $whereClause = [];
+    // Add search condition if search parameter exists
+    if (!empty($searchQuery)) {
+        $query .= " AND (b.BookName LIKE ?)";
+        $params[] = "$searchQuery%";
+    }
     
+    // Add existing category/subcategory filters
     if ($category) {
-        $whereClause[] = "c.CategoryName = ?";
+        $query .= " AND c.CategoryName = ?";
         $params[] = $category;
     }
     
     if ($subcategory) {
-        $whereClause[] = "s.SubcategoryName = ?";
+        $query .= " AND s.SubcategoryName = ?";
         $params[] = $subcategory;
     }
     
-    // Combine where clauses if any exist
-    if (!empty($whereClause)) {
-        $query .= " WHERE " . implode(" AND ", $whereClause);
-    }
-    
-    // Add an order clause
+    // Add the order clause
     $query .= " ORDER BY b.BookName ASC";
     
     // Prepare and execute query
@@ -39,10 +41,12 @@ try {
     $stmt->execute($params);
     $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Get page title based on filters
-    if ($category && $subcategory) {
+    // Update the page title to include search term if present
+    if (!empty($searchQuery)) {
+        $_title = "Search Results for '$searchQuery' - Secret Shelf";
+    } else if ($category && $subcategory) {
         $_title = "$subcategory $category Books - Secret Shelf";
-    } elseif ($category) {
+    } else if ($category) {
         $_title = "$category Books - Secret Shelf";
     } else {
         $_title = "All Books - Secret Shelf";

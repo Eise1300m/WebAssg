@@ -46,13 +46,13 @@ unset($_SESSION['error_message']);
 
             <div class="input-container">
                 <input type="text" id="UserID" name="Username" placeholder="Username..">
-                <span class="material-symbols-outlined">person</span>
+                <img src="../upload/icon/personwhite.png" alt="Person" class="person-icon">
                 <small class="error-message" id="user-error"></small>
             </div>
 
             <div class="input-container">
                 <input type="password" id="Userpwd" name="Userpwd" placeholder="Password..">
-                <span class="material-symbols-outlined">lock</span>
+                <img src="../upload/icon/lock.png" alt="Lock" class="lock-icon">
                 <small class="error-message" id="pass-error"></small>
             </div>
 

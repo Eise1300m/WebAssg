@@ -1,5 +1,5 @@
 // Use IIFE to avoid global scope pollution
-const ProductManagement = (function($) {
+const ProductManagement = (function ($) {
     // Private variables
     let _subcategoriesByCategory = {};
     let _currentCategoryFilter = 'all';
@@ -9,17 +9,17 @@ const ProductManagement = (function($) {
     function _updateSubcategoryFilter() {
         const categorySelect = document.getElementById('category-filter');
         const subcategorySelect = document.getElementById('subcategory-filter');
-        
+
         if (!categorySelect || !subcategorySelect) {
             console.error('Category or subcategory select not found');
             return;
         }
 
         const selectedCategory = categorySelect.value;
-        
+
         // Clear existing options
         subcategorySelect.innerHTML = '<option value="all">All Subcategories</option>';
-        
+
         // If "all" is selected, we don't need to add any options
         if (selectedCategory === 'all') return;
 
@@ -30,7 +30,7 @@ const ProductManagement = (function($) {
         try {
             const subcategoriesMap = JSON.parse(subcategoriesData.dataset.subcategories);
             const currentSubcategory = subcategoriesData.dataset.currentSubcategory;
-            
+
             if (subcategoriesMap[selectedCategory]) {
                 subcategoriesMap[selectedCategory].forEach(sub => {
                     const option = document.createElement('option');
@@ -61,15 +61,15 @@ const ProductManagement = (function($) {
                 _subcategoriesByCategory = JSON.parse(jsonStr);
                 _currentCategoryFilter = subcategoriesData.dataset.currentCategory || 'all';
                 _currentSubcategoryFilter = subcategoriesData.dataset.currentSubcategory || 'all';
-                
+
                 console.log('Loaded subcategories:', _subcategoriesByCategory); // Debug log
-                
+
                 // Set initial category value
                 const categoryFilter = document.getElementById('category-filter');
                 if (categoryFilter) {
                     categoryFilter.value = _currentCategoryFilter;
                 }
-                
+
                 // Update subcategory options
                 _updateSubcategoryFilter();
             } catch (e) {
@@ -97,33 +97,33 @@ const ProductManagement = (function($) {
 
     // Public methods
     return {
-        init: function() {
-            $(document).ready(function() {
+        init: function () {
+            $(document).ready(function () {
                 _initializeFilters();
                 _setupEventListeners();
             });
         },
 
-        showAddProductForm: function() {
+        showAddProductForm: function () {
             const modal = document.getElementById('productModal');
             if (modal) {
                 modal.style.display = 'block';
             }
         },
 
-        closeProductModal: function() {
+        closeProductModal: function () {
             const modal = document.getElementById('productModal');
             if (modal) {
                 modal.style.display = 'none';
             }
         },
 
-        editBook: function(bookId) {
+        editBook: function (bookId) {
             console.log('Editing book:', bookId);
             // Add your edit book logic here
         },
 
-        confirmDeleteBook: function(bookId) {
+        confirmDeleteBook: function (bookId) {
             if (confirm('Are you sure you want to delete this book?')) {
                 console.log('Deleting book:', bookId);
             }
@@ -140,62 +140,62 @@ window.closeProductModal = ProductManagement.closeProductModal;
 window.editBook = ProductManagement.editBook;
 window.confirmDeleteBook = ProductManagement.confirmDeleteBook;
 
-$(document).ready(function() {
+$(document).ready(function () {
     initializeAdminForms();
     initializeProfilePicture();
     initializeProductManagement();
     initializeDeliveryRequests();
 
     // Show Add Product Form
-    window.showAddProductForm = function() {
+    window.showAddProductForm = function () {
         $('#productModal').show();
         $('#modalTitle').text('Add New Book');
         $('#productForm')[0].reset();
         $('#book_id').val('');
-        
+
         // Reset subcategory dropdown
         $('#subcategory').html('<option value="">-- Select Category First --</option>').prop('disabled', true);
-        
+
         // Hide any existing image preview
         $('#image-preview-container').hide();
     };
 
     // Close Product Modal
-    window.closeProductModal = function() {
+    window.closeProductModal = function () {
         $('#productModal').hide();
     };
 
     // Edit Book
-    window.editBook = function(bookId) {
+    window.editBook = function (bookId) {
         // Reset any previous preview
         $('#image-preview-container').hide();
-        
+
         // Fetch book details via AJAX and populate the form
         $.ajax({
             url: 'fetchBookDetails.php',
             method: 'GET',
             data: { book_id: bookId },
-            success: function(data) {
+            success: function (data) {
                 const book = JSON.parse(data);
                 $('#book_id').val(book.BookNo);
                 $('#book_name').val(book.BookName);
                 $('#book_price').val(book.BookPrice);
                 $('#book_description').val(book.Description || '');
-                
+
                 // Set category and trigger change to load subcategories
                 $('#category').val(book.CategoryNo).trigger('change');
-                
+
                 // Set subcategory after a small delay to ensure subcategories are loaded
-                setTimeout(function() {
+                setTimeout(function () {
                     $('#subcategory').val(book.SubcategoryNo);
                 }, 100);
-                
+
                 // Show image preview if available
                 if (book.BookImage) {
                     $('#image-preview').attr('src', book.BookImage);
                     $('#image-preview-container').show();
                 }
-                
+
                 $('#productModal').show();
                 $('#modalTitle').text('Edit Book');
             }
@@ -203,14 +203,14 @@ $(document).ready(function() {
     };
 
     // Confirm Delete Book
-    window.confirmDeleteBook = function(bookId) {
+    window.confirmDeleteBook = function (bookId) {
         if (confirm('Are you sure you want to delete this book?')) {
             // Perform delete operation via AJAX
             $.ajax({
                 url: 'deleteBook.php',
                 method: 'POST',
                 data: { book_id: bookId },
-                success: function(response) {
+                success: function (response) {
                     alert(response);
                     location.reload();
                 }
@@ -219,10 +219,10 @@ $(document).ready(function() {
     };
 
     // View Order Details
-    window.viewOrderDetails = function(orderId) {
+    window.viewOrderDetails = function (orderId) {
         const modal = $('#orderModal');
         const contentDiv = $('#orderDetailsContent');
-        
+
         // Show modal with loading state
         modal.show();
         contentDiv.html('<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading order details...</div>');
@@ -232,7 +232,7 @@ $(document).ready(function() {
             url: 'fetchOrderDetails.php',
             type: 'POST',
             data: { order_id: orderId },
-            success: function(response) {
+            success: function (response) {
                 try {
                     if (typeof response === 'string') {
                         response = JSON.parse(response);
@@ -335,7 +335,7 @@ $(document).ready(function() {
                     contentDiv.html('<p class="error">Error loading order details.</p>');
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('AJAX Error:', error);
                 contentDiv.html('<p class="error">Error loading order details.</p>');
             }
@@ -343,34 +343,34 @@ $(document).ready(function() {
     };
 
     // Close Order Modal
-    window.closeOrderModal = function() {
+    window.closeOrderModal = function () {
         $('#orderModal').hide();
     };
 
     // Handle Product Form Submission
-    $('#productForm').submit(function(event) {
+    $('#productForm').submit(function (event) {
         event.preventDefault();
-        
+
         // Validate required fields
         if (!$('#book_name').val() || !$('#book_price').val() || !$('#category').val() || !$('#subcategory').val()) {
             alert('Please fill in all required fields.');
             return;
         }
-        
+
         const formData = new FormData(this);
-        
+
         // Show loading state
         const submitBtn = $(this).find('.save-btn');
         const originalText = submitBtn.text();
         submitBtn.text('Saving...').prop('disabled', true);
-        
+
         $.ajax({
             url: 'saveBook.php',
             method: 'POST',
             data: formData,
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 alert(response);
                 if (response.includes('successfully')) {
                     $('#productModal').hide();
@@ -379,7 +379,7 @@ $(document).ready(function() {
                     submitBtn.text(originalText).prop('disabled', false);
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 alert('Error saving book: ' + error);
                 submitBtn.text(originalText).prop('disabled', false);
             }
@@ -387,10 +387,10 @@ $(document).ready(function() {
     });
 
     // Book image preview
-    $('#book_image').on('change', function() {
+    $('#book_image').on('change', function () {
         if (this.files && this.files[0]) {
             const file = this.files[0];
-            
+
             // Validate file size (5MB max)
             if (file.size > 5000000) {
                 alert('Image file is too large. Maximum size is 5MB.');
@@ -406,7 +406,7 @@ $(document).ready(function() {
             }
 
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 $('#image-preview').attr('src', e.target.result);
                 $('#image-preview-container').show();
             };
@@ -417,9 +417,9 @@ $(document).ready(function() {
     // Add form field validation styling
     function validateFormFields() {
         let isValid = true;
-        
+
         // Check required fields
-        $('#productForm [required]').each(function() {
+        $('#productForm [required]').each(function () {
             if (!$(this).val()) {
                 $(this).addClass('field-error');
                 isValid = false;
@@ -427,7 +427,7 @@ $(document).ready(function() {
                 $(this).removeClass('field-error');
             }
         });
-        
+
         // Price validation
         const price = parseFloat($('#book_price').val());
         if (isNaN(price) || price <= 0) {
@@ -435,37 +435,37 @@ $(document).ready(function() {
             alert('Please enter a valid price.');
             isValid = false;
         }
-        
+
         return isValid;
     }
 
     // Update the form submission to use the validation
-    $('#productForm').off('submit').on('submit', function(event) {
+    $('#productForm').off('submit').on('submit', function (event) {
         event.preventDefault();
-        
+
         // Remove field-error class when typing
-        $('#productForm input, #productForm select, #productForm textarea').on('input change', function() {
+        $('#productForm input, #productForm select, #productForm textarea').on('input change', function () {
             $(this).removeClass('field-error');
         });
-        
+
         if (!validateFormFields()) {
             return false;
         }
-        
+
         const formData = new FormData(this);
-        
+
         // Show loading state
         const submitBtn = $(this).find('.save-btn');
         const originalText = submitBtn.text();
         submitBtn.text('Saving...').prop('disabled', true);
-        
+
         $.ajax({
             url: 'saveBook.php',
             method: 'POST',
             data: formData,
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 alert(response);
                 if (response.includes('successfully')) {
                     $('#productModal').hide();
@@ -474,7 +474,7 @@ $(document).ready(function() {
                     submitBtn.text(originalText).prop('disabled', false);
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 alert('Error saving book: ' + error);
                 submitBtn.text(originalText).prop('disabled', false);
             }
@@ -524,11 +524,11 @@ $(document).ready(function() {
         const categorySelect = $('#category-filter');
         const subcategorySelect = $('#subcategory-filter');
         const selectedCategory = categorySelect.val();
-        
+
         // Clear subcategory options
         subcategorySelect.empty();
         subcategorySelect.append('<option value="all">All Subcategories</option>');
-        
+
         // If a specific category is selected and it exists in our mapping
         if (selectedCategory && selectedCategory !== 'all' && subcategoriesByCategory[selectedCategory]) {
             // Add subcategories for the selected category
@@ -557,34 +557,35 @@ $(document).ready(function() {
         }
     }
 
-    // Initialize filters when document is ready
-    $(document).ready(function() {
-        // ... existing document.ready code ...
+    $(document).ready(function () {
 
-        // Initialize subcategory filter
         updateSubcategoryFilter();
 
-        // Add change event listener for category filter
         $('#category-filter').on('change', updateSubcategoryFilter);
 
         // Add form submit handler
-        $('#filterForm').on('submit', function(e) {
+        $('#filterForm').on('submit', function (e) {
             // If "All Categories" is selected, reset subcategory to "all" as well
             if ($('#category-filter').val() === 'all') {
                 $('#subcategory-filter').val('all');
             }
         });
     });
+
+    // Initialize customer management if on the customer management page
+    if ($('.customers-grid').length) {
+        initializeCustomerManagement();
+    }
 });
 
 function initializeAdminForms() {
     // Clear messages on input
-    $('.admin-form input').on('input', function() {
+    $('.admin-form input').on('input', function () {
         $('.admin-message').fadeOut();
     });
 
     // Handle form reset
-    $('.admin-btn.secondary').on('click', function(e) {
+    $('.admin-btn.secondary').on('click', function (e) {
         e.preventDefault();
         $(this).closest('form')[0].reset();
     });
@@ -596,7 +597,7 @@ function initializeAdminForms() {
 }
 
 function initializePasswordValidation() {
-    $('#new_password, #confirm_password').on('input', function() {
+    $('#new_password, #confirm_password').on('input', function () {
         let newPass = $('#new_password').val();
         let confirmPass = $('#confirm_password').val();
 
@@ -610,10 +611,10 @@ function initializePasswordValidation() {
 
 function initializeProfilePicture() {
     // Show preview and upload button when file is selected
-    $('#profile-pic-input').on('change', function(e) {
+    $('#profile-pic-input').on('change', function (e) {
         if (this.files && this.files[0]) {
             const file = this.files[0];
-            
+
             // Validate file size (5MB max)
             if (file.size > 5000000) {
                 alert('File is too large. Maximum size is 5MB.');
@@ -630,7 +631,7 @@ function initializeProfilePicture() {
 
             // Show preview
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 $('.admin-avatar').attr('src', e.target.result);
             }
             reader.readAsDataURL(file);
@@ -643,7 +644,7 @@ function initializeProfilePicture() {
 
 function updateOrderStatus(orderId, currentStatus) {
     let newStatus;
-    
+
     // Determine the next status
     if (currentStatus === 'Preparing') {
         newStatus = 'Delivering';
@@ -662,7 +663,7 @@ function updateOrderStatus(orderId, currentStatus) {
                 order_id: orderId,
                 status: newStatus
             },
-            success: function(response) {
+            success: function (response) {
                 try {
                     if (response.success) {
                         showFloatingMessage('Order status updated successfully', 'success');
@@ -678,7 +679,7 @@ function updateOrderStatus(orderId, currentStatus) {
                     showFloatingMessage('Error processing response', 'error');
                 }
             },
-            error: function() {
+            error: function () {
                 showFloatingMessage('Error connecting to server', 'error');
             }
         });
@@ -690,11 +691,11 @@ function showFloatingMessage(message, type) {
         .addClass('floating-message')
         .addClass(type)
         .text(message);
-    
+
     $('body').append(messageDiv);
-    
-    setTimeout(function() {
-        messageDiv.fadeOut(300, function() {
+
+    setTimeout(function () {
+        messageDiv.fadeOut(300, function () {
             $(this).remove();
         });
     }, 3000);
@@ -702,12 +703,12 @@ function showFloatingMessage(message, type) {
 
 function initializeDeliveryRequests() {
     // Close modal when clicking the X
-    $('.modal .close').on('click', function() {
+    $('.modal .close').on('click', function () {
         $('#orderModal').hide();
     });
 
     // Close modal when clicking outside
-    $(window).on('click', function(event) {
+    $(window).on('click', function (event) {
         if ($(event.target).hasClass('modal')) {
             $('#orderModal').hide();
         }
@@ -724,23 +725,23 @@ function initializeProductManagement() {
         $('#category-filter').on('change', updateSubcategoryFilter);
 
         // Add form submit handler
-        $('#filterForm').on('submit', function(e) {
+        $('#filterForm').on('submit', function (e) {
             if ($('#category-filter').val() === 'all') {
                 $('#subcategory-filter').val('all');
             }
         });
 
         // Category change event for add/edit form
-        $('#category').on('change', function() {
+        $('#category').on('change', function () {
             const categoryId = $(this).val();
             const subcategorySelect = $('#subcategory');
-            
+
             subcategorySelect.html('<option value="">-- Select Category First --</option>');
             subcategorySelect.prop('disabled', !categoryId);
-            
+
             if (categoryId && subcategoriesByCategory[categoryId]) {
                 let options = '<option value="">-- Select Subcategory --</option>';
-                subcategoriesByCategory[categoryId].forEach(function(sub) {
+                subcategoriesByCategory[categoryId].forEach(function (sub) {
                     options += `<option value="${sub.id}">${sub.name}</option>`;
                 });
                 subcategorySelect.html(options);
@@ -754,10 +755,10 @@ function updateSubcategoryFilter() {
     const categorySelect = $('#category-filter');
     const subcategorySelect = $('#subcategory-filter');
     const selectedCategory = categorySelect.val();
-    
+
     subcategorySelect.empty();
     subcategorySelect.append('<option value="all">All Subcategories</option>');
-    
+
     if (selectedCategory && selectedCategory !== 'all') {
         const subcategories = subcategoriesByCategory[selectedCategory] || [];
         subcategories.forEach(subcategory => {
@@ -778,7 +779,7 @@ function updateSubcategoryFilter() {
             `);
         });
     }
-    
+
     subcategorySelect.prop('disabled', !selectedCategory);
 }
 
@@ -791,14 +792,14 @@ let currentSubcategoryFilter = 'all';
 function updateSubcategoryFilter() {
     const categorySelect = document.getElementById('category-filter');
     const subcategorySelect = document.getElementById('subcategory-filter');
-    
+
     if (!categorySelect || !subcategorySelect) return;
 
     const selectedCategory = categorySelect.value;
-    
+
     // Clear existing options
     subcategorySelect.innerHTML = '<option value="all">All Subcategories</option>';
-    
+
     // If a specific category is selected, populate its subcategories
     if (selectedCategory !== 'all' && subcategoriesByCategory[selectedCategory]) {
         subcategoriesByCategory[selectedCategory].forEach(sub => {
@@ -879,7 +880,48 @@ function setupEventListeners() {
 }
 
 // Initialize when document is ready (using jQuery since it's already included)
-$(document).ready(function() {
+$(document).ready(function () {
     initializeFilters();
     setupEventListeners();
-}); 
+});
+
+// Customer Management Functions
+function initializeCustomerManagement() {
+    const searchInput = $('.search-input');
+    const resetButton = $('#resetButton'); // Using ID selector for better performance
+
+    // Handle reset button click
+    resetButton.on('click', function(e) {
+        e.preventDefault();
+        searchInput.val(''); // Clear the search input
+        resetButton.hide(); // Hide the reset button
+        window.location.href = 'AdminCheckCust.php'; // Redirect to clean URL
+    });
+
+    // Show/hide reset button based on search input
+    searchInput.on('input', function() {
+        const hasValue = this.value.trim().length > 0;
+        resetButton.toggle(hasValue);
+    });
+
+    // Set initial reset button visibility
+    resetButton.toggle(searchInput.val().trim().length > 0);
+
+}
+
+function filterCustomerCards(query) {
+    query = query.toLowerCase();
+    $('.customer-card').each(function() {
+        const card = $(this);
+        const username = card.find('.customer-basic-info h3').text().toLowerCase();
+        const email = card.find('.info-group:contains("Email:") p').text().toLowerCase();
+        const id = card.find('.customer-basic-info p').text().toLowerCase();
+
+        if (username.includes(query) || email.includes(query) || id.includes(query)) {
+            card.show();
+        } else {
+            card.hide();
+        }
+    });
+}
+

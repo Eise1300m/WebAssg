@@ -11,7 +11,7 @@ $query = "
     SELECT o.*, u.Username, u.Email 
     FROM orders o 
     JOIN users u ON o.UserID = u.UserID 
-    WHERE o.OrderStatus IN ('Preparing', 'Delivering', 'Completed')
+    WHERE o.OrderStatus IN ('Preparing', 'Delivering', 'Collected', 'Completed')
     ORDER BY o.OrderDate DESC
 ";
 
@@ -23,6 +23,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $statusCounts = [
     'Preparing' => 0,
     'Delivering' => 0,
+    'Collected' => 0,
     'Completed' => 0
 ];
 
@@ -33,6 +34,7 @@ foreach ($orders as $order) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,10 +44,14 @@ foreach ($orders as $order) {
     <link rel="stylesheet" href="../css/DeliveryRequestStyles.css">
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <?php include_once("navbaradmin.php") ?>
+
+    <a class="back-button" onclick="window.history.back()">
+        <img src="../upload/icon/back.png" alt="Back" class="back-icon"> Back to Dashboard
+    </a>
 
     <main class="admin-container">
         <div class="admin-header">
@@ -53,10 +59,6 @@ foreach ($orders as $order) {
             <p>Manage order deliveries</p>
         </div>
 
-        <div class="admin-content">
-            <a href="AdminMainPage.php" class="admin-nav-back">
-                <img src="../upload/icon/back.png" alt="Back"> Back to Dashboard
-            </a>
 
             <!-- Status Overview -->
             <div class="status-overview">
@@ -70,69 +72,68 @@ foreach ($orders as $order) {
 
                 <div class="status-card delivering">
                     <img src="../upload/icon/delivery.png" alt="Delivering" class="status-icon"">
-                    <div class="status-info">
-                        <h3>Delivering</h3>
-                        <p><?php echo $statusCounts['Delivering']; ?> Orders</p>
-                    </div>
+                    <div class=" status-info">
+                    <h3>Delivering</h3>
+                    <p><?php echo $statusCounts['Delivering']; ?> Orders</p>
                 </div>
             </div>
-
-            <!-- Order Lists -->
-            div class="order-lists">
-    <?php foreach (['Preparing', 'Delivering', 'Collected'] as $status): ?>
-        <div class="order-section">
-            <h2><?php echo $status; ?> Orders</h2>
-            <div class="order-cards">
-                <?php 
-                $filteredOrders = array_filter($orders, function($order) use ($status) {
-                    return $order['OrderStatus'] === $status;
-                });
-                
-                if (empty($filteredOrders)): ?>
-                    <div class="no-orders">No <?php echo strtolower($status); ?> orders at the moment.</div>
-                <?php else: 
-                    foreach ($filteredOrders as $order): ?>
-                    <div class="order-card">
-                        <div class="order-header">
-                            <h3>Order #<?php echo $order['OrderNo']; ?></h3>
-                            <span class="order-date"><?php echo date('M d, Y', strtotime($order['OrderDate'])); ?></span>
-                        </div>
-                        <div class="order-info">
-                            <p><strong>Customer:</strong> <?php echo htmlspecialchars($order['Username']); ?></p>
-                            <p><strong>Items:</strong> <?php echo $order['TotalQuantity']; ?></p>
-                            <p><strong>Total:</strong> RM <?php echo number_format($order['TotalAmount'], 2); ?></p>
-                        </div>
-                        <div class="order-actions">
-                            <button onclick="viewOrderDetails(<?php echo $order['OrderNo']; ?>)" class="view-btn">
-                                <img src="../upload/icon/view.png" alt="View" class="btn-icon"> View Details
-                            </button>
-                            <?php if ($status === 'Preparing'): ?>
-                                <button onclick="updateOrderStatus(<?php echo $order['OrderNo']; ?>, 'Preparing')" 
-                                        class="status-btn preparing">
-                                    <img src="../upload/icon/delivery.png" alt="Status" class="btn-icon">
-                                    Mark as Delivering
-                                </button>
-                            <?php elseif ($status === 'Delivering'): ?>
-                                <!-- Button disabled until user confirms collection -->
-                                <button class="status-btn delivering" disabled>
-                                    <img src="../upload/icon/check.png" alt="Status" class="btn-icon">
-                                    Waiting for Collection
-                                </button>
-                            <?php elseif ($status === 'Collected'): ?>
-                                <button onclick="updateOrderStatus(<?php echo $order['OrderNo']; ?>, 'Collected')" 
-                                        class="status-btn complete">
-                                    <img src="../upload/icon/check.png" alt="Status" class="btn-icon">
-                                    Mark as Complete
-                                </button>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                <?php endforeach;
-                endif; ?>
-            </div>
         </div>
-    <?php endforeach; ?>
-</div> 
+
+        <!-- Order Lists -->
+        <div class="order-lists">
+            <?php foreach (['Preparing', 'Delivering', 'Collected'] as $status): ?>
+                <div class="order-section">
+                    <h2><?php echo $status; ?> Orders</h2>
+                    <div class="order-cards">
+                        <?php
+                        $filteredOrders = array_filter($orders, function ($order) use ($status) {
+                            return $order['OrderStatus'] === $status;
+                        });
+
+                        if (empty($filteredOrders)): ?>
+                            <div class="no-orders">No <?php echo strtolower($status); ?> orders at the moment.</div>
+                            <?php else:
+                            foreach ($filteredOrders as $order): ?>
+                                <div class="order-card">
+                                    <div class="order-header">
+                                        <h3>Order #<?php echo $order['OrderNo']; ?></h3>
+                                        <span class="order-date"><?php echo date('M d, Y', strtotime($order['OrderDate'])); ?></span>
+                                    </div>
+                                    <div class="order-info">
+                                        <p><strong>Customer:</strong> <?php echo htmlspecialchars($order['Username']); ?></p>
+                                        <p><strong>Items:</strong> <?php echo $order['TotalQuantity']; ?></p>
+                                        <p><strong>Total:</strong> RM <?php echo number_format($order['TotalAmount'], 2); ?></p>
+                                    </div>
+                                    <div class="order-actions">
+                                        <button onclick="viewOrderDetails(<?php echo $order['OrderNo']; ?>)" class="view-btn">
+                                            <img src="../upload/icon/view.png" alt="View" class="btn-icon" style="filter: invert();" > View Details
+                                        </button>
+                                        <?php if ($status === 'Preparing'): ?>
+                                            <button onclick="updateOrderStatus(<?php echo $order['OrderNo']; ?>, 'Preparing')"
+                                                class="status-btn preparing">
+                                                <img src="../upload/icon/delivery.png" alt="Status" class="btn-icon">
+                                                Mark as Delivering
+                                            </button>
+                                        <?php elseif ($status === 'Delivering'): ?>
+                                            <!-- Button disabled until user confirms collection -->
+                                            <button class="status-btn delivering" disabled>
+                                                <img src="../upload/icon/check.png" alt="Status" class="btn-icon"">
+                                                Waiting for Collection
+                                            </button>
+                                        <?php elseif ($status === 'Collected'): ?>
+                                            <button onclick="updateOrderStatus(<?php echo $order['OrderNo']; ?>, 'Collected')"
+                                                class="status-btn complete">
+                                                <img src="../upload/icon/check.png" alt="Status" class="btn-icon">
+                                                Mark as Complete
+                                            </button>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                        <?php endforeach;
+                        endif; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
     </main>
 
@@ -149,4 +150,5 @@ foreach ($orders as $order) {
 
     <script src="../js/AdminScripts.js"></script>
 </body>
+
 </html>

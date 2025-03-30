@@ -17,7 +17,7 @@ body {
 /* Container Layout */
 .admin-container {
     max-width: 1200px;
-    margin: 60px auto;
+    margin: 120px auto;
     padding: 40px 20px;
 }
 
@@ -236,7 +236,38 @@ body {
 .btn-icon {
     width: 18px;
     height: 18px;
-    filter: brightness(0) invert(1);
+}
+
+.back-button {
+    position: absolute;
+    top: 150px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background: rgba(106, 142, 251, 0.2);
+    border-radius: 30px;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 100;
+    cursor: pointer;
+}
+
+.back-icon{
+    width: 35px;
+    height: 35px;
+}
+
+.back-button:hover {
+    background: rgba(106, 142, 251, 0.4);
+    transform: translateX(-5px);
+}
+
+.container {
+    margin-top: 40px;
 }
 
 /* Modal */

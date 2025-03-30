@@ -23,7 +23,7 @@ if (isset($_SESSION['signup_errors'])) {
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <script src="../js/Scripts.js"></script>
 
 </head>
@@ -31,10 +31,10 @@ if (isset($_SESSION['signup_errors'])) {
 <body>
 
     <?php include 'navbaradmin.php'; ?>
-    
+
     <!-- Back button to AdminMainPage.php -->
     <a class="back-button" onclick="window.history.back()">
-        <img src = "../upload/icon/back.png" alt="Back" class="back-icon"> Back to Dashboard
+        <img src="../upload/icon/back.png" alt="Back" class="back-icon"> Back to Dashboard
     </a>
 
     <div class="container">
@@ -43,7 +43,7 @@ if (isset($_SESSION['signup_errors'])) {
         <form id="adminSignupForm" method="post" action="UserSignUpProcess.php">
 
             <!-- Hidden input field to mark this as an admin registration -->
-            <div class="input-container"> 
+            <div class="input-container">
                 <span class="icon"><i class="fas fa-user"></i></span>
                 <input type="text" id="UName" name="UName" placeholder="Enter Username">
                 <span class="error-message" id="nameError"></span>

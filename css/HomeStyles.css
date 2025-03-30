@@ -1,11 +1,7 @@
-/* Base styles optimized for desktop */
 * {
     box-sizing: border-box;
     margin: 0;
-    font-family: 'Roboto Condensed', sans-serif;
 }
-
-
 
 body {
     background-image: url(../img/3086.jpg);
@@ -13,7 +9,7 @@ body {
     background-attachment: fixed;
     margin: 0;
     padding: 0;
-    display: block; /* Reset from flex */
+    display: block; 
 }
 
 .IndexBodybackground {
@@ -21,9 +17,8 @@ body {
     width: 70%;
     padding: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin: 20px auto; 
+    margin: 40px auto; 
 }
-
 
 .up {
     width: 100%;
@@ -128,9 +123,8 @@ body {
     object-fit: contain;
 }
 
-/* Specific styling for back button to center the arrow */
 #back .arrow-icon {
-    margin-left: 4px; /* Adjust this value as needed to center the back arrow */
+    margin-left: 4px; 
 }
 
 /* Optional: if you need to adjust the forward arrow */
@@ -150,7 +144,7 @@ body {
 
 /* Desktop-optimized category sections */
 .Category-part {
-    min-width: 800px;  /* Prevents it from shrinking too much */
+    min-width: 800px;  
     max-width: 1800px;
     margin: auto;
 }
@@ -179,12 +173,10 @@ body {
     justify-content: center;
 }
 
-
 .bookImg {
     width: 200px;
     height: 300px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.459);
-
 }
 
 figure {
@@ -200,59 +192,7 @@ figcaption {
     color: white;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .nav2 {
-        flex-wrap: wrap;
-        gap: 10px;
-    }
 
-    .nav2 a {
-        width: calc(50% - 10px);
-        font-size: 18px;
-    }
-
-    .Recommendation-Container {
-        padding: 20px;
-    }
-
-    .slider-btn {
-        width: 30px;
-        height: 30px;
-    }
-
-    .material-symbols-outlined {
-        font-size: 20px;
-    }
-
-    .Category-part {
-        width: 90%;
-        min-width: 500px;
-    }
-
-    .Category-Section {
-        padding: 30px;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .cat-img {
-        gap: 20px;
-    }
-
-    #bookImg {
-        width: 150px;
-        height: 220px;
-    }
-    
-    #back {
-        left: 2%;
-    }
-
-    #next {
-        right: 2%;
-    }
-}
 
 @media (min-width: 1200px) {
     .slider-wrapper {

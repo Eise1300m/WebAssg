@@ -19,11 +19,11 @@ body {
 .admin-container {
     flex: 1;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 40px auto;
     padding: 32px;
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 2rem;
+    margin-bottom: 20px;
 }
 
 .admin-header {
@@ -63,6 +63,7 @@ body {
 .admin-sidebar {
     background: rgba(248, 249, 250, 0.1);
     padding: 25px;
+    border-radius: 10px;
 }
 
 
@@ -86,6 +87,7 @@ body {
 .admin-nav-item {
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 0.75rem 1rem;
     color: #fff;
     text-decoration: none;
@@ -344,7 +346,6 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Button Styles */
 .add-product-btn {
   background: linear-gradient(135deg, #6e8efb, #a777e3);
   color: white;
@@ -618,4 +619,121 @@ body {
 
 .admin-nav-back:hover img {
   transform: translateX(-3px);
+}
+
+/* Customer Management Styles */
+.search-section {
+    margin: 20px 0;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.search-form {
+    display: flex;
+    gap: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.search-button {
+    padding: 12px 24px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #45a049;
+}
+
+.customers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.customer-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.customer-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.customer-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.customer-basic-info h3 {
+    margin: 0;
+    color: #333;
+}
+
+.customer-basic-info p {
+    margin: 5px 0 0;
+    color: #666;
+}
+
+.info-group {
+    margin-bottom: 15px;
+}
+
+.info-group label {
+    font-weight: 600;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.info-group p {
+    margin: 0;
+    color: #666;
+}
+
+.customer-stats {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.stat {
+    flex: 1;
+    text-align: center;
+}
+
+.stat span {
+    display: block;
+    color: #666;
+    font-size: 14px;
+}
+
+.stat strong {
+    display: block;
+    color: #333;
+    font-size: 18px;
+    margin-top: 5px;
 }

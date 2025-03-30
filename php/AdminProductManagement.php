@@ -10,6 +10,7 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
 // Determine any filters from GET parameters
 $categoryFilter = isset($_GET['category']) ? $_GET['category'] : 'all';
 $subcategoryFilter = isset($_GET['subcategory']) ? $_GET['subcategory'] : 'all';
+$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
 
 // Prepare the query with potential filters
 $query = "
@@ -29,6 +30,12 @@ if ($categoryFilter !== 'all') {
 if ($subcategoryFilter !== 'all') {
     $query .= " AND b.SubcategoryNo = ?";
     $params[] = $subcategoryFilter;
+}
+if (!empty($searchQuery)) {
+    $query .= " AND (b.BookName LIKE ? OR b.BookNo LIKE ?)";
+    $searchParam = "$searchQuery%";
+    $params[] = $searchParam;
+    $params[] = $searchParam;
 }
 
 $query .= " ORDER BY b.BookNo DESC";
@@ -78,7 +85,6 @@ foreach ($allSubcategories as $sub) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../css/AdminProductStyles.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/Scripts.js"></script>
     <script src="../js/AdminScripts.js"></script>
 
@@ -138,6 +144,18 @@ foreach ($allSubcategories as $sub) {
 
                     <div class="filter-container">
                         <form id="filterForm" method="get" class="filter-form">
+                            <div class="filter-group">
+                                <label for="search-input">Search Book</label>
+                                <div class="search-input-container">
+                                    <input type="text" id="search-input" name="search" 
+                                           placeholder="Search by name or ID..." 
+                                           value="<?php echo htmlspecialchars($searchQuery); ?>">
+                                    <button type="submit" class="search-btn">
+                                        <img src="../upload/icon/search.png" style="width: 20px; height: 20px;" alt="Search">
+                                    </button>
+                                </div>
+                            </div>
+
                             <div class="filter-group">
                                 <label for="category-filter">Category</label>
                                 <select id="category-filter" name="category" onchange="updateSubcategoryFilter()">

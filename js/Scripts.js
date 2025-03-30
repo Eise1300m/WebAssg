@@ -214,11 +214,11 @@ $(document).ready(function () {
     }
     // Search function
     function performSearch() {
-        let query = $("#searchInput").val();
-        if (query) {
-            alert("Searching for: " + query);
-        } else {
-            alert("Please enter a search query.");
+        const searchQuery = $("#searchInput").val().trim();
+        
+        if (searchQuery) {
+            // Redirect to MainPage.php with search parameter
+            window.location.href = `MainPage.php?search=${encodeURIComponent(searchQuery)}`;
         }
     }
 

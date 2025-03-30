@@ -47,7 +47,6 @@ if (isset($_GET['book_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $book['BookName']; ?> - Preview</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/BookPreviewStyle.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <link href="../css/NavbarStyles.css" rel="stylesheet">

@@ -12,22 +12,19 @@ body {
 
 .container {
 
-    margin-top: 100px; /* Adjust this value as needed */
-
+    margin-top: 100px;
     display: flex;    
     flex-direction: column;
-    justify-content: flex-start; /* Start content from the top */
-    min-height: auto; /* Allow dynamic height */
+    justify-content: flex-start;
+    min-height: auto; 
     align-items: center;
     padding: 20px;
     width: 550px;
     height: auto;
-    /* background-color: rgb(255, 255, 255); */
-
     background-color: rgba(255, 255, 255, 0.624);
     border-radius: 40px;
     border: 1px solid white;
-    overflow: hidden; /* Prevents content from overflowing */
+    overflow: hidden; 
 
 }
 
@@ -93,27 +90,22 @@ form {
     transform: translateY(-50%);
     font-size: 18px;
     color: #ffffff;
-    pointer-events: none; /* Ensures it doesn't interfere with input */
+    pointer-events: none;
 }
 
-/* Position the icon on the right side */
 .input-container .material-symbols-outlined {
     position: absolute;
     right: 15px;
-    /* Adjust icon position */
     top: 50%;
     transform: translateY(-50%);
     font-size: 20px;
     color: #ffffff;
-    /* Adjust icon color */
 }
 
 .signup-container {
     display: flex;
     justify-content: center;
-    /* Even spacing */
     align-items: center;
-    /* Align items vertically */
     gap: 10px;
     font-size: 18px;
 }
@@ -121,7 +113,6 @@ form {
 .signup-container a {
     font-weight: bold;
     color: #761cb7;
-    /* Adjust color */
     transition: color 0.3s ease;
 }
 
@@ -131,7 +122,6 @@ form {
 
 .signup-container a:hover {
     color: #a020f0;
-    /* Hover effect */
 }
 
 .submit-but {
@@ -161,8 +151,6 @@ form {
     margin-top: 5px;
     background: #ffe6e6;
     border-left: 3px solid #e74c3c;
-    /* color: red; */
-
 
 }
 
@@ -192,7 +180,7 @@ form {
 
 .back-button {
     position: absolute;
-    top: 130px;
+    top: 150px;
     left: 20px;
     display: flex;
     align-items: center;
@@ -205,6 +193,12 @@ form {
     transition: all 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.2);
     z-index: 100;
+    cursor: pointer;
+}
+
+.back-icon{
+    width: 35px;
+    height: 35px;
 }
 
 .back-button:hover {
@@ -212,22 +206,6 @@ form {
     transform: translateX(-5px);
 }
 
-.back-button img{
-    margin-right: 8px;
-    width: 35px;
-    height: 35px;
-}
-
-/* Adjust container to accommodate back button */
 .container {
     margin-top: 40px;
-}
-
-@media (max-width: 768px) {
-    .back-button {
-        top: 10px;
-        left: 10px;
-        padding: 8px 12px;
-        font-size: 14px;
-    }
 }

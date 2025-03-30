@@ -134,10 +134,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
         <div class="admin-content">
             <div class="admin-sidebar">
                 <div class="admin-profile">
-                    <img src="<?php echo !empty($admin['ProfilePic']) ? htmlspecialchars($admin['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>" 
-                         alt="Admin Profile" class="admin-avatar">
+                <div class="admin-profile" style="text-align: center;">
+                    <img src="<?php echo !empty($admin['ProfilePic']) ? htmlspecialchars($admin['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>"
+                        alt="Admin Profile" class="admin-avatar" style="display: block; margin: 0 auto;">
                     <h3><?php echo htmlspecialchars($admin['Username']); ?></h3>
                     <p>Administrator</p>
+                </div>
                     <form method="POST" action="" enctype="multipart/form-data" id="profile-pic-form">
                         <input type="file" name="profile_pic" id="profile-pic-input" 
                                style="display: none;" 
@@ -221,7 +223,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
         </div>
     </main>
 
-    <?php include 'footer.php'; ?>
 
 </body>
 </html> 

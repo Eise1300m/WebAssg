@@ -28,16 +28,18 @@ if (!isset($admin['Username'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Secret Shelf</title>
+    <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/HomeStyles.css">
     <link rel="stylesheet" href="../css/AdminStyles.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
 </head>
+
 <body>
 
     <?php require_once("navbaradmin.php") ?>
@@ -45,14 +47,14 @@ if (!isset($admin['Username'])) {
     <main class="admin-container">
         <div class="admin-header">
             <h1>Admin Dashboard</h1>
-            <p>Manage your bookstore</p>
+            <p>Manage Bookstore</p>
         </div>
 
         <div class="admin-content">
             <div class="admin-sidebar">
-                <div class="admin-profile">
-                    <img src="<?php echo !empty($admin['ProfilePic']) ? htmlspecialchars($admin['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>" 
-                         alt="Admin Profile" class="admin-avatar">
+                <div class="admin-profile" style="text-align: center;">
+                    <img src="<?php echo !empty($admin['ProfilePic']) ? htmlspecialchars($admin['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>"
+                        alt="Admin Profile" class="admin-avatar" style="display: block; margin: 0 auto;">
                     <h3><?php echo htmlspecialchars($admin['Username']); ?></h3>
                     <p>Administrator</p>
                 </div>
@@ -97,11 +99,18 @@ if (!isset($admin['Username'])) {
                         <h3>Delivery Requests</h3>
                         <p>Manage preparing and delivering orders</p>
                     </div>
+
+                    <div class="admin-card" onclick="window.location.href='AdminCheckCust.php'">
+                        <img src="../upload/icon/personwhite.png" alt="user" class="card-icon">
+                        <h3>User Management</h3>
+                        <p>View and manage customer details</p>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    
+
 </body>
+
 </html>

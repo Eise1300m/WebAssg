@@ -3,8 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@100..900&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/Scripts.js"></script>
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
@@ -31,8 +29,8 @@ $profile_pic = '../upload/icon/UnknownUser.jpg';
                 <a href="AdminMainPage.php"><img src="../upload/icon/dashboardblack.png" alt="Dashboard" class="nav-icon"> Dashboard</a>
                 <a href="logout.php"><img src="../upload/icon/logoutblack.png" alt="Logout" class="nav-icon"> Logout</a>
             <?php else: ?>
-                <a href="UserLogin.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
-                <a href="UserRegister.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>
+                <a href="UserLogin.php"></i> Login</a>
+                <a href="UserRegister.php"></i> Register</a>
             <?php endif; ?>
         </div>
     </div>

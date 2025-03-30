@@ -35,11 +35,10 @@ $roleValue = ($signupType === 'admin') ? "admin" : "customer"; // Set role value
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $_title ?? 'Secret Shelf / SignUp' ?></title>
-    <link rel="stylesheet" href="../css/CustomerSignUpStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="../css/NavbarStyles.css">
+    <link rel="stylesheet" href="../css/CustomerSignUpStyles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,537;1,537&display=swap" rel="stylesheet">
     <script src="../js/Scripts.js"></script>
 
 </head>
