@@ -143,7 +143,7 @@ $(document).ready(function () {
     function initForms() {
         let form = document.getElementById("login-form");
 
-        if (form) { // Ensure form exists before adding event listener
+        if (form) {
             form.addEventListener("submit", function (event) {
                 let username = document.getElementById("UserID").value.trim();
                 let password = document.getElementById("Userpwd").value.trim();
@@ -168,7 +168,7 @@ $(document).ready(function () {
                 }
 
                 if (!isValid) {
-                    event.preventDefault(); // Stop form submission if validation fails
+                    event.preventDefault();
                 }
             });
         }

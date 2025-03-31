@@ -1,59 +1,31 @@
 <?php
-require_once("connection.php");
+require_once("base.php");
 
-// Get category and subcategory from URL parameters
-$category = isset($_GET['category']) ? $_GET['category'] : null;
-$subcategory = isset($_GET['subcategory']) ? $_GET['subcategory'] : null;
-
-// Update the search functionality
-$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
+// Get filters from URL parameters
+$filters = [
+    'search' => get('search'),
+    'category' => get('category'),
+    'subcategory' => get('subcategory')
+];
 
 try {
-    // Modify the base query to include search functionality
-    $query = "SELECT b.* 
-              FROM book b
-              JOIN subcategory s ON b.SubcategoryNo = s.SubcategoryNo
-              JOIN category c ON s.CategoryNo = c.CategoryNo
-              WHERE 1=1";
+    // Get books using the utility function
+    $books = get_books($filters);
     
-    // Add search condition if search parameter exists
-    if (!empty($searchQuery)) {
-        $query .= " AND (b.BookName LIKE ?)";
-        $params[] = "$searchQuery%";
-    }
-    
-    // Add existing category/subcategory filters
-    if ($category) {
-        $query .= " AND c.CategoryName = ?";
-        $params[] = $category;
-    }
-    
-    if ($subcategory) {
-        $query .= " AND s.SubcategoryName = ?";
-        $params[] = $subcategory;
-    }
-    
-    // Add the order clause
-    $query .= " ORDER BY b.BookName ASC";
-    
-    // Prepare and execute query
-    $stmt = $_db->prepare($query);
-    $stmt->execute($params);
-    $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Update the page title to include search term if present
-    if (!empty($searchQuery)) {
-        $_title = "Search Results for '$searchQuery' - Secret Shelf";
-    } else if ($category && $subcategory) {
-        $_title = "$subcategory $category Books - Secret Shelf";
-    } else if ($category) {
-        $_title = "$category Books - Secret Shelf";
+    // Set page title
+    if (!empty($filters['search'])) {
+        $_title = "Search Results for '" . encode($filters['search']) . "' - Secret Shelf";
+    } else if ($filters['category'] && $filters['subcategory']) {
+        $_title = encode($filters['subcategory'] . ' ' . $filters['category']) . " Books - Secret Shelf";
+    } else if ($filters['category']) {
+        $_title = encode($filters['category']) . " Books - Secret Shelf";
     } else {
         $_title = "All Books - Secret Shelf";
     }
     
 } catch (PDOException $e) {
-    die("Error fetching books: " . $e->getMessage());
+    add_err('db', "Error fetching books: " . $e->getMessage());
+    $books = [];
 }
 ?>
 
@@ -84,7 +56,7 @@ try {
     <div class="wrapbox">
         <div class="page-header">
             <h1><?= $_title ?></h1>
-            <?php if (count($books) === 0): ?>
+            <?php if (empty($books)): ?>
                 <p class="no-results">No books found in this category. Please try another category.</p>
             <?php else: ?>
                 <p class="results-count">Showing <?= count($books) ?> books</p>
@@ -92,20 +64,27 @@ try {
         </div>
         
         <div class="book-container">
-            <?php foreach ($books as $book) { ?>
+            <?php foreach ($books as $book): ?>
                 <div class="book-card">
                     <div class="book-image">
-                        <a href="BookPreview.php?book_id=<?php echo $book['BookNo']; ?>">
-                            <img src="<?php echo !empty($book['BookImage']) ? $book['BookImage'] : '../upload/bookPfp/BookCoverUnavailable.webp'; ?>" alt="<?php echo htmlspecialchars($book['BookName']); ?>">
+                        <a href="BookPreview.php?book_id=<?= encode($book['BookNo']) ?>">
+                            <img src="<?= !empty($book['BookImage']) ? encode($book['BookImage']) : '../upload/bookPfp/BookCoverUnavailable.webp' ?>" 
+                                 alt="<?= encode($book['BookName']) ?>">
                         </a>
                     </div>
                     <div class="book-details">
-                        <h3 class="book-title" title="<?php echo htmlspecialchars($book['BookName']); ?>"><?php echo htmlspecialchars($book['BookName']); ?></h3>
-                        <p class="book-author" title="<?php echo htmlspecialchars($book['Author']); ?>"><strong>Author:</strong> <?php echo htmlspecialchars($book['Author']); ?></p>
-                        <p class="book-price"><strong>Price:</strong> RM <?php echo number_format($book['BookPrice'], 2); ?></p>
+                        <h3 class="book-title" title="<?= encode($book['BookName']) ?>">
+                            <?= encode($book['BookName']) ?>
+                        </h3>
+                        <p class="book-author" title="<?= encode($book['Author']) ?>">
+                            <strong>Author:</strong> <?= encode($book['Author']) ?>
+                        </p>
+                        <p class="book-price">
+                            <strong>Price:</strong> <?= format_price($book['BookPrice']) ?>
+                        </p>
                         
                         <?php if (isset($_SESSION['user_name'])): ?>
-                            <button class="cart-but" data-book-id="<?php echo $book['BookNo']; ?>">
+                            <button class="cart-but" data-book-id="<?= encode($book['BookNo']) ?>">
                                 <img src="../upload/icon/shoppingcart.png" alt="Cart">
                                 Add to Cart
                             </button>
@@ -117,7 +96,7 @@ try {
                         <?php endif; ?>
                     </div>
                 </div>
-            <?php } ?>
+            <?php endforeach; ?>
         </div>
 
     </div>

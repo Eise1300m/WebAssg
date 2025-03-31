@@ -1,29 +1,38 @@
 <?php
-session_start();
-require_once("connection.php");
+require_once("base.php");
 
 // Ensure only admins can access
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+    $_SESSION['flash_message'] = [
+        'type' => 'error',
+        'message' => '❌ Access denied. Admin privileges required.'
+    ];
     header("Location: UserLogin.php");
-    exit();
+    exit;
 }
 
 $username = $_SESSION['user_name'];
 
 // Get admin info
-$stmt = $_db->prepare("SELECT * FROM users WHERE Username = ? AND Role = 'admin'");
-$stmt->execute([$username]);
+$stmt = $_db->prepare("SELECT * FROM users WHERE Username = :username AND Role = 'admin'");
+$stmt->execute(['username' => $username]);
 $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Debugging output
 if (!$admin) {
-    die("Admin not found or not an admin.");
+    handleError("Only authorized users can access this page.");
 }
 
 // Check if Username key exists
 if (!isset($admin['Username'])) {
-    die("Username key is missing in the admin data.");
+    handleError("Username key is missing in the admin data.");
 }
+
+// Output header with custom title
+// Include navbar
+includeAdminNav();
+// Display any flash messages
+displayFlashMessage();
 ?>
 
 <!DOCTYPE html>
@@ -41,8 +50,6 @@ if (!isset($admin['Username'])) {
 </head>
 
 <body>
-
-    <?php require_once("navbaradmin.php") ?>
 
     <main class="admin-container">
         <div class="admin-header">
@@ -109,7 +116,7 @@ if (!isset($admin['Username'])) {
             </div>
         </div>
     </main>
-
+    
 
 </body>
 

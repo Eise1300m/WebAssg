@@ -1,38 +1,30 @@
 <?php
-session_start();
-require_once("connection.php");
+require_once("base.php");
 
-// Capture checkout message at the very beginning
-$checkoutMessage = "";
-if (isset($_SESSION['checkout_message'])) {
-    $checkoutMessage = $_SESSION['checkout_message'];
-    unset($_SESSION['checkout_message']); // Clear the message after retrieving it
-}
-
-if (!isset($_SESSION['user_name'])) {
-    header("Location: UserLogin.php");
-    exit;
-}
+requireLogin();
 
 $username = $_SESSION['user_name'];
 
 // Fetch user data from the database
-$stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
-$stmt->execute([$username]);
+$stmt = $db->query("SELECT * FROM users WHERE Username = ?", [$username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
-    die("User not found.");
+    handleError("User not found.", "UserLogin.php");
 }
 
 $user_id = $user['UserID'];
 
 // Fetch address data
-$stmt = $_db->prepare("SELECT * FROM address WHERE UserID = ?");
-$stmt->execute([$user_id]);
+$stmt = $db->query("SELECT * FROM address WHERE UserID = ?", [$user_id]);
 $address = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $updateMessage = "";
+
+includeNavbar();
+
+// Display flash messages
+displayFlashMessage();
 
 // Update address
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
@@ -43,20 +35,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
 
     if (!empty($new_street) && !empty($new_city) && !empty($new_state) && !empty($new_postal)) {
         if ($address) {
-            $stmt = $_db->prepare("UPDATE address SET Street = ?, City = ?, State = ?, PostalCode = ? WHERE UserID = ?");
-            $stmt->execute([$new_street, $new_city, $new_state, $new_postal, $user_id]);
+            $stmt = $db->query("UPDATE address SET Street = ?, City = ?, State = ?, PostalCode = ? WHERE UserID = ?", [$new_street, $new_city, $new_state, $new_postal, $user_id]);
             $updateMessage = "✅ Address updated successfully!";
         } else {
-            $stmt = $_db->prepare("INSERT INTO address (UserID, Street, City, State, PostalCode) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([$user_id, $new_street, $new_city, $new_state, $new_postal]);
+            $stmt = $db->query("INSERT INTO address (UserID, Street, City, State, PostalCode) VALUES (?, ?, ?, ?, ?)", [$user_id, $new_street, $new_city, $new_state, $new_postal]);
             $updateMessage = "✅ Address added successfully!";
         }
     } else {
         $updateMessage = "❌ All address fields are required!";
     }
 
-    $stmt = $_db->prepare("SELECT * FROM address WHERE UserID = ?");
-    $stmt->execute([$user_id]);
+    $stmt = $db->query("SELECT * FROM address WHERE UserID = ?", [$user_id]);
     $address = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
@@ -65,12 +54,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_contact"])) {
     $new_phone = trim($_POST["phone"]);
 
     if (!empty($new_phone)) {
-        $stmt = $_db->prepare("UPDATE users SET ContactNo = ? WHERE UserID = ?");
-        $stmt->execute([$new_phone, $user_id]);
+        $stmt = $db->query("UPDATE users SET ContactNo = ? WHERE UserID = ?", [$new_phone, $user_id]);
         $updateMessage = "✅ Phone number updated successfully!";
         
-        $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
-        $stmt->execute([$username]);
+        $stmt = $db->query("SELECT * FROM users WHERE Username = ?", [$username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
     } else {
         $updateMessage = "❌ Phone number is required!";
@@ -106,12 +93,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
             }
 
             if (move_uploaded_file($fileTmpName, $uploadPath)) {
-                $stmt = $_db->prepare("UPDATE users SET ProfilePic = ? WHERE UserID = ?");
-                if ($stmt->execute([$uploadPath, $user['UserID']])) {
+                $stmt = $db->query("UPDATE users SET ProfilePic = ? WHERE UserID = ?", [$uploadPath, $user['UserID']]);
+                if ($stmt->rowCount() > 0) {
                     $updateMessage = "✅ Profile picture updated successfully!";
                     
-                    $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
-                    $stmt->execute([$username]);
+                    $stmt = $db->query("SELECT * FROM users WHERE Username = ?", [$username]);
                     $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 } else {
                     $updateMessage = "❌ Failed to update database.";
@@ -124,6 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
         $updateMessage = "❌ Upload failed: " . $file["error"];
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -204,14 +191,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                                 <input type="tel" id="phone" name="phone" value="<?php echo htmlspecialchars($user['ContactNo'] ?? ''); ?>" pattern="^(\+?6?01)[0-46-9]-*[0-9]{7,8}$" placeholder="01x-xxxxxxxx" required>
                                 <img src="../upload/icon/edit.png" alt="Edit" title="Click to edit" class="input-icon">
                             </div>
-                            <small class="input-hint">Malaysian format: 01x-xxxxxxxx</small>
+                            <small class="input-hint">Malaysian format: 0123456789</small>
                         </div>
 
                         <div class="form-actions">
                             <button type="submit" name="update_contact" class="save-btn">Update Phone Number</button>
                         </div>
                     </div>
+                </form>
 
+                <form class="profile-form" method="POST" action="">
                     <div class="form-section">
                         <h2>Address Information <img src="../upload/icon/edit.png" alt="Edit" title="Editable section" class="section-icon"></h2>
 
@@ -244,11 +233,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                                 </div>
                             </div>
 
-
-
                         <?php else: ?>
                             <p class="no-address-message">
-                                <i class="fas fa-info-circle"></i>
+                                <img src="../upload/icon/info.png" alt="Info" class="info-icon" style = "width: 20px; height: 20px;">
                                 No address found. Please add your address below.
                             </p><br>
 

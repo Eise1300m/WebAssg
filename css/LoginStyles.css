@@ -60,6 +60,7 @@ form {
     flex-direction: column;
     align-items: center;
     width: 80%;
+    max-width: 400px;
 }
 
 .signup-container {
@@ -93,28 +94,35 @@ form {
 }
 
 .input-container input {
-    width: 80%;
-    padding: 12px 40px 12px 15px;
+    width: 100%;
+    padding: 12px 45px 12px 20px;
     border-radius: 40px;
     border: 2px solid #fffefec5;
     outline: none;
     font-size: 16px;
     color: #ffffff;
+    background-color: transparent;
+    box-sizing: border-box;
 }
 
 /* Update icon styles */
 .person-icon, .lock-icon {
     position: absolute;
-    right: 25px;  /* Adjust this value to position the icon */
-    top: 50%;
-    transform: translateY(-50%);
+    right: 20px;
+    top: 12px;
     width: 20px;
     height: 20px;
     pointer-events: none;
+    z-index: 1;
+    opacity: 0.8;
 }
 
 .input-container input:focus {
     border-color: rgb(53, 46, 109);
+}
+
+.input-container input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .submit-but {
@@ -138,39 +146,17 @@ form {
 }
 
 .error-message {
-    font-size: 0.9em;
-    margin-top: 8px;
-    padding: 3px 6px;
-    width: 180px;
-    background: #ffe6e6;
-    border-left: 3px solid #f34f3d;
-    display: inline-block;
-}
-
-.error-message:empty {
+    font-size: 14px;
+    color: #5b5a5a;
+    margin-top: 5px;
+    margin-left: 15px;
+    width: 50%;
     background: transparent;
-    border-left-color: transparent;
-    padding: 0;
-    margin-top: 0;
+    background: #ffe6e6;
+    border-left: 3px solid #e74c3c;
+    
 }
 
-/* Floating Error Message Animation */
-.floating-error {
-    position: fixed;
-    top: 225px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgb(245, 100, 100);
-    color: white;
-    padding: 25px 20px;
-    border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    text-align: center;
-    max-width: 80%;
-    animation: fadeInOut 4s ease-in-out;
-    font-size: 30px;
-}
 
 .back-button {
     position: absolute;
@@ -200,13 +186,6 @@ form {
     transform: translateX(-5px);
 }
 
-@keyframes fadeInOut {
-    0% { opacity: 0; }
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { opacity: 0; display: none; }
-}
-
 .login-container {
     padding: 32px; 
 }
@@ -232,6 +211,52 @@ form {
 
     .container {
         margin: 0;
+    }
+}
+
+/* Flash Message Styles */
+.flash-message {
+    position: fixed;
+    top: 160px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: 500;
+    z-index: 1000;
+    text-align: center;
+    min-width: 300px;
+    max-width: 80%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    animation: slideIn 0.8s ease-out forwards, fadeOut 0.5s ease-out 3.5s forwards;
+}
+
+.flash-message.error {
+    background: linear-gradient(135deg, #ff6b6b, #ff4757);
+    color: white;
+}
+
+
+@keyframes slideIn {
+    0% {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -100%);
+        opacity: 0;
     }
 }
 

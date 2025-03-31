@@ -1,11 +1,8 @@
 <?php
-session_start();
-require_once("connection.php");
+require_once("base.php");
 
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    header("Location: UserLogin.php");
-    exit();
-}
+// Ensure only admins can access
+requireAdmin();
 
 // Determine any filters from GET parameters
 $categoryFilter = isset($_GET['category']) ? $_GET['category'] : 'all';
@@ -41,22 +38,27 @@ if (!empty($searchQuery)) {
 $query .= " ORDER BY b.BookNo DESC";
 
 // Execute the filtered query
-$stmt = $_db->prepare($query);
-$stmt->execute($params);
+$stmt = $db->query($query, $params);
 $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Fetch categories for the add/edit form and filter dropdown
-$stmt = $_db->prepare("SELECT * FROM category");
-$stmt->execute();
+$stmt = $db->query("SELECT * FROM category");
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Fetch all subcategories
-$stmt = $_db->prepare("SELECT * FROM subcategory");
-$stmt->execute();
+$stmt = $db->query("SELECT * FROM subcategory");
 $allSubcategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Count books for stats
 $bookCount = count($books);
+
+// Output header with custom title
+
+// Include navbar
+includeAdminNav();
+
+// Display any flash messages
+displayFlashMessages();
 
 // Add this after your existing database queries, before the HTML
 $subcategoriesMap = [];
@@ -91,8 +93,6 @@ foreach ($allSubcategories as $sub) {
 </head>
 
 <body>
-    <?php include_once("navbaradmin.php") ?>
-
     <main class="admin-container">
         <div class="admin-header">
             <h1>Product Management</h1>

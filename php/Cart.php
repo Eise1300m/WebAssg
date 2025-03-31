@@ -1,9 +1,30 @@
 <?php
-session_start();
-if (!isset($_SESSION['user_name'])) {
-    header("Location: UserUserLogin.php");
-    exit;
+require_once("base.php");
+
+// Ensure user is logged in
+requireLogin();
+
+$username = $_SESSION['user_name'];
+
+// Get user information
+$stmt = $db->query("SELECT * FROM users WHERE Username = ?", [$username]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$user) {
+    handleError("User not found.", "UserLogin.php");
 }
+
+$user_id = $user['UserID'];
+
+// Get user's address
+$stmt = $db->query("SELECT * FROM address WHERE UserID = ?", [$user_id]);
+$address = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Include navbar
+includeNavbar();
+
+// Display any flash messages
+displayFlashMessages();
 
 $cart = $_SESSION['cart'] ?? [];
 $subtotal = 0;

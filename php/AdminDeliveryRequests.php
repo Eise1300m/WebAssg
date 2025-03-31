@@ -41,12 +41,14 @@ foreach ($orders as $order) {
     <title>Delivery Requests - Secret Shelf</title>
     <link rel="stylesheet" href="../css/HomeStyles.css">
     <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/DeliveryRequestStyles.css">
+    <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/DeliveryRequestStyles.css">
 </head>
 
-<body>
+<body data-page="admin">
     <?php include_once("navbaradmin.php") ?>
 
     <a class="back-button" onclick="window.history.back()">
@@ -148,7 +150,6 @@ foreach ($orders as $order) {
         </div>
     </div>
 
-    <script src="../js/AdminScripts.js"></script>
 </body>
 
 </html>

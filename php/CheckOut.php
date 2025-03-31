@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once("connection.php");
+require_once("base.php");
 
 if (!isset($_SESSION['user_name']) || empty($_SESSION['cart'])) {
     header("Location: Cart.php");
@@ -32,10 +33,13 @@ try {
 
     // Check if user has an address
     if ($userInfo['address_count'] == 0) {
-        // No address found, redirect to profile page with message
-        $_SESSION['checkout_message'] = "Please add a shipping address before checkout.";
+        $_SESSION['flash_message'] = [
+            'type' => 'warning',
+            'message' => 'Please add your address before proceeding with checkout.'
+        ];
+        
         header("Location: UserEditProfile.php");
-        exit;
+        exit();
     }
 
     $user_id = $userInfo['UserID'];
@@ -289,7 +293,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         
                         <div class="payment-option">
-                            <input type="radio" id="ewallet" name="payment_type" value="ewallet">
+                            <input type="radio" id="ewallet" name="payment_type" value="E-wallet">
                             <label for="ewallet">
                                 <span class="checkmark"></span>
                                 <span class="payment-option-name">E-Wallet</span>
