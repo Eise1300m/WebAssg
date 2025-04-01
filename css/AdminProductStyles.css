@@ -236,7 +236,7 @@ body {
     position: absolute;
     right: 20px;
     top: 15px;
-    color: white;
+    color: rgb(35, 29, 29);
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
@@ -244,7 +244,7 @@ body {
 }
 
 .close:hover {
-    color: #ccc;
+    color: #e65b5b;
     transform: scale(1.1);
 }
 
@@ -307,7 +307,6 @@ body {
     background: rgba(20, 18, 18, 0.2);
 }
 
-/* Submit Buttons */
 .save-btn {
     background: linear-gradient(135deg, #6e8efb, #a777e3);
     color: white;
@@ -327,7 +326,6 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Product Category Badge */
 .category-badge {
     display: inline-block;
     padding: 4px 10px;
@@ -337,7 +335,6 @@ body {
     border: 1px solid rgba(106, 142, 251, 0.4);
 }
 
-/* Enhanced navigation for product management */
 .product-navigation {
     display: flex;
     justify-content: space-between;
@@ -382,7 +379,6 @@ body {
     opacity: 0.6;
 }
 
-/* Product Filters */
 .product-filters {
     display: flex;
     gap: 10px;
@@ -399,7 +395,6 @@ body {
 }
 
 
-/* Additional visual enhancements */
 .product-count {
     margin-bottom: 15px;
     color: rgba(255, 255, 255, 0.7);
@@ -513,34 +508,24 @@ body {
 
 @keyframes shake {
 
-    0%,
-    100% {
+    0%,100% {
         transform: translateX(0);
     }
 
-    10%,
-    30%,
-    50%,
-    70%,
-    90% {
+    10%,30%,50%,70%,90% {
         transform: translateX(-5px);
     }
 
-    20%,
-    40%,
-    60%,
-    80% {
+    20%,40%,60%,80% {
         transform: translateX(5px);
     }
 }
 
-/* Loading state for buttons */
 .save-btn:disabled {
     opacity: 0.7;
     cursor: wait;
 }
 
-/* Admin Stats Cards */
 .admin-stats {
     display: flex;
     flex-wrap: wrap;
@@ -598,7 +583,6 @@ body {
     color: #ffffff;
 }
 
-/* Product Actions and Filters */
 .product-actions {
     display: flex;
     flex-wrap: wrap;
@@ -681,7 +665,6 @@ body {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* Scrollable Table Container */
 .product-table-container {
     max-height: 600px;
     overflow-y: auto;
@@ -691,7 +674,6 @@ body {
     background: rgba(255, 255, 255, 0.05);
 }
 
-/* Fixed table header */
 .product-table {
     width: 100%;
     border-collapse: separate;
@@ -713,7 +695,6 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Action Buttons in Flex Display */
 .action-buttons {
     display: flex;
     gap: 8px;
@@ -761,7 +742,6 @@ body {
     font-size: 12px;
 }
 
-/* Badge styles for categories and subcategories */
 .category-badge,
 .subcategory-badge {
     display: inline-block;
@@ -783,7 +763,6 @@ body {
     border: 1px solid rgba(142, 106, 251, 0.4);
 }
 
-/* No results styling */
 .no-results {
     text-align: center;
     padding: 30px;
@@ -791,7 +770,6 @@ body {
     font-style: italic;
 }
 
-/* Scrollbar styling */
 .product-table-container::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -811,7 +789,6 @@ body {
     background: rgba(255, 255, 255, 0.3);
 }
 
-/* Image preview container improvements */
 .image-preview-container {
     margin-top: 10px;
     text-align: center;

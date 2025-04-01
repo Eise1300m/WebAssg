@@ -2,14 +2,7 @@
 require_once("base.php");
 
 // Ensure only admins can access
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    $_SESSION['flash_message'] = [
-        'type' => 'error',
-        'message' => '❌ Access denied. Admin privileges required.'
-    ];
-    header("Location: UserLogin.php");
-    exit;
-}
+requireAdmin();
 
 $username = $_SESSION['user_name'];
 

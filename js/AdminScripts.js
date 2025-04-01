@@ -111,13 +111,6 @@ const ProductManagement = (function ($) {
             }
         },
 
-        closeProductModal: function () {
-            const modal = document.getElementById('productModal');
-            if (modal) {
-                modal.style.display = 'none';
-            }
-        },
-
         editBook: function (bookId) {
             console.log('Editing book:', bookId);
             // Add your edit book logic here
@@ -136,7 +129,11 @@ ProductManagement.init();
 
 // Make functions globally available for onclick events
 window.showAddProductForm = ProductManagement.showAddProductForm;
-window.closeProductModal = ProductManagement.closeProductModal;
+window.closeProductModal = function() {
+    $('#productModal').hide();
+    $('#productForm')[0].reset();
+    $('#image-preview-container').hide();
+};
 window.editBook = ProductManagement.editBook;
 window.confirmDeleteBook = ProductManagement.confirmDeleteBook;
 
@@ -145,6 +142,22 @@ $(document).ready(function () {
     initializeProfilePicture();
     initializeProductManagement();
     initializeDeliveryRequests();
+
+    // Modal close functionality
+    $('#closeModal').on('click', function() {
+        $('#productModal').hide();
+        $('#productForm')[0].reset();
+        $('#image-preview-container').hide();
+    });
+
+    // Close modal when clicking outside
+    $(window).on('click', function(event) {
+        if ($(event.target).hasClass('modal')) {
+            $('#productModal').hide();
+            $('#productForm')[0].reset();
+            $('#image-preview-container').hide();
+        }
+    });
 
     // Show Add Product Form
     window.showAddProductForm = function () {
@@ -158,11 +171,6 @@ $(document).ready(function () {
 
         // Hide any existing image preview
         $('#image-preview-container').hide();
-    };
-
-    // Close Product Modal
-    window.closeProductModal = function () {
-        $('#productModal').hide();
     };
 
     // Edit Book
@@ -179,6 +187,7 @@ $(document).ready(function () {
                 const book = JSON.parse(data);
                 $('#book_id').val(book.BookNo);
                 $('#book_name').val(book.BookName);
+                $('#book_author').val(book.Author);
                 $('#book_price').val(book.BookPrice);
                 $('#book_description').val(book.Description || '');
 
@@ -225,7 +234,6 @@ $(document).ready(function () {
 
         // Show modal with loading state
         modal.show();
-        contentDiv.html('<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading order details...</div>');
 
         // Fetch order details
         $.ajax({
@@ -347,40 +355,50 @@ $(document).ready(function () {
         $('#orderModal').hide();
     };
 
-    // Handle Product Form Submission
-    $('#productForm').submit(function (event) {
-        event.preventDefault();
-
+    // Form submission handler
+    $('#productForm').off('submit').on('submit', function(e) {
+        e.preventDefault();
+        
         // Validate required fields
-        if (!$('#book_name').val() || !$('#book_price').val() || !$('#category').val() || !$('#subcategory').val()) {
+        if (!$('#book_name').val() || !$('#book_author').val() || !$('#book_price').val() || !$('#category').val() || !$('#subcategory').val()) {
             alert('Please fill in all required fields.');
             return;
         }
 
         const formData = new FormData(this);
-
+        const bookId = $('#book_id').val();
+        const url = bookId ? 'updateBook.php' : 'addBook.php';
+        
         // Show loading state
         const submitBtn = $(this).find('.save-btn');
         const originalText = submitBtn.text();
         submitBtn.text('Saving...').prop('disabled', true);
-
+        
         $.ajax({
-            url: 'saveBook.php',
+            url: url,
             method: 'POST',
             data: formData,
-            contentType: false,
             processData: false,
-            success: function (response) {
-                alert(response);
-                if (response.includes('successfully')) {
-                    $('#productModal').hide();
-                    location.reload();
-                } else {
+            contentType: false,
+            success: function(response) {
+                try {
+                    const result = typeof response === 'string' ? JSON.parse(response) : response;
+                    if (result.success) {
+                        alert(result.message);
+                        location.reload();
+                    } else {
+                        alert(result.message || 'Error occurred while saving the book');
+                        submitBtn.text(originalText).prop('disabled', false);
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    alert('Error occurred while saving the book');
                     submitBtn.text(originalText).prop('disabled', false);
                 }
             },
-            error: function (xhr, status, error) {
-                alert('Error saving book: ' + error);
+            error: function(xhr, status, error) {
+                console.error('AJAX error:', error);
+                alert('Error occurred while saving the book');
                 submitBtn.text(originalText).prop('disabled', false);
             }
         });
@@ -576,6 +594,18 @@ $(document).ready(function () {
     if ($('.customers-grid').length) {
         initializeCustomerManagement();
     }
+
+    // Add click event for modal close button
+    $('.modal .close').on('click', function() {
+        window.closeProductModal();
+    });
+
+    // Close modal when clicking outside
+    $(window).on('click', function(event) {
+        if ($(event.target).hasClass('modal')) {
+            window.closeProductModal();
+        }
+    });
 });
 
 function initializeAdminForms() {
@@ -702,17 +732,21 @@ function showFloatingMessage(message, type) {
 }
 
 function initializeDeliveryRequests() {
-    // Close modal when clicking the X
-    $('.modal .close').on('click', function () {
-        $('#orderModal').hide();
-    });
+    // Modal functionality
+    const modal = document.getElementById("orderModal");
+    const span = document.getElementsByClassName("close")[0];
 
-    // Close modal when clicking outside
-    $(window).on('click', function (event) {
-        if ($(event.target).hasClass('modal')) {
-            $('#orderModal').hide();
+    if (span) {
+        span.onclick = function() {
+            modal.style.display = "none";
         }
-    });
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
 }
 
 // Product Management Functions

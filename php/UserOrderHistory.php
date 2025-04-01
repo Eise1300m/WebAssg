@@ -33,12 +33,13 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order History - Secret Shelf</title>
     <link rel="stylesheet" href="../css/HomeStyles.css">
+    <link rel="stylesheet" href="../css/OrderStyles.css">
+    <link rel="stylesheet" href="../css/ProfileStyles.css">
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../css/OrderHistoryStyles.css">
 </head>
 
 <body data-page="orders">
@@ -86,7 +87,6 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             </span>
                                         </p>
                                         <div class="order-actions">
-                                            <!-- In your order card section -->
                                             <?php if ($order['OrderStatus'] === 'Delivering'): ?>
                                                 <button class="collect-btn" data-order-id="<?php echo htmlspecialchars($order['OrderNo']); ?>">
                                                     <img src="../upload/icon/check.png" alt="Collect" style="width: 20px; height: 20px; filter: invert(1);">
@@ -112,11 +112,6 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </main>
 
-    <!-- Load required scripts -->
-    <script src="../js/lib/core.js"></script>
-    <script src="../js/lib/validation.js"></script>
-    <script src="../js/modules/orders.js"></script>
-    <script src="../js/main.js"></script>
     <?php include 'footer.php'; ?>
 </body>
 

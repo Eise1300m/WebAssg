@@ -1,5 +1,9 @@
 <?php
 require_once("base.php");
+require_once("../lib/BookHelper.php");
+
+// Initialize BookHelper with database connection
+BookHelper::init($_db);
 
 // Ensure only admins can access
 requireAdmin();
@@ -172,7 +176,6 @@ foreach ($allSubcategories as $sub) {
                                 <label for="subcategory-filter">Subcategory</label>
                                 <select id="subcategory-filter" name="subcategory">
                                     <option value="all">All Subcategories</option>
-                                    <!-- This will be populated via JavaScript based on category selection -->
                                 </select>
                             </div>
 
@@ -241,22 +244,23 @@ foreach ($allSubcategories as $sub) {
     <!-- Add/Edit Product Modal -->
     <div id="productModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeProductModal()">&times;</span>
-            <!-- <h2 id="modalTitle">Add New Book</h2> -->
+            <span class="close" id="closeModal">&times;</span>
+            <h2 id="modalTitle">Add New Book</h2>
             <form id="productForm">
                 <input type="hidden" name="book_id" id="book_id">
+                <input type="hidden" name="action" id="action" value="add">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="book_name">Book Name</label>
                         <input type="text" id="book_name" name="book_name" required>
                     </div>
+                </div>
+
+                <div class="form-row">
                     <div class="form-group">
                         <label for="book_price">Price (RM)</label>
                         <input type="number" id="book_price" name="book_price" step="0.01" required>
                     </div>
-                </div>
-
-                <div class="form-row">
                     <div class="form-group">
                         <label for="category">Category</label>
                         <select id="category" name="category" required>
@@ -268,6 +272,9 @@ foreach ($allSubcategories as $sub) {
                             <?php endforeach; ?>
                         </select>
                     </div>
+                </div>
+
+                <div class="form-row">
                     <div class="form-group">
                         <label for="subcategory">Subcategory</label>
                         <select id="subcategory" name="subcategory" required>
@@ -305,7 +312,6 @@ foreach ($allSubcategories as $sub) {
     <!-- Remove inline script references and keep only external ones -->
     <script src="../js/Scripts.js"></script>
     <script src="../js/AdminScripts.js"></script>
-    <?php include 'footer.php'; ?>
 </body>
 
 </html>

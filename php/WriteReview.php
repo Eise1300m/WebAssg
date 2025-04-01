@@ -55,13 +55,13 @@ if (isset($_GET['book_id'])) {
                     $stmt = $_db->prepare("UPDATE reviews SET Rating = ?, ReviewText = ?, ReviewDate = NOW() 
                                            WHERE UserID = ? AND BookNo = ?");
                     $stmt->execute([$rating, $review_text, $user_id, $book_id]);
-                    $success_message = "Your review has been updated!";
+                    $success_message = "Your review has been updated! Redirecting back...";
                 } else {
                     // Insert new review
                     $stmt = $_db->prepare("INSERT INTO reviews (UserID, BookNo, Rating, ReviewText, ReviewDate) 
                                            VALUES (?, ?, ?, ?, NOW())");
                     $stmt->execute([$user_id, $book_id, $rating, $review_text]);
-                    $success_message = "Your review has been submitted!";
+                    $success_message = "Your review has been submitted! Redirecting back...";
                 }
 
                 // Redirect back to book preview page after 2 seconds
@@ -84,7 +84,6 @@ if (isset($_GET['book_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Write a Review - <?php echo $book['BookName']; ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="stylesheet" href="../css/WriteReviewStyle.css">
@@ -113,7 +112,23 @@ if (isset($_GET['book_id'])) {
         <?php endif; ?>
 
         <?php if ($success_message): ?>
-            <div class="success-message"><?php echo $success_message; ?></div>
+            <div class="success-message">
+                <?php echo $success_message; ?>
+                <div class="countdown">Redirecting in <span id="timer">2</span> seconds...</div>
+            </div>
+            <script>
+                // Countdown timer
+                let timeLeft = 2;
+                const timerElement = document.getElementById('timer');
+                const countdown = setInterval(function() {
+                    timeLeft--;
+                    timerElement.textContent = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(countdown);
+                        window.location.href = 'BookPreview.php?book_id=<?php echo $book_id; ?>';
+                    }
+                }, 1000);
+            </script>
         <?php endif; ?>
 
         <form method="POST" action="" class="review-form">

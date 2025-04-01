@@ -11,7 +11,7 @@ if (isset($_GET['book_id'])) {
     $bookId = $_GET['book_id'];
     
     $stmt = $_db->prepare("
-        SELECT b.*, s.SubcategoryNo, s.CategoryNo
+        SELECT b.*, s.SubcategoryNo, s.CategoryNo, b.Author
         FROM book b
         JOIN subcategory s ON b.SubcategoryNo = s.SubcategoryNo
         WHERE b.BookNo = ?

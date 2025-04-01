@@ -1,46 +1,68 @@
-/* Desktop-optimized footer */
 footer {
-
-    background-color: rgb(255, 255, 255);
-    padding: 30px;
+    min-height: 200px;
+    padding: 20px 0;
+    background-color: #f8f9fa;
+    margin-top: 50px;
     width: 100%;
-    text-align: left;
-    margin-top: 40px;
-
 }
 
 .Bottom-Area {
-    margin: 0;
+    max-width: 1200px;
     display: flex;
-    align-items: flex-start;
-    padding: 20px;
+    padding: 0 20px;
 }
 
 .Bot1 {
-    margin: 0 15px;
-    font-size: 18px;
-    text-align: left;
-    width: 20%;
+    flex: 1;
+    padding: 0 20px;
+}
+
+.Bot1 p {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    color: #333;
 }
 
 .Bot1 a {
+    display: block;
+    margin: 8px 0;
     text-decoration: none;
-    line-height: 1.5;
-    color: rgb(34, 198, 248);
-    font-size: 20px;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.Bot1 a:hover {
+    color: #007bff;
 }
 
 .Bot2 {
-    width: 30%;
-    border-left: solid rgba(0, 0, 0, 0.562);
-    padding-left: 35px;
+    flex: 1;
+    padding: 0 60px;
+    border-left: 2px solid #817e7e;
+}
 
+.Bot2 h3 {
+    font-size: 25px;
+    margin-bottom: 15px;
+    color: #333;
 }
 
 .Bot2 p {
-   
+    margin: 8px 0;
     line-height: 1.5;
-    color: black;
-    font-size: 20px;
-
+    color: #666;
 }
+
+@media (max-width: 768px) {
+    .Bottom-Area {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .Bot1, .Bot2 {
+        width: 100%;
+        padding: 20px;
+    }
+} 

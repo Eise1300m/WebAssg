@@ -29,8 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
         $updateMessage = "❌ Incorrect old password!";
     } elseif ($new_password !== $confirm_password) {
         $updateMessage = "❌ New passwords do not match!";
-    } elseif (strlen($new_password) ) {
-        $updateMessage = "❌ Password must be at least 6 characters!";
     } else {
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
         $stmt = $_db->prepare("UPDATE users SET Password = ? WHERE Username = ?");
@@ -42,6 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,6 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/Scripts.js"></script>
 </head>
+
 <body>
     <?php include_once("navbar.php") ?>
 
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                 <form class="profile-form" method="POST" action="">
                     <div class="form-section">
                         <h2><img src="../upload/icon/lock.png" alt="Security" class="section-icon"> Change Password</h2>
-                        
+
                         <div class="form-group">
                             <label for="old_password">Current Password</label>
                             <div class="input-with-icon">
@@ -119,4 +119,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
 
     <?php include 'footer.php'; ?>
 </body>
-</html> 
+
+</html>

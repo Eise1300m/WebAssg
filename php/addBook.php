@@ -1,14 +1,13 @@
 <?php
 session_start();
 require_once("connection.php");
+require_once("base.php");
 
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    echo json_encode(['success' => false, 'message' => 'Unauthorized access']);
-    exit;
-}
+requireAdmin();
 
 try {
     $bookName = $_POST['book_name'];
+    $bookAuthor = $_POST['book_author'];
     $bookPrice = $_POST['book_price'];
     $description = $_POST['description'];
     $subcategoryNo = $_POST['subcategory'];
@@ -25,11 +24,11 @@ try {
         }
     }
     
-    $query = "INSERT INTO book (BookName, BookPrice, Description, SubcategoryNo, BookImage) 
-              VALUES (?, ?, ?, ?, ?)";
+    $query = "INSERT INTO book (BookName, Author, BookPrice, Description, SubcategoryNo, BookImage) 
+              VALUES (?, ?, ?, ?, ?, ?)";
     
     $stmt = $_db->prepare($query);
-    $stmt->execute([$bookName, $bookPrice, $description, $subcategoryNo, $bookImage]);
+    $stmt->execute([$bookName, $bookAuthor, $bookPrice, $description, $subcategoryNo, $bookImage]);
     
     echo json_encode(['success' => true, 'message' => 'Book added successfully']);
 } catch (Exception $e) {

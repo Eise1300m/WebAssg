@@ -1,65 +1,70 @@
 <?php
 require_once("base.php");
+require_once("../lib/BookHelper.php");
 
-// Get filters from URL parameters
-$filters = [
-    'search' => get('search'),
-    'category' => get('category'),
-    'subcategory' => get('subcategory')
-];
+// Initialize BookHelper with database connection
+BookHelper::init($_db);
 
-try {
-    // Get books using the utility function
-    $books = get_books($filters);
-    
-    // Set page title
-    if (!empty($filters['search'])) {
-        $_title = "Search Results for '" . encode($filters['search']) . "' - Secret Shelf";
-    } else if ($filters['category'] && $filters['subcategory']) {
-        $_title = encode($filters['subcategory'] . ' ' . $filters['category']) . " Books - Secret Shelf";
-    } else if ($filters['category']) {
-        $_title = encode($filters['category']) . " Books - Secret Shelf";
-    } else {
-        $_title = "All Books - Secret Shelf";
-    }
-    
-} catch (PDOException $e) {
-    add_err('db', "Error fetching books: " . $e->getMessage());
-    $books = [];
+// Get filter parameters
+$categoryFilter = isset($_GET['category']) ? $_GET['category'] : 'all';
+$subcategoryFilter = isset($_GET['subcategory']) ? $_GET['subcategory'] : 'all';
+$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+// Prepare filters for BookHelper
+$filters = [];
+if ($categoryFilter !== 'all') {
+    $filters['category'] = $categoryFilter;
 }
+if ($subcategoryFilter !== 'all') {
+    $filters['subcategory'] = $subcategoryFilter;
+}
+if (!empty($searchQuery)) {
+    $filters['search'] = $searchQuery;
+}
+
+// Get books using BookHelper
+$books = BookHelper::getBooks($filters);
+
+// Get categories for filter dropdown
+$categories = BookHelper::getCategories();
+
+// Get subcategories for filter dropdown
+$subcategories = [];
+if ($categoryFilter !== 'all') {
+    $subcategories = BookHelper::getSubcategories($categoryFilter);
+}
+
+// Include navbar
+include 'navbar.php';
+include 'DropDownNav.php';
+
+// Display any flash messages
+displayFlashMessages();
 ?>
 
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../css/MainPage.css" rel="stylesheet">
-    <title><?= $_title ?></title>
-    <link href="../css/NavbarStyles.css" rel="stylesheet">
+    <title>Secret Shelf - Book Store</title>
+    <link rel="stylesheet" href="../css/MainPage.css">
+    <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/Dropdown.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
-
-
-
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/order.js"></script>
+    <script src="../js/Scripts.js"></script>
 </head>
-
-<?php include_once("navbar.php") ?>
-<?php include_once("DropDownNav.php") ?>
-
 <body>
-
     <div class="wrapbox">
         <div class="page-header">
-            <h1><?= $_title ?></h1>
+            <h1>All Books</h1>
             <?php if (empty($books)): ?>
                 <p class="no-results">No books found in this category. Please try another category.</p>
             <?php else: ?>
-                <p class="results-count">Showing <?= count($books) ?> books</p>
+                <p class="results-count">Showing <?php echo count($books); ?> books</p>
             <?php endif; ?>
         </div>
         
@@ -67,24 +72,24 @@ try {
             <?php foreach ($books as $book): ?>
                 <div class="book-card">
                     <div class="book-image">
-                        <a href="BookPreview.php?book_id=<?= encode($book['BookNo']) ?>">
-                            <img src="<?= !empty($book['BookImage']) ? encode($book['BookImage']) : '../upload/bookPfp/BookCoverUnavailable.webp' ?>" 
-                                 alt="<?= encode($book['BookName']) ?>">
+                        <a href="BookPreview.php?book_id=<?php echo $book['BookNo']; ?>">
+                            <img src="<?php echo BookHelper::getBookImage($book); ?>" 
+                                 alt="<?php echo htmlspecialchars($book['BookName']); ?>">
                         </a>
                     </div>
                     <div class="book-details">
-                        <h3 class="book-title" title="<?= encode($book['BookName']) ?>">
-                            <?= encode($book['BookName']) ?>
+                        <h3 class="book-title" title="<?php echo htmlspecialchars($book['BookName']); ?>">
+                            <?php echo htmlspecialchars($book['BookName']); ?>
                         </h3>
-                        <p class="book-author" title="<?= encode($book['Author']) ?>">
-                            <strong>Author:</strong> <?= encode($book['Author']) ?>
+                        <p class="book-author" title="<?php echo htmlspecialchars($book['Author']); ?>">
+                            <strong>Author:</strong> <?php echo htmlspecialchars($book['Author']); ?>
                         </p>
                         <p class="book-price">
-                            <strong>Price:</strong> <?= format_price($book['BookPrice']) ?>
+                            <strong>Price:</strong> <?php echo BookHelper::formatPrice($book['BookPrice']); ?>
                         </p>
                         
                         <?php if (isset($_SESSION['user_name'])): ?>
-                            <button class="cart-but" data-book-id="<?= encode($book['BookNo']) ?>">
+                            <button class="cart-but" data-book-id="<?php echo $book['BookNo']; ?>">
                                 <img src="../upload/icon/shoppingcart.png" alt="Cart">
                                 Add to Cart
                             </button>
@@ -98,12 +103,8 @@ try {
                 </div>
             <?php endforeach; ?>
         </div>
-
     </div>
 
-    <script src="../js/order.js"></script>
-    <script src="../js/Scripts.js"></script>
-
+    <?php include 'footer.php'; ?>
 </body>
-
 </html>

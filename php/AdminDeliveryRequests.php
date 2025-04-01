@@ -46,6 +46,7 @@ foreach ($orders as $order) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../css/DeliveryRequestStyles.css">
+    <script src="../js/AdminScripts.js"></script>
 </head>
 
 <body data-page="admin">
@@ -61,20 +62,19 @@ foreach ($orders as $order) {
             <p>Manage order deliveries</p>
         </div>
 
-
-            <!-- Status Overview -->
-            <div class="status-overview">
-                <div class="status-card preparing">
-                    <img src="../upload/icon/package.png" alt="Preparing" class="status-icon">
-                    <div class="status-info">
-                        <h3>Preparing</h3>
-                        <p><?php echo $statusCounts['Preparing']; ?> Orders</p>
-                    </div>
+        <!-- Status Overview -->
+        <div class="status-overview">
+            <div class="status-card preparing">
+                <img src="../upload/icon/package.png" alt="Preparing" class="status-icon">
+                <div class="status-info">
+                    <h3>Preparing</h3>
+                    <p><?php echo $statusCounts['Preparing']; ?> Orders</p>
                 </div>
+            </div>
 
-                <div class="status-card delivering">
-                    <img src="../upload/icon/delivery.png" alt="Delivering" class="status-icon"">
-                    <div class=" status-info">
+            <div class="status-card delivering">
+                <img src="../upload/icon/delivery.png" alt="Delivering" class="status-icon">
+                <div class="status-info">
                     <h3>Delivering</h3>
                     <p><?php echo $statusCounts['Delivering']; ?> Orders</p>
                 </div>
@@ -108,7 +108,7 @@ foreach ($orders as $order) {
                                     </div>
                                     <div class="order-actions">
                                         <button onclick="viewOrderDetails(<?php echo $order['OrderNo']; ?>)" class="view-btn">
-                                            <img src="../upload/icon/view.png" alt="View" class="btn-icon" style="filter: invert();" > View Details
+                                            <img src="../upload/icon/view.png" alt="View" class="btn-icon" style="filter: invert();"> View Details
                                         </button>
                                         <?php if ($status === 'Preparing'): ?>
                                             <button onclick="updateOrderStatus(<?php echo $order['OrderNo']; ?>, 'Preparing')"
@@ -117,9 +117,8 @@ foreach ($orders as $order) {
                                                 Mark as Delivering
                                             </button>
                                         <?php elseif ($status === 'Delivering'): ?>
-                                            <!-- Button disabled until user confirms collection -->
                                             <button class="status-btn delivering" disabled>
-                                                <img src="../upload/icon/check.png" alt="Status" class="btn-icon"">
+                                                <img src="../upload/icon/check.png" alt="Status" class="btn-icon">
                                                 Waiting for Collection
                                             </button>
                                         <?php elseif ($status === 'Collected'): ?>
@@ -145,11 +144,8 @@ foreach ($orders as $order) {
             <span class="close">&times;</span>
             <h2>Order Details</h2>
             <div id="orderDetailsContent">
-
             </div>
         </div>
     </div>
-
 </body>
-
 </html>

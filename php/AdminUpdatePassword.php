@@ -30,8 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
         $updateMessage = "❌ Incorrect current password!";
     } elseif ($new_password !== $confirm_password) {
         $updateMessage = "❌ New passwords do not match!";
-    } elseif (strlen($new_password) < 6) {
-        $updateMessage = "❌ Password must be at least 6 characters!";
     } else {
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
         $stmt = $_db->prepare("UPDATE users SET Password = ? WHERE Username = ? AND Role = 'admin'");
@@ -114,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                         <div class="form-group">
                             <label for="new_password">New Password</label>
                             <div class="input-with-icon">
-                                <input type="password" id="new_password" name="new_password" required minlength="6">
+                                <input type="password" id="new_password" name="new_password" required>
                                 <img src="../upload/icon/openlock.png" alt="New Lock" class="input-icon">
                             </div>
                         </div>
@@ -122,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                         <div class="form-group">
                             <label for="confirm_password">Confirm New Password</label>
                             <div class="input-with-icon">
-                                <input type="password" id="confirm_password" name="confirm_password" required minlength="6">
+                                <input type="password" id="confirm_password" name="confirm_password" required>
                                 <img src="../upload/icon/openlock.png" alt="Confirm Lock" class="input-icon">
                             </div>
                         </div>

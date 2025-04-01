@@ -25,7 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     try {
-        // Database validation using PDO
         $sql = "SELECT * FROM users WHERE Username = :username";
         $stmt = $_db->prepare($sql);
         $stmt->bindParam(":username", $username);
