@@ -38,7 +38,6 @@ $rating_data = $stmt->fetch(PDO::FETCH_ASSOC);
 $average_rating = $rating_data['average_rating'] ? round($rating_data['average_rating'], 1) : 0;
 $review_count = $rating_data['review_count'];
 
-// Include navbar
 include 'navbar.php';
 ?>
 
@@ -65,7 +64,6 @@ include 'navbar.php';
     </button>
 
     <div class="wrap-container">
-        <!-- Book details container -->
         <div class="book-container">
             <div class="inner-position">
                 <div class="book-image">
@@ -82,7 +80,7 @@ include 'navbar.php';
                         <div>Author: <?php echo htmlspecialchars($book['Author']); ?></div>
                         <div>Price: RM <?php echo number_format($book['BookPrice'], 2); ?></div>
 
-                        <!-- Rating Display -->
+                        <!-- Display Rating-->
                         <?php if ($review_count > 0): ?>
                             <div class="book-rating">
                                 <div class="stars">

@@ -1,15 +1,21 @@
 <?php
+// Disable error display for this page to ensure clean JSON output
+ini_set('display_errors', 0);
+error_reporting(0);
+
 session_start();
-require_once("connection.php");
 require_once("base.php");
+
+// Set JSON content type
+header('Content-Type: application/json');
 
 requireAdmin();
 
 try {
     $bookName = $_POST['book_name'];
-    $bookAuthor = $_POST['book_author'];
+    $bookAuthor = isset($_POST['book_author']) ? $_POST['book_author'] : '';
     $bookPrice = $_POST['book_price'];
-    $description = $_POST['description'];
+    $description = $_POST['book_description'];
     $subcategoryNo = $_POST['subcategory'];
     
     // Handle image upload

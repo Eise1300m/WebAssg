@@ -1,5 +1,5 @@
 <?php
-class SecurityHelper {
+class ValidationHelper {
     public static function sanitizeInput($input) {
         if (is_array($input)) {
             return array_map([self::class, 'sanitizeInput'], $input);
@@ -65,19 +65,6 @@ class SecurityHelper {
             header('Location: index.php');
             exit();
         }
-    }
-
-    public static function setFlashMessage($key, $message) {
-        $_SESSION['flash'][$key] = $message;
-    }
-
-    public static function getFlashMessage($key) {
-        if (isset($_SESSION['flash'][$key])) {
-            $message = $_SESSION['flash'][$key];
-            unset($_SESSION['flash'][$key]);
-            return $message;
-        }
-        return null;
     }
 
     // New method to validate address fields

@@ -1,6 +1,13 @@
 <?php
+// Disable error display for this page to ensure clean JSON output
+ini_set('display_errors', 0);
+error_reporting(0);
+
 session_start();
-require_once("connection.php");
+require_once("base.php");
+
+// Set JSON content type
+header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     echo json_encode(['success' => false, 'message' => 'Unauthorized access']);
@@ -11,7 +18,7 @@ try {
     $bookId = $_POST['book_id'];
     $bookName = $_POST['book_name'];
     $bookPrice = $_POST['book_price'];
-    $description = $_POST['description'];
+    $description = $_POST['book_description']; 
     $subcategoryNo = $_POST['subcategory'];
     
     // Start with base query

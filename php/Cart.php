@@ -7,7 +7,8 @@ requireLogin();
 $username = $_SESSION['user_name'];
 
 // Get user information
-$stmt = $db->query("SELECT * FROM users WHERE Username = ?", [$username]);
+$stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
+$stmt->execute([$username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
@@ -17,7 +18,8 @@ if (!$user) {
 $user_id = $user['UserID'];
 
 // Get user's address
-$stmt = $db->query("SELECT * FROM address WHERE UserID = ?", [$user_id]);
+$stmt = $_db->prepare("SELECT * FROM address WHERE UserID = ?");
+$stmt->execute([$user_id]);
 $address = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Include navbar

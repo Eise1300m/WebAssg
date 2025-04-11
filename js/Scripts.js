@@ -1,541 +1,281 @@
 $(document).ready(function () {
-    /** =================== FORM VALIDATION =================== **/
-    initializeFormValidation();
-    
-    /** =================== LOGIN VALIDATION =================== **/
-    initForms();
-    handleLoginRedirect();
-    
-    /** =================== SEARCH FUNCTIONALITY =================== **/
-    initializeSearch();
-    
-    /** =================== IMAGE SLIDER =================== **/
-    initializeImageSlider();
-    
-    /** =================== PROFILE MANAGEMENT =================== **/
-    initializeProfileManagement();
-    
-    /** =================== ADMIN FUNCTIONALITY =================== **/
-    initializeAdminFeatures();
-    
-    /** =================== BOOK PREVIEW FUNCTIONALITY =================== **/
-    initializeBookPreview();
-    
-    /** =================== LOGIN BUFFER =================== **/
-    if (document.getElementById('countdown')) {
-        initializeLoginBuffer();
-    }
-
-    /** =================== PROFILE MENU FUNCTIONS =================== **/
+    // Initialize all necessary functions
+    initializeLoginForm();
     initializeProfileMenu();
-
-    // Order History Functionality
     initializeOrderHistory();
+    initializeSignupForm();
+    initializeSlider();
 });
 
-/** =================== FORM VALIDATION FUNCTIONS =================== **/
-function initializeFormValidation() {
-    // Clears error messages on input change
-    $("input").on("input", function () {
-        $(this).next(".error-message").text("");
-    });
-
-    // Password confirmation check
-    $("#psw, #pswcfm").on("input", function () {
-        let password = $("#psw").val();
-        let confirmPassword = $("#pswcfm").val();
-
-        if (confirmPassword !== "" && password !== confirmPassword) {
-            $("#pswcfmError").text("Passwords do not match!");
-        } else {
-            $("#pswcfmError").text("");
-        }
-    });
-
-    // Signup form validation
-    $("#signupForm").submit(function (event) {
-        validateSignupForm(event);
-    });
-}
-
-function validateSignupForm(event) {
-        let phoneNumber = $("#tel").val().trim();
-    let phonePattern = /^01\d{8,9}$/;
-        let email = $("#emails").val().trim();
-    let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        let isValid = true;
-
-    $(".error-message").text("");
-
-        if ($("#UName").val() === "") {
-            $("#nameError").text("Name is required!");
-            isValid = false;
-        }
-
-        if ($("#psw").val() === "") {
-            $("#pswError").text("Password is required!");
-            isValid = false;
-        }
-
-        if ($("#psw").val() !== $("#pswcfm").val()) {
-            $("#pswcfmError").text("Passwords do not match!");
-            isValid = false;
-        } else if ($("#pswcfm").val() === "") {
-            $("#pswcfmError").text("Confirmation password is required!");
-            isValid = false;
-        }
-
-        if (email === "") {
-            $("#emailError").text("Email is required!");
-            isValid = false;
-        } else if (!emailPattern.test(email)) {
-            $("#emailError").text("Invalid email format! (e.g., example@domain.com)");
-            isValid = false;
-        }
-
-        if (phoneNumber === "") {
-            $("#telError").text("Phone number is required!");
-            isValid = false;
-        } else if (!phonePattern.test(phoneNumber)) {
-            $("#telError").text("Invalid phone number format! (01XXXX..)");
-            isValid = false;
-        }
-
-        if (!isValid) {
-            event.preventDefault();
-    }
-}
-
-/** =================== LOGIN VALIDATION FUNCTIONS =================== **/
-function initForms() {
-    let form = document.getElementById("login-form");
+// Login Form Handling
+function initializeLoginForm() {
+    const form = document.getElementById("login-form");
     if (form) {
-        form.addEventListener("submit", validateLoginForm);
-    }
-}
-
-function validateLoginForm(event) {
-    let username = document.getElementById("UserID").value.trim();
-    let password = document.getElementById("Userpwd").value.trim();
-    let userError = document.getElementById("user-error");
-    let passError = document.getElementById("pass-error");
-    let isValid = true;
-
-    userError.textContent = "";
-    passError.textContent = "";
-
-    if (username === "") {
-        userError.textContent = "Please enter your username.";
-        userError.style.display = "block";
-        isValid = false;
-    }
-
-    if (password === "") {
-        passError.textContent = "Password cannot be empty.";
-        passError.style.display = "block";
-        isValid = false;
-    }
-
-    if (!isValid) {
-        event.preventDefault();
-    }
-}
-
-function handleLoginRedirect() {
-    let loginMessage = $("#loginMessage").text().trim();
-    let redirectUrl = $("#redirectUrl").text().trim();
-
-    if (loginMessage !== "") {
-        $("#loginMessage").text(loginMessage);
-        setTimeout(function () {
-            window.location.href = redirectUrl || "MainPage.php";
-        }, 3000);
-    }
-}
-
-/** =================== SEARCH FUNCTIONS =================== **/
-function initializeSearch() {
-    $("#searchButton").click(performSearch);
-    $("#searchInput").keypress(function (event) {
-        if (event.key === "Enter") {
-            performSearch();
-        }
-    });
-}
-
-function performSearch() {
-    const searchQuery = $("#searchInput").val().trim();
-    if (searchQuery) {
-        window.location.href = `MainPage.php?search=${encodeURIComponent(searchQuery)}`;
-    }
-}
-
-/** =================== IMAGE SLIDER FUNCTIONS =================== **/
-function initializeImageSlider() {
-    const coverArr = [
-        '../img/Intro3.png',
-        '../img/Intro2.png',
-        '../img/Intro1.png'
-    ];
-
-    let i = 0;
-    let total = coverArr.length;
-    let slideInterval;
-
-    function updateContent() {
-        $("#mainImg").fadeOut(500, function () {
-            $(this).attr("src", coverArr[i]).fadeIn(1500);
-        });
-    }
-
-    function nextSlide() {
-        i = (i + 1) % total;
-        updateContent();
-    }
-
-    function prevSlide() {
-        i = (i - 1 + total) % total;
-        updateContent();
-    }
-
-    function startAutoSlide() {
-        stopAutoSlide();
-        slideInterval = setInterval(nextSlide, 3500);
-    }
-
-    function stopAutoSlide() {
-        clearInterval(slideInterval);
-    }
-
-    $("#next").click(function () {
-        stopAutoSlide();
-        nextSlide();
-        startAutoSlide();
-    });
-
-    $("#back").click(function () {
-        stopAutoSlide();
-        prevSlide();
-        startAutoSlide();
-    });
-
-    startAutoSlide();
-}
-
-/** =================== PROFILE MANAGEMENT FUNCTIONS =================== **/
-    function initializeProfileManagement() {
-        const toggleEditBtn = document.getElementById('toggleEdit');
-        const cancelEditBtn = document.getElementById('cancelEdit');
-        const formInputs = document.querySelectorAll('.profile-form input, .profile-form textarea');
-        const formActions = document.querySelector('.form-actions');
-        const navLinks = document.querySelectorAll('.profile-nav a');
-        const sections = document.querySelectorAll('.profile-section');
-
-    if (toggleEditBtn && cancelEditBtn) {
-        toggleEditBtn.addEventListener('click', function () {
-                formInputs.forEach(input => input.removeAttribute('readonly'));
-                formActions.style.display = 'flex';
-                toggleEditBtn.style.display = 'none';
-            });
-
-        cancelEditBtn.addEventListener('click', function () {
-                formInputs.forEach(input => input.setAttribute('readonly', true));
-                formActions.style.display = 'none';
-                toggleEditBtn.style.display = 'block';
-            });
-        }
-
-    if (navLinks.length > 0) {
-            navLinks.forEach(link => {
-            link.addEventListener('click', function (e) {
-                    if (this.getAttribute('href').startsWith('#')) {
-                        e.preventDefault();
-                        const sectionId = this.getAttribute('data-section');
-                        
-                        sections.forEach(section => {
-                            section.style.display = 'none';
-                            section.classList.remove('active');
-                        });
-                        
-                        document.getElementById(sectionId).style.display = 'block';
-                        document.getElementById(sectionId).classList.add('active');
-                        
-                        navLinks.forEach(navLink => navLink.classList.remove('active'));
-                        this.classList.add('active');
-                    }
-                });
-            });
-        }
-
-    // Profile picture upload handling
-        const profilePicInput = document.getElementById('profile-pic-input');
-        const uploadButton = document.getElementById('upload-pic-btn');
-        
-        if (profilePicInput) {
-        profilePicInput.addEventListener('change', handleProfilePictureUpload);
-    }
-}
-
-function handleProfilePictureUpload(e) {
-                if (this.files && this.files[0]) {
-                    const file = this.files[0];
-                    
-                    if (file.size > 5000000) {
-                        alert('File is too large. Maximum size is 5MB.');
-            this.value = '';
-                        return;
-                    }
-
-                    const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-                    if (!validTypes.includes(file.type)) {
-                        alert('Only JPG, PNG & GIF files are allowed.');
-            this.value = '';
-                        return;
-                    }
-
-                    const reader = new FileReader();
-        reader.onload = function (e) {
-                        document.getElementById('profile-pic').src = e.target.result;
-                    }
-                    reader.readAsDataURL(file);
-
-        document.getElementById('upload-pic-btn').style.display = 'inline-block';
+        // Clear error messages when user types
+        form.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                const errorElement = this.nextElementSibling;
+                if (errorElement && errorElement.classList.contains('error-message')) {
+                    errorElement.textContent = '';
                 }
-        }
-
-/** =================== ADMIN FUNCTIONS =================== **/
-    function initializeAdminFeatures() {
-        if (document.querySelector('.admin-form')) {
-            initializeAdminForms();
-            initializeProfilePicture();
-        }
-    }
-
-    function initializeAdminForms() {
-    $('.admin-form input').on('input', function () {
-            $('.admin-message').fadeOut();
+            });
         });
 
-    $('.admin-btn.secondary').on('click', function (e) {
-            e.preventDefault();
-            $(this).closest('form')[0].reset();
-        });
+        // Handle form submission
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+            const username = form.querySelector('input[name="Username"]').value.trim();
+            const password = form.querySelector('input[name="Userpwd"]').value.trim();
 
-        if ($('#new_password').length) {
-            initializePasswordValidation();
-        }
-    }
+            if (!username) {
+                showFieldError('Username', 'Please enter your username');
+                isValid = false;
+            }
 
-    function initializePasswordValidation() {
-    $('#new_password, #confirm_password').on('input', function () {
-            let newPass = $('#new_password').val();
-            let confirmPass = $('#confirm_password').val();
+            if (!password) {
+                showFieldError('Userpwd', 'Please enter your password');
+                isValid = false;
+            }
 
-            if (confirmPass && newPass !== confirmPass) {
-                $('#confirm_password')[0].setCustomValidity("Passwords do not match!");
-            } else {
-                $('#confirm_password')[0].setCustomValidity("");
+            if (!isValid) {
+                event.preventDefault();
             }
         });
     }
-
-/** =================== BOOK PREVIEW FUNCTIONS =================== **/
-function initializeBookPreview() {
-    if (document.querySelector('.book-container')) {
-        initializeReviewStars();
-    }
 }
 
-    function initializeReviewStars() {
-        const starLabels = document.querySelectorAll('.stars-container label');
-        
-    if (!starLabels.length) return;
-        
-        starLabels.forEach(label => {
-        label.addEventListener('mouseenter', handleStarHover);
-        label.addEventListener('mouseleave', handleStarLeave);
-        label.addEventListener('click', handleStarClick);
-    });
-
-    initializeExistingStars();
-}
-
-function handleStarHover() {
-                this.querySelector('i').classList.remove('far');
-                this.querySelector('i').classList.add('fas');
-                
-                let prevLabel = this;
-                while (prevLabel = prevLabel.previousElementSibling) {
-                    if (prevLabel.tagName === 'LABEL') {
-                        prevLabel.querySelector('i').classList.remove('far');
-                        prevLabel.querySelector('i').classList.add('fas');
-                    }
-                }
-}
-            
-function handleStarLeave() {
-                document.querySelectorAll('.stars-container label i').forEach(icon => {
-                    const input = icon.parentElement.previousElementSibling;
-                    if (input && !input.checked) {
-                        icon.classList.remove('fas');
-                        icon.classList.add('far');
-                    }
-                });
-                
-                const checkedInput = document.querySelector('.stars-container input:checked');
-                if (checkedInput) {
-                    let allInputs = document.querySelectorAll('.stars-container input');
-                    allInputs.forEach(input => {
-                        if (parseInt(input.value) <= parseInt(checkedInput.value)) {
-                            let nextLabel = input.nextElementSibling;
-                            if (nextLabel) {
-                                nextLabel.querySelector('i').classList.remove('far');
-                                nextLabel.querySelector('i').classList.add('fas');
-                            }
-                        }
-                    });
-                }
-}
-            
-function handleStarClick() {
-                const input = this.previousElementSibling;
-                if (input && input.type === 'radio') {
-                    input.checked = true;
-                    
-                    document.querySelectorAll('.stars-container label i').forEach(icon => {
-                        icon.classList.remove('fas');
-                        icon.classList.add('far');
-                    });
-                    
-                    let value = parseInt(input.value);
-                    let allLabels = document.querySelectorAll('.stars-container label');
-                    for (let i = 0; i < value; i++) {
-                        if (allLabels[i]) {
-                            allLabels[i].querySelector('i').classList.remove('far');
-                            allLabels[i].querySelector('i').classList.add('fas');
-                        }
-                    }
-                }
-}
-        
-function initializeExistingStars() {
-        const checkedInput = document.querySelector('.stars-container input:checked');
-        if (checkedInput) {
-            const value = parseInt(checkedInput.value);
-            const labels = document.querySelectorAll('.stars-container label');
-            
-            for (let i = 0; i < value; i++) {
-                if (labels[i]) {
-                    labels[i].querySelector('i').classList.remove('far');
-                    labels[i].querySelector('i').classList.add('fas');
-                }
-            }
-        }
-    }
-
-/** =================== LOGIN BUFFER FUNCTIONS =================== **/
-function initializeLoginBuffer() {
-    const countdownElement = document.getElementById('countdown');
-    const redirectUrlElement = document.getElementById('redirectUrl');
-
-    if (countdownElement && redirectUrlElement) {
-        let count = 3;
-        
-        // Immediately update the initial count
-        countdownElement.textContent = count;
-        
-        // Update countdown display
-        const updateCountdown = () => {
-            count--;
-            countdownElement.textContent = count;
-            
-            if (count < 0) {
-                // Redirect when countdown reaches 0
-                const redirectUrl = redirectUrlElement.getAttribute('data-url');
-                if (redirectUrl) {
-                    window.location.href = redirectUrl;
-                }
-            } else {
-                // Continue countdown
-                setTimeout(updateCountdown, 1000);
-            }
-        };
-        
-        // Start countdown after a short delay
-        setTimeout(updateCountdown, 1000);
-    }
-}
-
-/** =================== PROFILE MENU FUNCTIONS =================== **/
+// Profile Menu Handling
 function initializeProfileMenu() {
-    // Profile dropdown toggle
     $("#profileIcon").click(function(e) {
         e.stopPropagation();
         $("#profileDropdown").toggleClass("show");
     });
 
-    // Close dropdown when clicking elsewhere
     $(document).click(function(e) {
         if (!$(e.target).closest('.profile-dropdown').length) {
             $("#profileDropdown").removeClass("show");
         }
     });
 
-    // Close dropdown when clicking on a menu item
     $(".profile-menu-items a").click(function() {
         $("#profileDropdown").removeClass("show");
     });
 }
 
-// Order History Functionality
+// Order History Handling
 function initializeOrderHistory() {
-    // Handle confirm collection button clicks
     $('.collect-btn').on('click', function() {
         const orderId = $(this).data('order-id');
-        if (confirm('Are you sure you want to confirm collection of this order?')) {
-            $.ajax({
-                url: 'php/confirm_collection.php',
-                type: 'POST',
-                data: { order_id: orderId },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        // Show success message
-                        showMessage('Order collection confirmed successfully!', 'success');
-                        // Reload the page after a short delay
+        $.ajax({
+            url: 'UserOrderHistory.php',
+            type: 'POST',
+            data: {
+                action: 'confirm_collection',
+                order_id: orderId
+            },
+            success: function(response) {
+                try {
+                    const result = JSON.parse(response);
+                    if (result.success) {
+                        showFloatingMessage('Order collection confirmed successfully!', 'success');
                         setTimeout(function() {
                             location.reload();
                         }, 1500);
                     } else {
-                        showMessage(response.message || 'Failed to confirm collection.', 'error');
+                        showFloatingMessage(result.message || 'Failed to confirm collection.', 'error');
                     }
-                },
-                error: function() {
-                    showMessage('An error occurred. Please try again.', 'error');
+                } catch (e) {
+                    showFloatingMessage('Error processing response.', 'error');
                 }
-            });
-        }
+            },
+            error: function() {
+                showFloatingMessage('Error confirming collection. Please try again.', 'error');
+            }
+        });
     });
 }
 
-// Show message function
-function showMessage(message, type) {
-    // Remove any existing message
-    $('.floating-message').remove();
-    
-    // Create message element
+// Utility Functions
+function showFieldError(fieldName, message) {
+    const input = document.querySelector(`input[name="${fieldName}"]`);
+    if (input) {
+        let errorElement = input.nextElementSibling;
+        if (!errorElement || !errorElement.classList.contains('error-message')) {
+            errorElement = document.createElement('small');
+            errorElement.className = 'error-message';
+            input.parentNode.insertBefore(errorElement, input.nextSibling);
+        }
+        errorElement.textContent = message;
+    }
+}
+
+function showFloatingMessage(message, type = 'error') {
     const messageElement = $('<div>')
         .addClass('floating-message')
         .addClass(type)
-        .text(message);
-    
-    // Add to body
-    $('body').append(messageElement);
-    
-    // Remove after 3 seconds
-    setTimeout(function() {
+        .text(message)
+        .appendTo('body');
+
+    setTimeout(() => {
         messageElement.fadeOut(300, function() {
             $(this).remove();
         });
     }, 3000);
+}
+
+function validateForm(formId) {
+    const form = $(`#${formId}`);
+    let isValid = true;
+
+    form.find('input[required]').each(function() {
+        const input = $(this);
+        const value = input.val().trim();
+        const fieldName = input.attr('name');
+        const errorElement = $(`#${fieldName}Error`);
+
+        if (!value) {
+            errorElement.text(`${fieldName} is required`);
+            input.addClass('invalid');
+            isValid = false;
+        } else {
+            errorElement.text('');
+            input.removeClass('invalid');
+        }
+    });
+
+    return isValid;
+}
+
+function initializeSignupForm() {
+    const form = $('#signupForm');
+    if (!form.length) return;
+
+    // Function to show error message below an input
+    function showInputError(input, message) {
+        const container = $(input).closest('.input-container');
+        let errorDiv = container.find('.error-message');
+        
+        if (errorDiv.length === 0) {
+            errorDiv = $('<div class="error-message"></div>');
+            container.append(errorDiv);
+        }
+        
+        errorDiv.text(message);
+        $(input).addClass('error');
+    }
+
+    // Function to clear error message
+    function clearInputError(input) {
+        const container = $(input).closest('.input-container');
+        const errorDiv = container.find('.error-message');
+        errorDiv.text('');
+        $(input).removeClass('error');
+    }
+
+    // Validate signup form
+    form.on('submit', function(e) {
+        let isValid = true;
+        
+        // Clear all previous error messages
+        $('.error-message').text('');
+        $('input').removeClass('error');
+        
+        // Validate each required field
+        $(this).find('input[required]').each(function() {
+            if (!$(this).val().trim()) {
+                showInputError(this, 'This field is required');
+                isValid = false;
+            } else {
+                clearInputError(this);
+                
+                // Additional validation for specific fields
+                if ($(this).attr('type') === 'email') {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test($(this).val())) {
+                        showInputError(this, 'Invalid email format');
+                        isValid = false;
+                    }
+                }
+                
+                if ($(this).attr('name') === 'tel') {
+                    const phoneRegex = /^01[0-9]{8,9}$/;
+                    if (!phoneRegex.test($(this).val())) {
+                        showInputError(this, 'Invalid phone number format');
+                        isValid = false;
+                    }
+                }
+            }
+        });
+        
+        // Check if passwords match
+        const password = $('input[name="psw"]');
+        const confirmPassword = $('input[name="pswcfm"]');
+        if (password.val() && confirmPassword.val() && password.val() !== confirmPassword.val()) {
+            showInputError(confirmPassword, 'Passwords do not match');
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+
+    // Clear error message when user starts typing
+    form.find('input').on('input', function() {
+        clearInputError(this);
+    });
+}
+
+// Slider functionality
+function initializeSlider() {
+    const sliderContent = $('.slider-content');
+    const backBtn = $('#back');
+    const nextBtn = $('#next');
+    const images = [
+        '../img/Intro1.png',
+        '../img/Intro2.png',
+        '../img/Intro3.png'
+    ];
+    let currentIndex = 0;
+
+    // Function to update slider image
+    function updateSlider() {
+        sliderContent.find('img').fadeOut(500, function() {
+            $(this).attr('src', images[currentIndex]).fadeIn(500);
+        });
+    }
+
+    // Next button click handler
+    nextBtn.on('click', function() {
+        currentIndex = (currentIndex + 1) % images.length;
+        updateSlider();
+    });
+
+    // Back button click handler
+    backBtn.on('click', function() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        updateSlider();
+    });
+
+    // Auto slide every 5 seconds
+    let slideInterval = setInterval(function() {
+        currentIndex = (currentIndex + 1) % images.length;
+        updateSlider();
+    }, 5000);
+
+    // Pause auto-slide on hover
+    sliderContent.hover(
+        function() {
+            clearInterval(slideInterval);
+        },
+        function() {
+            slideInterval = setInterval(function() {
+                currentIndex = (currentIndex + 1) % images.length;
+                updateSlider();
+            }, 5000);
+        }
+    );
+
+    // Initialize slider
+    updateSlider();
 }

@@ -11,7 +11,6 @@ const ProductManagement = (function ($) {
         const subcategorySelect = document.getElementById('subcategory-filter');
 
         if (!categorySelect || !subcategorySelect) {
-            console.error('Category or subcategory select not found');
             return;
         }
 
@@ -62,8 +61,6 @@ const ProductManagement = (function ($) {
                 _currentCategoryFilter = subcategoriesData.dataset.currentCategory || 'all';
                 _currentSubcategoryFilter = subcategoriesData.dataset.currentSubcategory || 'all';
 
-                console.log('Loaded subcategories:', _subcategoriesByCategory); // Debug log
-
                 // Set initial category value
                 const categoryFilter = document.getElementById('category-filter');
                 if (categoryFilter) {
@@ -74,10 +71,7 @@ const ProductManagement = (function ($) {
                 _updateSubcategoryFilter();
             } catch (e) {
                 console.error('Error parsing subcategories data:', e);
-                console.log('Raw data:', subcategoriesData.dataset.subcategories);
             }
-        } else {
-            console.error('Subcategories data element not found');
         }
     }
 
@@ -112,69 +106,6 @@ const ProductManagement = (function ($) {
         },
 
         editBook: function (bookId) {
-            console.log('Editing book:', bookId);
-            // Add your edit book logic here
-        },
-
-        confirmDeleteBook: function (bookId) {
-            if (confirm('Are you sure you want to delete this book?')) {
-                console.log('Deleting book:', bookId);
-            }
-        }
-    };
-})(jQuery);
-
-// Initialize the module
-ProductManagement.init();
-
-// Make functions globally available for onclick events
-window.showAddProductForm = ProductManagement.showAddProductForm;
-window.closeProductModal = function() {
-    $('#productModal').hide();
-    $('#productForm')[0].reset();
-    $('#image-preview-container').hide();
-};
-window.editBook = ProductManagement.editBook;
-window.confirmDeleteBook = ProductManagement.confirmDeleteBook;
-
-$(document).ready(function () {
-    initializeAdminForms();
-    initializeProfilePicture();
-    initializeProductManagement();
-    initializeDeliveryRequests();
-
-    // Modal close functionality
-    $('#closeModal').on('click', function() {
-        $('#productModal').hide();
-        $('#productForm')[0].reset();
-        $('#image-preview-container').hide();
-    });
-
-    // Close modal when clicking outside
-    $(window).on('click', function(event) {
-        if ($(event.target).hasClass('modal')) {
-            $('#productModal').hide();
-            $('#productForm')[0].reset();
-            $('#image-preview-container').hide();
-        }
-    });
-
-    // Show Add Product Form
-    window.showAddProductForm = function () {
-        $('#productModal').show();
-        $('#modalTitle').text('Add New Book');
-        $('#productForm')[0].reset();
-        $('#book_id').val('');
-
-        // Reset subcategory dropdown
-        $('#subcategory').html('<option value="">-- Select Category First --</option>').prop('disabled', true);
-
-        // Hide any existing image preview
-        $('#image-preview-container').hide();
-    };
-
-    // Edit Book
-    window.editBook = function (bookId) {
         // Reset any previous preview
         $('#image-preview-container').hide();
 
@@ -183,11 +114,22 @@ $(document).ready(function () {
             url: 'fetchBookDetails.php',
             method: 'GET',
             data: { book_id: bookId },
+                dataType: 'json',
             success: function (data) {
-                const book = JSON.parse(data);
+                    try {
+                        // If data is already parsed JSON (from dataType:'json'), use it directly
+                        const book = data;
+                        
+                        if (book.error) {
+                            alert('Error: ' + book.error);
+                            return;
+                        }
+                        
                 $('#book_id').val(book.BookNo);
                 $('#book_name').val(book.BookName);
+                        if (book.Author) {
                 $('#book_author').val(book.Author);
+                        }
                 $('#book_price').val(book.BookPrice);
                 $('#book_description').val(book.Description || '');
 
@@ -207,12 +149,19 @@ $(document).ready(function () {
 
                 $('#productModal').show();
                 $('#modalTitle').text('Edit Book');
-            }
-        });
-    };
+                    } catch (e) {
+                        console.error('Error processing book data:', e);
+                        alert('Error loading book details. Please try again.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Ajax error:', xhr.responseText);
+                    alert('Error: Could not load book details. Please check the console for more information.');
+                }
+            });
+        },
 
-    // Confirm Delete Book
-    window.confirmDeleteBook = function (bookId) {
+        confirmDeleteBook: function (bookId) {
         if (confirm('Are you sure you want to delete this book?')) {
             // Perform delete operation via AJAX
             $.ajax({
@@ -224,152 +173,94 @@ $(document).ready(function () {
                     location.reload();
                 }
             });
+            }
+        }
+    };
+})(jQuery);
+
+// Initialize the module
+$(document).ready(function() {
+    // Initialize ProductManagement
+    ProductManagement.init();
+    
+    // Expose functions to global scope for HTML onclick handlers
+    window.showAddProductForm = ProductManagement.showAddProductForm;
+    window.editBook = ProductManagement.editBook;
+    window.confirmDeleteBook = ProductManagement.confirmDeleteBook;
+    window.closeProductModal = function() {
+        $('#productModal').hide();
+        $('#productForm')[0].reset();
+        $('#image-preview-container').hide();
+    };
+
+    // Add global function for subcategory filter used in inline HTML
+    window.updateSubcategoryFilter = function() {
+        const categorySelect = document.getElementById('category-filter');
+        const subcategorySelect = document.getElementById('subcategory-filter');
+        
+        if (!categorySelect || !subcategorySelect) return;
+        
+        const selectedCategory = categorySelect.value;
+        
+        // Clear existing options
+        subcategorySelect.innerHTML = '<option value="all">All Subcategories</option>';
+        
+        // If "all" is selected, we don't need to add any options
+        if (selectedCategory === 'all') return;
+        
+        // Get subcategories for selected category
+        const subcategoriesData = document.getElementById('subcategories-data');
+        if (!subcategoriesData) return;
+        
+        try {
+            const subcategoriesMap = JSON.parse(subcategoriesData.dataset.subcategories);
+            const currentSubcategory = subcategoriesData.dataset.currentSubcategory;
+            
+            if (subcategoriesMap[selectedCategory]) {
+                subcategoriesMap[selectedCategory].forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub.id;
+                    option.textContent = sub.name;
+                    if (sub.id.toString() === currentSubcategory) {
+                        option.selected = true;
+                    }
+                    subcategorySelect.appendChild(option);
+                });
+            }
+        } catch (e) {
+            console.error('Error updating subcategories:', e);
         }
     };
 
-    // View Order Details
-    window.viewOrderDetails = function (orderId) {
-        const modal = $('#orderModal');
-        const contentDiv = $('#orderDetailsContent');
+    // Initialize other admin features
+    initializeAdminForms();
+    initializeProfilePicture();
+    initializeDeliveryRequests();
+    
+    if ($('.customers-grid').length) {
+        initializeCustomerManagement();
+    }
 
-        // Show modal with loading state
-        modal.show();
-
-        // Fetch order details
-        $.ajax({
-            url: 'fetchOrderDetails.php',
-            type: 'POST',
-            data: { order_id: orderId },
-            success: function (response) {
-                try {
-                    if (typeof response === 'string') {
-                        response = JSON.parse(response);
-                    }
-
-                    if (response.error) {
-                        contentDiv.html(`<p class="error">${response.error}</p>`);
-                        return;
-                    }
-
-                    const data = response;
-                    let html = `
-                        <div class="order-details-grid">
-                            <div class="order-info-section">
-                                <h3>Order Information</h3>
-                                <div class="info-row">
-                                    <span class="info-label">Order ID:</span>
-                                    <span>#${data.order.OrderNo}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Order Date:</span>
-                                    <span>${new Date(data.order.OrderDate).toLocaleDateString()}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Status:</span>
-                                    <span class="status-badge ${data.order.OrderStatus.toLowerCase()}">${data.order.OrderStatus}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Payment Method:</span>
-                                    <span>${data.order.PaymentType}</span>
-                                </div>
-                            </div>
-                            
-                            <div class="order-info-section">
-                                <h3>Customer Information</h3>
-                                <div class="info-row">
-                                    <span class="info-label">Name:</span>
-                                    <span>${data.order.Username}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Email:</span>
-                                    <span>${data.order.Email}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Contact:</span>
-                                    <span>${data.order.ContactNo}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Shipping Address:</span>
-                                    <span>${data.order.ShippingAddress}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="order-info-section">
-                            <h3>Order Items</h3>
-                            <table class="order-items-table">
-                                <thead>
-                                    <tr>
-                                        <th>Book</th>
-                                        <th>Author</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                        <th>Subtotal</th>
-                                    </tr>
-                                </thead>
-                                <tbody>`;
-
-                    let totalAmount = 0;
-                    data.items.forEach(item => {
-                        const subtotal = item.Quantity * item.Price;
-                        totalAmount += subtotal;
-                        html += `
-                            <tr>
-                                <td>
-                                    <div class="book-info">
-                                        <img src="${item.BookImage}" alt="${item.BookName}" class="book-thumbnail">
-                                        <span>${item.BookName}</span>
-                                    </div>
-                                </td>
-                                <td>${item.Author}</td>
-                                <td>${item.Quantity}</td>
-                                <td>RM ${parseFloat(item.Price).toFixed(2)}</td>
-                                <td>RM ${subtotal.toFixed(2)}</td>
-                            </tr>`;
-                    });
-
-                    html += `
-                                <tr class="total-row">
-                                    <td colspan="4">Total Amount:</td>
-                                    <td>RM ${parseFloat(data.order.TotalAmount).toFixed(2)}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>`;
-
-                    contentDiv.html(html);
-                } catch (e) {
-                    console.error('Error parsing response:', e);
-                    contentDiv.html('<p class="error">Error loading order details.</p>');
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error('AJAX Error:', error);
-                contentDiv.html('<p class="error">Error loading order details.</p>');
-            }
-        });
-    };
-
-    // Close Order Modal
-    window.closeOrderModal = function () {
-        $('#orderModal').hide();
-    };
-
-    // Form submission handler
+    // Modal handling
+    $('#closeModal').on('click', closeProductModal);
+    $(window).on('click', function(event) {
+        if ($(event.target).hasClass('modal')) {
+            closeProductModal();
+        }
+    });
+    
+    // Form validation and submission
     $('#productForm').off('submit').on('submit', function(e) {
         e.preventDefault();
         
-        // Validate required fields
-        if (!$('#book_name').val() || !$('#book_author').val() || !$('#book_price').val() || !$('#category').val() || !$('#subcategory').val()) {
-            alert('Please fill in all required fields.');
-            return;
+        if (!validateFormFields()) {
+            return false;
         }
 
         const formData = new FormData(this);
         const bookId = $('#book_id').val();
         const url = bookId ? 'updateBook.php' : 'addBook.php';
         
-        // Show loading state
         const submitBtn = $(this).find('.save-btn');
         const originalText = submitBtn.text();
         submitBtn.text('Saving...').prop('disabled', true);
@@ -380,24 +271,26 @@ $(document).ready(function () {
             data: formData,
             processData: false,
             contentType: false,
+            dataType: 'json',
             success: function(response) {
                 try {
-                    const result = typeof response === 'string' ? JSON.parse(response) : response;
-                    if (result.success) {
-                        alert(result.message);
+                    // Response is already parsed as JSON due to dataType:'json'
+                    if (response.success) {
+                        alert(response.message);
                         location.reload();
                     } else {
-                        alert(result.message || 'Error occurred while saving the book');
+                        alert(response.message || 'Error occurred while saving the book');
                         submitBtn.text(originalText).prop('disabled', false);
                     }
                 } catch (e) {
-                    console.error('Error parsing response:', e);
+                    console.error('Error processing response:', e);
                     alert('Error occurred while saving the book');
                     submitBtn.text(originalText).prop('disabled', false);
                 }
             },
             error: function(xhr, status, error) {
                 console.error('AJAX error:', error);
+                console.log('Response text:', xhr.responseText);
                 alert('Error occurred while saving the book');
                 submitBtn.text(originalText).prop('disabled', false);
             }
@@ -432,7 +325,42 @@ $(document).ready(function () {
         }
     });
 
-    // Add form field validation styling
+    // Handle category change in the add/edit form
+    $('#category').on('change', function() {
+        const categoryId = $(this).val();
+        const subcategorySelect = $('#subcategory');
+        
+        subcategorySelect.html('<option value="">-- Select Category First --</option>');
+        subcategorySelect.prop('disabled', !categoryId);
+        
+        if (!categoryId) return;
+        
+        // Get subcategories from data attribute
+        const subcategoriesData = document.getElementById('subcategories-data');
+        if (!subcategoriesData) return;
+        
+        try {
+            const subcategoriesMap = JSON.parse(subcategoriesData.dataset.subcategories);
+            
+            if (subcategoriesMap[categoryId]) {
+                let options = '<option value="">-- Select Subcategory --</option>';
+                subcategoriesMap[categoryId].forEach(function(sub) {
+                    options += `<option value="${sub.id}">${sub.name}</option>`;
+                });
+                subcategorySelect.html(options);
+                subcategorySelect.prop('disabled', false);
+            }
+        } catch (e) {
+            console.error('Error loading subcategories for form:', e);
+        }
+    });
+    
+    // Initialize filters on page load
+    if (document.getElementById('category-filter')) {
+        window.updateSubcategoryFilter();
+    }
+});
+
     function validateFormFields() {
         let isValid = true;
 
@@ -454,159 +382,13 @@ $(document).ready(function () {
             isValid = false;
         }
 
-        return isValid;
-    }
-
-    // Update the form submission to use the validation
-    $('#productForm').off('submit').on('submit', function (event) {
-        event.preventDefault();
-
         // Remove field-error class when typing
         $('#productForm input, #productForm select, #productForm textarea').on('input change', function () {
             $(this).removeClass('field-error');
         });
 
-        if (!validateFormFields()) {
-            return false;
-        }
-
-        const formData = new FormData(this);
-
-        // Show loading state
-        const submitBtn = $(this).find('.save-btn');
-        const originalText = submitBtn.text();
-        submitBtn.text('Saving...').prop('disabled', true);
-
-        $.ajax({
-            url: 'saveBook.php',
-            method: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                alert(response);
-                if (response.includes('successfully')) {
-                    $('#productModal').hide();
-                    location.reload();
-                } else {
-                    submitBtn.text(originalText).prop('disabled', false);
-                }
-            },
-            error: function (xhr, status, error) {
-                alert('Error saving book: ' + error);
-                submitBtn.text(originalText).prop('disabled', false);
-            }
-        });
-    });
-
-    // Initialize subcategory filter on page load
-    updateSubcategoryFilter();
-
-    // Define the subcategoriesByCategory mapping based on your database structure
-    const subcategoriesByCategory = {
-        1: [ // Novel
-            { id: 101, name: 'Romance' },
-            { id: 102, name: 'Mystery' },
-            { id: 103, name: 'ScienceFiction' },
-            { id: 104, name: 'Fantasy' },
-            { id: 105, name: 'Horror' }
-        ],
-        2: [ // Comic
-            { id: 201, name: 'Romance' },
-            { id: 202, name: 'Horror' },
-            { id: 203, name: 'Superhero' },
-            { id: 204, name: 'Comedy' },
-            { id: 205, name: 'Adventure' }
-        ],
-        3: [ // Children
-            { id: 301, name: 'Pictures' },
-            { id: 302, name: 'FairyTales' },
-            { id: 303, name: 'Educational' },
-            { id: 304, name: 'Moral' },
-            { id: 305, name: 'Animal' }
-        ],
-        4: [ // Education
-            { id: 401, name: 'Mathematic' },
-            { id: 402, name: 'Science' },
-            { id: 403, name: 'History' },
-            { id: 404, name: 'Language' },
-            { id: 405, name: 'ComputerScience' },
-            { id: 406, name: 'Business' },
-            { id: 407, name: 'Engineering' },
-            { id: 408, name: 'Psychology' }
-        ]
-    };
-
-    // Update the subcategory filter function
-    function updateSubcategoryFilter() {
-        const categorySelect = $('#category-filter');
-        const subcategorySelect = $('#subcategory-filter');
-        const selectedCategory = categorySelect.val();
-
-        // Clear subcategory options
-        subcategorySelect.empty();
-        subcategorySelect.append('<option value="all">All Subcategories</option>');
-
-        // If a specific category is selected and it exists in our mapping
-        if (selectedCategory && selectedCategory !== 'all' && subcategoriesByCategory[selectedCategory]) {
-            // Add subcategories for the selected category
-            subcategoriesByCategory[selectedCategory].forEach(subcategory => {
-                const selected = subcategory.id == currentSubcategoryFilter ? 'selected' : '';
-                subcategorySelect.append(`
-                    <option value="${subcategory.id}" ${selected}>
-                        ${subcategory.name}
-                    </option>
-                `);
-            });
-            subcategorySelect.prop('disabled', false);
-        } else {
-            // If "All Categories" is selected, show all subcategories
-            if (selectedCategory === 'all') {
-                Object.values(subcategoriesByCategory).flat().forEach(subcategory => {
-                    const selected = subcategory.id == currentSubcategoryFilter ? 'selected' : '';
-                    subcategorySelect.append(`
-                        <option value="${subcategory.id}" ${selected}>
-                            ${subcategory.name}
-                        </option>
-                    `);
-                });
-            }
-            subcategorySelect.prop('disabled', selectedCategory === '');
-        }
-    }
-
-    $(document).ready(function () {
-
-        updateSubcategoryFilter();
-
-        $('#category-filter').on('change', updateSubcategoryFilter);
-
-        // Add form submit handler
-        $('#filterForm').on('submit', function (e) {
-            // If "All Categories" is selected, reset subcategory to "all" as well
-            if ($('#category-filter').val() === 'all') {
-                $('#subcategory-filter').val('all');
-            }
-        });
-    });
-
-    // Initialize customer management if on the customer management page
-    if ($('.customers-grid').length) {
-        initializeCustomerManagement();
-    }
-
-    // Add click event for modal close button
-    $('.modal .close').on('click', function() {
-        window.closeProductModal();
-    });
-
-    // Close modal when clicking outside
-    $(window).on('click', function(event) {
-        if ($(event.target).hasClass('modal')) {
-            window.closeProductModal();
-        }
-    });
-});
+    return isValid;
+}
 
 function initializeAdminForms() {
     // Clear messages on input
@@ -672,60 +454,62 @@ function initializeProfilePicture() {
     });
 }
 
-function updateOrderStatus(orderId, currentStatus) {
-    let newStatus;
-
-    // Determine the next status
-    if (currentStatus === 'Preparing') {
-        newStatus = 'Delivering';
-    } else if (currentStatus === 'Collected') {
-        newStatus = 'Complete';
-    } else {
-        console.error('Invalid current status:', currentStatus);
-        return;
+function updateOrderStatus(orderId, newStatus) {
+    let confirmMessage = '';
+    switch(newStatus) {
+        case 'Delivering':
+            confirmMessage = 'Are you sure you want to mark this order as Delivering?';
+            break;
+        case 'Complete':
+            confirmMessage = 'Are you sure you want to mark this order as Complete?';
+            break;
+        default:
+            confirmMessage = 'Are you sure you want to update this order status?';
     }
 
-    if (confirm(`Are you sure you want to mark this order as ${newStatus}?`)) {
+    if (confirm(confirmMessage)) {
         $.ajax({
-            url: 'adminupdateorderstatus.php',
+            url: 'AdminDeliveryRequests.php',
             type: 'POST',
-            data: {
+            data: { 
+                action: 'update_status',
                 order_id: orderId,
-                status: newStatus
+                new_status: newStatus
             },
-            success: function (response) {
-                try {
-                    if (response.success) {
-                        showFloatingMessage('Order status updated successfully', 'success');
-                        // Reload the page after a short delay
-                        setTimeout(() => {
-                            location.reload();
-                        }, 1500);
-                    } else {
-                        showFloatingMessage(response.message || 'Error updating order status', 'error');
-                    }
-                } catch (e) {
-                    console.error('Error processing response:', e);
-                    showFloatingMessage('Error processing response', 'error');
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    showFloatingMessage('Order status updated successfully!', 'success');
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    showFloatingMessage(response.message || 'Failed to update order status.', 'error');
                 }
             },
-            error: function () {
-                showFloatingMessage('Error connecting to server', 'error');
+            error: function() {
+                showFloatingMessage('An error occurred. Please try again.', 'error');
             }
         });
     }
 }
 
 function showFloatingMessage(message, type) {
-    const messageDiv = $('<div>')
+    // Remove any existing message
+    $('.floating-message').remove();
+    
+    // Create message element
+    const messageElement = $('<div>')
         .addClass('floating-message')
         .addClass(type)
         .text(message);
-
-    $('body').append(messageDiv);
-
-    setTimeout(function () {
-        messageDiv.fadeOut(300, function () {
+    
+    // Add to body
+    $('body').append(messageElement);
+    
+    // Remove after 3 seconds
+    setTimeout(function() {
+        messageElement.fadeOut(300, function() {
             $(this).remove();
         });
     }, 3000);
@@ -749,180 +533,10 @@ function initializeDeliveryRequests() {
     }
 }
 
-// Product Management Functions
-function initializeProductManagement() {
-    if ($('#category-filter').length) {
-        // Initialize subcategory filter on page load
-        updateSubcategoryFilter();
-
-        // Add change event listener for category filter
-        $('#category-filter').on('change', updateSubcategoryFilter);
-
-        // Add form submit handler
-        $('#filterForm').on('submit', function (e) {
-            if ($('#category-filter').val() === 'all') {
-                $('#subcategory-filter').val('all');
-            }
-        });
-
-        // Category change event for add/edit form
-        $('#category').on('change', function () {
-            const categoryId = $(this).val();
-            const subcategorySelect = $('#subcategory');
-
-            subcategorySelect.html('<option value="">-- Select Category First --</option>');
-            subcategorySelect.prop('disabled', !categoryId);
-
-            if (categoryId && subcategoriesByCategory[categoryId]) {
-                let options = '<option value="">-- Select Subcategory --</option>';
-                subcategoriesByCategory[categoryId].forEach(function (sub) {
-                    options += `<option value="${sub.id}">${sub.name}</option>`;
-                });
-                subcategorySelect.html(options);
-                subcategorySelect.prop('disabled', false);
-            }
-        });
-    }
-}
-
-function updateSubcategoryFilter() {
-    const categorySelect = $('#category-filter');
-    const subcategorySelect = $('#subcategory-filter');
-    const selectedCategory = categorySelect.val();
-
-    subcategorySelect.empty();
-    subcategorySelect.append('<option value="all">All Subcategories</option>');
-
-    if (selectedCategory && selectedCategory !== 'all') {
-        const subcategories = subcategoriesByCategory[selectedCategory] || [];
-        subcategories.forEach(subcategory => {
-            const selected = subcategory.id == currentSubcategoryFilter ? 'selected' : '';
-            subcategorySelect.append(`
-                <option value="${subcategory.id}" ${selected}>
-                    ${subcategory.name}
-                </option>
-            `);
-        });
-    } else if (selectedCategory === 'all') {
-        Object.values(subcategoriesByCategory).flat().forEach(subcategory => {
-            const selected = subcategory.id == currentSubcategoryFilter ? 'selected' : '';
-            subcategorySelect.append(`
-                <option value="${subcategory.id}" ${selected}>
-                    ${subcategory.name}
-                </option>
-            `);
-        });
-    }
-
-    subcategorySelect.prop('disabled', !selectedCategory);
-}
-
-// Global variables - declare at the top
-const subcategoriesByCategory = {};
-let currentCategoryFilter = 'all';
-let currentSubcategoryFilter = 'all';
-
-// Function declarations
-function updateSubcategoryFilter() {
-    const categorySelect = document.getElementById('category-filter');
-    const subcategorySelect = document.getElementById('subcategory-filter');
-
-    if (!categorySelect || !subcategorySelect) return;
-
-    const selectedCategory = categorySelect.value;
-
-    // Clear existing options
-    subcategorySelect.innerHTML = '<option value="all">All Subcategories</option>';
-
-    // If a specific category is selected, populate its subcategories
-    if (selectedCategory !== 'all' && subcategoriesByCategory[selectedCategory]) {
-        subcategoriesByCategory[selectedCategory].forEach(sub => {
-            const option = document.createElement('option');
-            option.value = sub.id;
-            option.textContent = sub.name;
-            if (sub.id.toString() === currentSubcategoryFilter) {
-                option.selected = true;
-            }
-            subcategorySelect.appendChild(option);
-        });
-    }
-}
-
-function handleFilterReset(e) {
-    e.preventDefault();
-    window.location.href = 'AdminProductManagement.php';
-}
-
-function showAddProductForm() {
-    const modal = document.getElementById('productModal');
-    if (modal) {
-        modal.style.display = 'block';
-    }
-}
-
-function closeProductModal() {
-    const modal = document.getElementById('productModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
-}
-
-function editBook(bookId) {
-    console.log('Editing book:', bookId);
-    // Add your edit book logic here
-}
-
-function confirmDeleteBook(bookId) {
-    if (confirm('Are you sure you want to delete this book?')) {
-        console.log('Deleting book:', bookId);
-    }
-}
-
-function initializeFilters() {
-    const subcategoriesData = document.getElementById('subcategories-data');
-    if (subcategoriesData) {
-        try {
-            const parsedData = JSON.parse(subcategoriesData.dataset.subcategories || '{}');
-            Object.assign(subcategoriesByCategory, parsedData);
-            currentCategoryFilter = subcategoriesData.dataset.currentCategory || 'all';
-            currentSubcategoryFilter = subcategoriesData.dataset.currentSubcategory || 'all';
-        } catch (e) {
-            console.error('Error parsing subcategories data:', e);
-        }
-    }
-
-    const categoryFilter = document.getElementById('category-filter');
-    if (categoryFilter) {
-        categoryFilter.value = currentCategoryFilter;
-    }
-
-    updateSubcategoryFilter();
-}
-
-function setupEventListeners() {
-    // Category filter change event
-    const categoryFilter = document.getElementById('category-filter');
-    if (categoryFilter) {
-        categoryFilter.addEventListener('change', updateSubcategoryFilter);
-    }
-
-    // Filter form reset event
-    const filterForm = document.getElementById('filterForm');
-    if (filterForm) {
-        filterForm.addEventListener('reset', handleFilterReset);
-    }
-}
-
-// Initialize when document is ready (using jQuery since it's already included)
-$(document).ready(function () {
-    initializeFilters();
-    setupEventListeners();
-});
-
 // Customer Management Functions
 function initializeCustomerManagement() {
     const searchInput = $('.search-input');
-    const resetButton = $('#resetButton'); // Using ID selector for better performance
+    const resetButton = $('#resetButton');
 
     // Handle reset button click
     resetButton.on('click', function(e) {
@@ -940,7 +554,6 @@ function initializeCustomerManagement() {
 
     // Set initial reset button visibility
     resetButton.toggle(searchInput.val().trim().length > 0);
-
 }
 
 function filterCustomerCards(query) {
@@ -958,4 +571,213 @@ function filterCustomerCards(query) {
         }
     });
 }
+
+// Order Details Modal
+function viewOrderDetails(orderId) {
+    $.ajax({
+        url: 'fetchOrderDetails.php',
+        type: 'POST',
+        data: { order_id: orderId },
+        success: function(response) {
+            try {
+                if (typeof response === 'string') {
+                    response = JSON.parse(response);
+                }
+
+                if (response.error) {
+                    $('#orderDetailsContent').html(`<p class="error">${response.error}</p>`);
+                    return;
+                }
+
+                const data = response;
+                let html = `
+                    <div class="order-details-grid">
+                        <div class="order-info-section">
+                            <h3>Order Information</h3>
+                            <div class="info-row">
+                                <span class="info-label">Order ID:</span>
+                                <span>#${data.order.OrderNo}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Order Date:</span>
+                                <span>${new Date(data.order.OrderDate).toLocaleDateString()}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Status:</span>
+                                <span class="status-badge ${data.order.OrderStatus.toLowerCase()}">${data.order.OrderStatus}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Payment Method:</span>
+                                <span>${data.order.PaymentType}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="order-info-section">
+                            <h3>Customer Information</h3>
+                            <div class="info-row">
+                                <span class="info-label">Name:</span>
+                                <span>${data.order.Username}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Email:</span>
+                                <span>${data.order.Email}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Contact:</span>
+                                <span>${data.order.ContactNo}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Shipping Address:</span>
+                                <span>${data.order.ShippingAddress}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-info-section">
+                        <h3>Order Items</h3>
+                        <table class="order-items-table">
+                            <thead>
+                                <tr>
+                                    <th>Book</th>
+                                    <th>Author</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+
+                let totalAmount = 0;
+                data.items.forEach(item => {
+                    const subtotal = item.Quantity * item.Price;
+                    totalAmount += subtotal;
+                    html += `
+                        <tr>
+                            <td>
+                                <div class="book-info">
+                                    <img src="${item.BookImage}" alt="${item.BookName}" class="book-thumbnail">
+                                    <span>${item.BookName}</span>
+                                </div>
+                            </td>
+                            <td>${item.Author}</td>
+                            <td>${item.Quantity}</td>
+                            <td>RM ${parseFloat(item.Price).toFixed(2)}</td>
+                            <td>RM ${subtotal.toFixed(2)}</td>
+                        </tr>`;
+                });
+
+                html += `
+                            <tr class="total-row">
+                                <td colspan="4">Total Amount:</td>
+                                <td>RM ${parseFloat(data.order.TotalAmount).toFixed(2)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>`;
+
+                $('#orderDetailsContent').html(html);
+            } catch (e) {
+                console.error('Error parsing response:', e);
+                $('#orderDetailsContent').html('<p class="error">Error loading order details.</p>');
+            }
+            
+            $('#orderModal').show();
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX Error:', error);
+            $('#orderDetailsContent').html('<p class="error">Error loading order details.</p>');
+            $('#orderModal').show();
+        }
+    });
+}
+
+function closeOrderModal() {
+    $('#orderModal').hide();
+}
+
+// Order cancellation functionality
+(function() {
+    // Private variable to store the order ID being cancelled
+    let orderIdToCancel = null;
+    
+    // Initialize event listeners when document is ready
+    $(document).ready(function() {
+        // Close cancel modal when clicking the close button
+        $(document).on('click', '#cancelModal .close', function() {
+            closeCancelModal();
+        });
+        
+        // Close cancel modal when clicking outside of it
+        $(window).on('click', function(event) {
+            if ($(event.target).is('#cancelModal')) {
+                closeCancelModal();
+            }
+        });
+        
+        // Handle confirm button click in cancel modal
+        $(document).on('click', '#cancelModal .confirm-btn', function() {
+            processOrderCancellation();
+        });
+        
+        // Handle cancel button click in cancel modal
+        $(document).on('click', '#cancelModal .cancel-btn', function() {
+            closeCancelModal();
+        });
+        
+        // Use event delegation to handle cancel button clicks
+        $(document).on('click', '.cancel-btn[data-order-id]', function() {
+            const orderId = $(this).data('order-id');
+            if (orderId) {
+                showCancelModal(orderId);
+            }
+        });
+    });
+    
+    // Function to show the cancel modal
+    function showCancelModal(orderId) {
+        orderIdToCancel = orderId;
+        $('#cancelModal').show();
+    }
+    
+    // Function to close the cancel modal
+    function closeCancelModal() {
+        $('#cancelModal').hide();
+        orderIdToCancel = null;
+    }
+    
+    // Function to process the order cancellation
+    function processOrderCancellation() {
+        if (!orderIdToCancel) return;
+        
+        $.ajax({
+            url: 'update_order_status.php',
+            type: 'POST',
+            data: { 
+                order_id: orderIdToCancel,
+                new_status: 'Cancelled'
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    showFloatingMessage('Order cancelled successfully!', 'success');
+                    setTimeout(function() {
+                    location.reload();
+                    }, 1500);
+                } else {
+                    showFloatingMessage(response.message || 'Failed to cancel order.', 'error');
+                }
+                closeCancelModal();
+            },
+            error: function() {
+                showFloatingMessage('Error cancelling order. Please try again.', 'error');
+                closeCancelModal();
+            }
+        });
+    }
+    
+    // Expose functions to the global scope
+    window.cancelOrder = showCancelModal;
+    window.closeCancelModal = closeCancelModal;
+    window.confirmCancel = processOrderCancellation;
+})();
 

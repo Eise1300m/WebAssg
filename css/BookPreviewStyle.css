@@ -263,7 +263,7 @@ body {
 /* Floating message style (consistent with MainPage.php) */
 .floating-message {
     position: fixed;
-    top: 120px;
+    top: 150px;
     right: 20px;
     padding: 15px 25px;
     border-radius: 5px;
@@ -330,7 +330,6 @@ body {
     filter: brightness(0) invert(1);
 }
 
-/* Star icon styling */
 .star-icon {
     width: 20px;
     height: 20px;
@@ -342,7 +341,6 @@ body {
     align-items: center;
 }
 
-/* Button icon styling */
 .btn-icon {
     width: 18px;
     height: 18px;
@@ -403,21 +401,10 @@ body {
     transition: transform 0.3s ease;
 }
 
-
-/* Make it responsive */
-@media (max-width: 768px) {
-    .write-review-btn {
-        width: 100%;
-        margin-top: 15px;
-    }
-}
-
-/* Remove any old message popup styles that might conflict */
 .message-popup {
     display: none;
 }
 
-/* Enhanced Reviews Section Styles */
 .reviews-section {
     width: 100%;
     max-width: 1200px;
@@ -530,12 +517,6 @@ body {
     font-style: italic;
 }
 
-/* Animation for reviews loading */
-/* @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-} */
-
 .review-item {
     animation: fadeIn 0.5s ease-out forwards;
 }
@@ -545,34 +526,3 @@ body {
 .review-item:nth-child(4) { animation-delay: 0.3s; }
 .review-item:nth-child(5) { animation-delay: 0.4s; }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .reviews-title {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .write-review-btn {
-        width: 100%;
-        text-align: center;
-    }
-    
-    .review-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .review-date {
-        margin-top: 5px;
-    }
-
-    .inner-position {
-        flex-direction: column;
-    }
-
-    .book-image {
-        width: 100%;
-        max-width: 300px;
-        margin: 0 auto;
-    }
-}

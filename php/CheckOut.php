@@ -104,7 +104,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
     
-    if (isset($_POST['confirm_payment']) && isset($_POST['payment_type'])) {
+    if (isset($_POST['confirm_payment'])) {
+        if (!isset($_POST['payment_type']) || empty($_POST['payment_type'])) {
+            $_SESSION['payment_error'] = "Please select a payment method.";
+            header("Location: CheckOut.php");
+            exit;
+        }
+        
         $payment_type = $_POST['payment_type'];
         
         try {
@@ -150,10 +156,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: CheckOut.php");
             exit;
         }
-    } elseif (isset($_POST['confirm_payment']) && !isset($_POST['payment_type'])) {
-        $_SESSION['payment_error'] = "Please select a payment method.";
-        header("Location: CheckOut.php");
-        exit;
     }
 }
 ?>
@@ -277,7 +279,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <form method="post" id="payment-form" action="CheckOut.php">
                     <div class="payment-options">
                         <div class="payment-option">
-                            <input type="radio" id="credit-card" name="payment_type" value="Credit Card">
+                            <input type="radio" id="credit-card" name="payment_type" value="Credit Card" required>
                             <label for="credit-card">
                                 <span class="checkmark"></span>
                                 <span class="payment-option-name">Credit Card</span>
@@ -285,7 +287,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         
                         <div class="payment-option">
-                            <input type="radio" id="debit-card" name="payment_type" value="Debit Card">
+                            <input type="radio" id="debit-card" name="payment_type" value="Debit Card" required>
                             <label for="debit-card">
                                 <span class="checkmark"></span>
                                 <span class="payment-option-name">Debit Card</span>
@@ -293,7 +295,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         
                         <div class="payment-option">
-                            <input type="radio" id="ewallet" name="payment_type" value="E-wallet">
+                            <input type="radio" id="ewallet" name="payment_type" value="E-wallet" required>
                             <label for="ewallet">
                                 <span class="checkmark"></span>
                                 <span class="payment-option-name">E-Wallet</span>
@@ -301,7 +303,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         
                         <div class="payment-option">
-                            <input type="radio" id="banktransfer" name="payment_type" value="Bank Transfer">
+                            <input type="radio" id="banktransfer" name="payment_type" value="Bank Transfer" required>
                             <label for="banktransfer">
                                 <span class="checkmark"></span>
                                 <span class="payment-option-name">Bank Transfer</span>

@@ -617,56 +617,155 @@ body {
     margin-right: 10px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 992px) {
-    .filter-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .filter-group {
-        width: 100%;
-    }
-    
-    .filter-btn, .reset-btn {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .action-buttons {
-        flex-direction: column;
-    }
-    
-    .order-details-header {
-        flex-direction: column;
-    }
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    padding: 0;
 }
 
-@media (max-width: 768px) {
-    .admin-container {
-        padding: 0 10px;
-        margin: 1rem auto;
-    }
-    
-    .product-table {
-        font-size: 14px;
-    }
-    
-    .product-table th, .product-table td {
-        padding: 8px;
-    }
-    
-    .modal-content {
-        width: 95%;
-        padding: 20px;
-    }
-    
-    .order-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .order-item-price {
-        margin-top: 10px;
-    }
-} 
+.page-link {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 4px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.page-link:hover:not(.disabled):not(.current) {
+    background-color: #f0f0f0;
+    border-color: #ccc;
+}
+
+.page-link.current {
+    background-color: #4a6fdc;
+    color: white;
+    border-color: #4a6fdc;
+    cursor: default;
+}
+
+.page-link.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.page-link.prev,
+.page-link.next {
+    font-weight: bold;
+}
+
+.page-link.dots {
+    border: none;
+    padding: 8px 4px;
+    cursor: default;
+}
+
+/* Summary text */
+.pagination-summary {
+    text-align: center;
+    color: #666;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+/* Items per page selector */
+.items-per-page {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.items-per-page select {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-left: 5px;
+}
+
+/* Search and Filter Styles */
+.search-filter-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.search-filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.search-input-group {
+    display: flex;
+    flex: 1;
+    min-width: 250px;
+}
+
+.search-input-group input {
+    flex: 1;
+    padding: 10px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.search-btn {
+    background-color: #4a6fdc;
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.filter-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.filter-group select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    min-width: 120px;
+    font-size: 14px;
+}
+
+.apply-filter-btn {
+    background-color: #4a6fdc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.reset-filter-btn {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.apply-filter-btn:hover {
+    background-color: #3b5db3;
+}
+
+.reset-filter-btn:hover {
+    background-color: #e3e3e3;
+}

@@ -2,49 +2,48 @@
 session_start();
 require_once("connection.php");
 
-// Check if user is logged in
 if (!isset($_SESSION['user_name'])) {
-    echo json_encode(['success' => false, 'message' => 'User not logged in']);
-    exit;
+    echo json_encode(['success' => false, 'message' => 'Please login first']);
+    exit();
 }
 
-// Check if order_id is provided
-if (!isset($_POST['order_id']) || empty($_POST['order_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Order ID is required']);
-    exit;
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id'])) {
+    $order_id = $_POST['order_id'];
+    $username = $_SESSION['user_name'];
 
-$order_id = $_POST['order_id'];
-$username = $_SESSION['user_name'];
+    try {
+        // Get user ID
+        $stmt = $_db->prepare("SELECT UserID FROM users WHERE UserName = ?");
+        $stmt->execute([$username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Get user ID
-$stmt = $_db->prepare("SELECT UserID FROM users WHERE UserName = ?");
-$stmt->execute([$username]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$user) {
+            echo json_encode(['success' => false, 'message' => 'User not found']);
+            exit();
+        }
 
-if (!$user) {
-    echo json_encode(['success' => false, 'message' => 'User not found']);
-    exit;
-}
+        // Check if order belongs to user and is in delivering status
+        $stmt = $_db->prepare("
+            SELECT OrderNo, OrderStatus 
+            FROM orders 
+            WHERE OrderNo = ? AND UserID = ? AND OrderStatus = 'Delivering'
+        ");
+        $stmt->execute([$order_id, $user['UserID']]);
+        $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$user_id = $user['UserID'];
+        if (!$order) {
+            echo json_encode(['success' => false, 'message' => 'Order not found or not eligible for collection']);
+            exit();
+        }
 
-// Verify the order belongs to the user
-$stmt = $_db->prepare("SELECT * FROM orders WHERE OrderNo = ? AND UserID = ?");
-$stmt->execute([$order_id, $user_id]);
-$order = $stmt->fetch(PDO::FETCH_ASSOC);
+        // Update order status to Collected
+        $stmt = $_db->prepare("UPDATE orders SET OrderStatus = 'Collected' WHERE OrderNo = ?");
+        $stmt->execute([$order_id]);
 
-if (!$order) {
-    echo json_encode(['success' => false, 'message' => 'Order not found or does not belong to you']);
-    exit;
-}
-
-// Update order status to 'Collected'
-$stmt = $_db->prepare("UPDATE orders SET OrderStatus = 'Collected' WHERE OrderNo = ?");
-$result = $stmt->execute([$order_id]);
-
-if ($result) {
-    echo json_encode(['success' => true, 'message' => 'Order collection confirmed successfully']);
+        echo json_encode(['success' => true, 'message' => 'Order collection confirmed successfully']);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+    }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Failed to update order status']);
+    echo json_encode(['success' => false, 'message' => 'Invalid request']);
 } 

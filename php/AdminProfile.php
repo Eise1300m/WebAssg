@@ -4,10 +4,9 @@ require_once("base.php");
 // Check if user is admin
 requireAdmin();
 
-session_start();
 require_once("connection.php");
 require_once("../lib/FormHelper.php");
-require_once("../lib/SecurityHelper.php");
+require_once("../lib/ValidationHelper.php");
 
 $username = $_SESSION['user_name'];
 

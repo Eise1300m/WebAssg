@@ -1,12 +1,10 @@
 <?php
 require_once("base.php");
 
-// Check if user is logged in
 requireLogin();
 
 $username = $_SESSION['user_name'];
 
-// Fetch user data from the database
 $stmt = $db->query("SELECT * FROM users WHERE Username = ?", [$username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -16,7 +14,6 @@ if (!$user) {
 
 $user_id = $user['UserID'];
 
-// Fetch address data
 $stmt = $db->query("SELECT * FROM address WHERE UserID = ?", [$user_id]);
 $address = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -24,7 +21,6 @@ $updateMessage = "";
 
 includeNavbar();
 
-// Display flash messages
 displayFlashMessage();
 
 // Update address
@@ -57,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_contact"])) {
     if (!empty($new_phone)) {
         $stmt = $db->query("UPDATE users SET ContactNo = ? WHERE UserID = ?", [$new_phone, $user_id]);
         $updateMessage = "✅ Phone number updated successfully!";
-        
+
         $stmt = $db->query("SELECT * FROM users WHERE Username = ?", [$username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
     } else {
@@ -65,10 +61,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_contact"])) {
     }
 }
 
-// Handle profile picture upload
+// profile picture upload
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
     $file = $_FILES["profile_pic"];
-    
+
     if ($file["error"] === UPLOAD_ERR_OK) {
         $fileName = $file["name"];
         $fileTmpName = $file["tmp_name"];
@@ -97,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                 $stmt = $db->query("UPDATE users SET ProfilePic = ? WHERE UserID = ?", [$uploadPath, $user['UserID']]);
                 if ($stmt->rowCount() > 0) {
                     $updateMessage = "✅ Profile picture updated successfully!";
-                    
+
                     $stmt = $db->query("SELECT * FROM users WHERE Username = ?", [$username]);
                     $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 } else {
@@ -120,16 +116,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Management - Secret Shelf</title>
+    <title> Profile Management - Secret Shelf</title>
+    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <link rel="stylesheet" href="../css/HomeStyles.css">
     <link rel="stylesheet" href="../css/ProfileStyles.css">
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/Scripts.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="../js/order.js"></script>
+
 </head>
 
 <body>
@@ -236,7 +233,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
 
                         <?php else: ?>
                             <p class="no-address-message">
-                                <img src="../upload/icon/info.png" alt="Info" class="info-icon" style = "width: 20px; height: 20px;">
+                                <img src="../upload/icon/info.png" alt="Info" class="info-icon" style="width: 20px; height: 20px;">
                                 No address found. Please add your address below.
                             </p><br>
 

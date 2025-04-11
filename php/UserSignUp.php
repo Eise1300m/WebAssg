@@ -3,30 +3,13 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+require_once("base.php");
 require_once("../lib/FormHelper.php");
-require_once("../lib/SecurityHelper.php");
+require_once("../lib/ValidationHelper.php");
 
-$errors = $_SESSION['signup_errors'] ?? [];
-$input_data = $_SESSION['signup_data'] ?? [];
-unset($_SESSION['signup_errors'], $_SESSION['signup_data']);
-
-$signupType = $_GET['type'] ?? 'user'; // Default to 'user' if not specified
-$formAction = ($signupType === 'admin') ? 'UserSignUpProcess.php' : 'UserSignUpProcess.php';
-$roleValue = ($signupType === 'admin') ? "admin" : "customer"; // Set role value
+$signupType = $_GET['type'] ?? 'user';
+$roleValue = ($signupType === 'admin') ? "admin" : "customer";
 ?>
-
-<?php if (!empty($errors)): ?>
-    <div id="floating-error" class="floating-error">
-        <?php
-        // Display errors as a list if there are multiple
-        if (is_array($errors)) {
-            echo htmlspecialchars($errors[0]); // Just show the first error
-        } else {
-            echo htmlspecialchars($errors);
-        }
-        ?>
-    </div>
-<?php endif; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -42,11 +25,11 @@ $roleValue = ($signupType === 'admin') ? "admin" : "customer"; // Set role value
     <script src="../js/Scripts.js"></script>
 </head>
 
-<?php
-include 'navbar.php'
-?>
+<?php include 'navbar.php' ?>
 
 <body>
+    <?php displayFlashMessage(); ?>
+
     <a class="back-button" onclick="window.history.back()">
         <img src="../upload/icon/back.png" alt="Back" class="back-icon"> Back 
     </a>
@@ -54,40 +37,50 @@ include 'navbar.php'
     <div class="container">
         <h1>Sign Up</h1>
 
-        <form id="signupForm" method="post" action="UserSignUpProcess.php">
+        <form id="signupForm" method="post" action="UserSignUpProcess.php" novalidate>
             <?php echo FormHelper::hidden('role', $roleValue); ?>
 
             <div class="input-container">
                 <img src="../upload/icon/personwhite.png" alt="Person" class="input-icon">
-                <?php echo FormHelper::text('UName', 'placeholder="Enter Username"'); ?>
-                <span class="error-message" id="nameError"><?php echo FormHelper::error('UName'); ?></span>
+                <?php 
+                echo FormHelper::text('UName', 'placeholder="Enter Username" required');
+                echo FormHelper::error('UName', $errors ?? []);
+                ?>
             </div>
 
             <div class="input-container">
                 <img src="../upload/icon/lock.png" alt="Lock" class="input-icon">
-                <?php echo FormHelper::password('psw', 'placeholder="Enter password"'); ?>
-                <span class="error-message" id="pswError"><?php echo FormHelper::error('psw'); ?></span>
+                <?php 
+                echo FormHelper::password('psw', 'placeholder="Enter password" required');
+                echo FormHelper::error('psw', $errors ?? []);
+                ?>
             </div>
 
             <div class="input-container">
                 <img src="../upload/icon/lock.png" alt="Lock" class="input-icon">
-                <?php echo FormHelper::password('pswcfm', 'placeholder="Confirm your password"'); ?>
-                <span class="error-message" id="pswcfmError"><?php echo FormHelper::error('pswcfm'); ?></span>
+                <?php 
+                echo FormHelper::password('pswcfm', 'placeholder="Confirm your password" required');
+                echo FormHelper::error('pswcfm', $errors ?? []);
+                ?>
             </div>
 
             <div class="input-container">
                 <img src="../upload/icon/info.png" alt="Info" class="input-icon">
-                <?php echo FormHelper::email('emails', 'placeholder="Email - Exp: Secret@example.com"'); ?>
-                <span class="error-message" id="emailError"><?php echo FormHelper::error('emails'); ?></span>
+                <?php 
+                echo FormHelper::email('emails', 'placeholder="Email - Exp: Secret@example.com" required');
+                echo FormHelper::error('emails', $errors ?? []);
+                ?>
             </div>
 
             <div class="input-container">
                 <img src="../upload/icon/phone.png" alt="Phone" class="input-icon">
-                <?php echo FormHelper::text('tel', 'placeholder="Phone number - Exp: 01XXXXXXXX"'); ?>
-                <span class="error-message" id="telError"><?php echo FormHelper::error('tel'); ?></span>
+                <?php 
+                echo FormHelper::phone('tel', '', 'placeholder="Phone number - Exp: 01XXXXXXXX" required');
+                echo FormHelper::error('tel', $errors ?? []);
+                ?>
             </div>
 
-            <?php echo FormHelper::submit('Submit', 'class="submit-but"'); ?>
+            <button type="submit" class="submit-but">Submit</button>
         </form>
 
         <div class="signup-container">

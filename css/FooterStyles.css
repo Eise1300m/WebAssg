@@ -1,5 +1,4 @@
 footer {
-    min-height: 200px;
     padding: 20px 0;
     background-color: #f8f9fa;
     margin-top: 50px;
@@ -53,16 +52,3 @@ footer {
     line-height: 1.5;
     color: #666;
 }
-
-@media (max-width: 768px) {
-    .Bottom-Area {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .Bot1, .Bot2 {
-        width: 100%;
-        padding: 20px;
-    }
-} 

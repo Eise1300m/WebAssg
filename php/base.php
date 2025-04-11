@@ -8,13 +8,14 @@ if (session_status() == PHP_SESSION_NONE) {
 require_once("connection.php");
 
 // Include helper classes
-require_once("../lib/DatabaseHelper.php");
-require_once("../lib/SecurityHelper.php");
+require_once("../lib/ValidationHelper.php");
 require_once("../lib/FormHelper.php");
 require_once("../lib/BookHelper.php");
+require_once("../lib/PaginationHelper.php");
 
 // Initialize helpers
 BookHelper::init($_db);
+PaginationHelper::init($_db);
 
 // Common error handling function
 function handleError($message, $redirect = null) {
@@ -109,9 +110,6 @@ function displayFlashMessages() {
     }
 }
 
-// Common database instance
-$db = DatabaseHelper::getInstance($_db);
-
 // Utility functions for MainPage.php
 function get($key, $default = '') {
     return isset($_GET[$key]) ? $_GET[$key] : $default;
@@ -168,14 +166,78 @@ function add_err($key, $message) {
     $_SESSION['errors'][$key] = $message;
 }
 
-/**
- * @return void
- */
 function displayFlashMessage() {
     if (isset($_SESSION['flash_message'])) {
         $flash = $_SESSION['flash_message'];
         echo '<div class="flash-message ' . $flash['type'] . '">' . $flash['message'] . '</div>';
         unset($_SESSION['flash_message']);
+    }
+}
+
+// Order Management Functions
+function confirmOrderCollection($order_id) {
+    global $_db;
+    
+    if (!isset($_SESSION['user_name'])) {
+        return ['success' => false, 'message' => 'Please login first'];
+    }
+
+    try {
+        // Get user ID
+        $stmt = $_db->prepare("SELECT UserID FROM users WHERE UserName = ?");
+        $stmt->execute([$_SESSION['user_name']]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user) {
+            return ['success' => false, 'message' => 'User not found'];
+        }
+
+        // Update order status to Collected
+        $stmt = $_db->prepare("UPDATE orders SET OrderStatus = 'Collected' WHERE OrderNo = ?");
+        $stmt->execute([$order_id]);
+
+        return ['success' => true, 'message' => 'Order collection confirmed successfully'];
+    } catch (PDOException $e) {
+        return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
+    }
+}
+
+function updateOrderStatus($order_id, $new_status) {
+    global $_db;
+    
+    if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+        return ['success' => false, 'message' => 'Unauthorized access'];
+    }
+
+    try {
+        // Check if order exists
+        $stmt = $_db->prepare("SELECT OrderStatus FROM orders WHERE OrderNo = ?");
+        $stmt->execute([$order_id]);
+        $order = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$order) {
+            return ['success' => false, 'message' => 'Order not found'];
+        }
+        
+        // Validate status transition
+        $validTransitions = [
+            'Preparing' => ['Delivering'],
+            'Delivering' => ['Collected', 'Complete'],
+            'Collected' => ['Complete']
+        ];
+        
+        if (!isset($validTransitions[$order['OrderStatus']]) || 
+            !in_array($new_status, $validTransitions[$order['OrderStatus']])) {
+            return ['success' => false, 'message' => 'Invalid status transition'];
+        }
+        
+        // Update order status
+        $stmt = $_db->prepare("UPDATE orders SET OrderStatus = ? WHERE OrderNo = ?");
+        $stmt->execute([$new_status, $order_id]);
+        
+        return ['success' => true, 'message' => 'Order status updated successfully'];
+    } catch (PDOException $e) {
+        return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
     }
 }
 ?> 

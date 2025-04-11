@@ -53,11 +53,10 @@ displayFlashMessages();
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/Dropdown.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
+    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/order.js"></script>
     <script src="../js/Scripts.js"></script>
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
-
 </head>
 
 <body>
@@ -65,7 +64,7 @@ displayFlashMessages();
         <div class="page-header">
             <h1>All Books</h1>
             <?php if (empty($books)): ?>
-                <p class="no-results">No books found in this category. Please try another category.</p>
+                <p class="no-results">No books found. Please try another</p>
             <?php else: ?>
                 <p class="results-count">Showing <?php echo count($books); ?> books</p>
             <?php endif; ?>

@@ -1,17 +1,77 @@
 <?php
 session_start();
-require_once("connection.php");
+require_once("base.php");
 
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    header("Location: UserLogin.php");
-    exit();
+// Check if user is admin
+requireAdmin();
+
+// Handle order status update
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_status') {
+    // Set JSON content type header
+    header('Content-Type: application/json');
+    
+    $order_id = $_POST['order_id'];
+    $new_status = $_POST['new_status'];
+
+    try {
+        // Check if order exists
+        $stmt = $_db->prepare("SELECT OrderStatus FROM orders WHERE OrderNo = ?");
+        $stmt->execute([$order_id]);
+        $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$order) {
+            echo json_encode(['success' => false, 'message' => 'Order not found']);
+            exit();
+        }
+
+        // Validate status transition
+        $validTransitions = [
+            'Preparing' => ['Delivering'],
+            'Collected' => ['Complete']
+            // Delivering to Collected is handled by customer
+        ];
+
+        if (
+            !isset($validTransitions[$order['OrderStatus']]) ||
+            !in_array($new_status, $validTransitions[$order['OrderStatus']])
+        ) {
+            echo json_encode(['success' => false, 'message' => 'Invalid status transition']);
+            exit();
+        }
+
+        // Update order status
+        $stmt = $_db->prepare("UPDATE orders SET OrderStatus = ? WHERE OrderNo = ?");
+        $stmt->execute([$new_status, $order_id]);
+
+        // Set flash message
+        $_SESSION['flash_message'] = [
+            'type' => 'success',
+            'message' => 'Order #' . $order_id . ' status updated to ' . $new_status . ' successfully!'
+        ];
+
+        echo json_encode(['success' => true, 'message' => 'Order status updated successfully']);
+        exit();
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+        exit();
+    }
 }
 
+// Check for orders that have been in 'Delivering' status for more than 14 days
+$stmt = $_db->prepare("
+    UPDATE orders 
+    SET OrderStatus = 'Complete' 
+    WHERE OrderStatus = 'Delivering' 
+    AND OrderDate <= DATE_SUB(NOW(), INTERVAL 14 DAY)
+");
+$stmt->execute();
+
+// Query to get all relevant orders
 $query = "
     SELECT o.*, u.Username, u.Email 
     FROM orders o 
     JOIN users u ON o.UserID = u.UserID 
-    WHERE o.OrderStatus IN ('Preparing', 'Delivering', 'Collected', 'Completed')
+    WHERE o.OrderStatus IN ('Preparing', 'Delivering', 'Collected', 'Complete')
     ORDER BY o.OrderDate DESC
 ";
 
@@ -24,7 +84,7 @@ $statusCounts = [
     'Preparing' => 0,
     'Delivering' => 0,
     'Collected' => 0,
-    'Completed' => 0
+    'Complete' => 0
 ];
 
 foreach ($orders as $order) {
@@ -51,6 +111,7 @@ foreach ($orders as $order) {
 
 <body data-page="admin">
     <?php include_once("navbaradmin.php") ?>
+    <?php displayFlashMessage(); ?>
 
     <a class="back-button" onclick="window.history.back()">
         <img src="../upload/icon/back.png" alt="Back" class="back-icon"> Back to Dashboard
@@ -79,11 +140,27 @@ foreach ($orders as $order) {
                     <p><?php echo $statusCounts['Delivering']; ?> Orders</p>
                 </div>
             </div>
+
+            <div class="status-card collected">
+                <img src="../upload/icon/collect.png" alt="Collected" class="status-icon">
+                <div class="status-info">
+                    <h3>Collected</h3>
+                    <p><?php echo $statusCounts['Collected']; ?> Orders</p>
+                </div>
+            </div>
+
+            <div class="status-card complete">
+                <img src="../upload/icon/check.png" alt="Complete" class="status-icon">
+                <div class="status-info">
+                    <h3>Complete</h3>
+                    <p><?php echo $statusCounts['Complete']; ?> Orders</p>
+                </div>
+            </div>
         </div>
 
         <!-- Order Lists -->
         <div class="order-lists">
-            <?php foreach (['Preparing', 'Delivering', 'Collected'] as $status): ?>
+            <?php foreach (['Preparing', 'Delivering', 'Collected', 'Complete'] as $status): ?>
                 <div class="order-section">
                     <h2><?php echo $status; ?> Orders</h2>
                     <div class="order-cards">
@@ -95,11 +172,19 @@ foreach ($orders as $order) {
                         if (empty($filteredOrders)): ?>
                             <div class="no-orders">No <?php echo strtolower($status); ?> orders at the moment.</div>
                             <?php else:
-                            foreach ($filteredOrders as $order): ?>
-                                <div class="order-card">
+                            foreach ($filteredOrders as $order):
+                                $orderDate = new DateTime($order['OrderDate']);
+                                $now = new DateTime();
+                                $daysDiff = $now->diff($orderDate)->days;
+                                $isOverdue = $status === 'Delivering' && $daysDiff >= 14;
+                            ?>
+                                <div class="order-card <?php echo $isOverdue ? 'overdue' : ''; ?>">
                                     <div class="order-header">
                                         <h3>Order #<?php echo $order['OrderNo']; ?></h3>
                                         <span class="order-date"><?php echo date('M d, Y', strtotime($order['OrderDate'])); ?></span>
+                                        <?php if ($isOverdue): ?>
+                                            <span class="overdue-badge">Overdue (<?php echo $daysDiff; ?> days)</span>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="order-info">
                                         <p><strong>Customer:</strong> <?php echo htmlspecialchars($order['Username']); ?></p>
@@ -111,18 +196,18 @@ foreach ($orders as $order) {
                                             <img src="../upload/icon/view.png" alt="View" class="btn-icon" style="filter: invert();"> View Details
                                         </button>
                                         <?php if ($status === 'Preparing'): ?>
-                                            <button onclick="updateOrderStatus(<?php echo $order['OrderNo']; ?>, 'Preparing')"
+                                            <button onclick="updateOrderStatus(<?php echo $order['OrderNo']; ?>, 'Delivering')"
                                                 class="status-btn preparing">
                                                 <img src="../upload/icon/delivery.png" alt="Status" class="btn-icon">
                                                 Mark as Delivering
                                             </button>
                                         <?php elseif ($status === 'Delivering'): ?>
-                                            <button class="status-btn delivering" disabled>
-                                                <img src="../upload/icon/check.png" alt="Status" class="btn-icon">
+                                            <button disabled class="status-btn delivering" style="opacity: 0.6; cursor: not-allowed;">
+                                                <img src="../upload/icon/collect.png" alt="Status" class="btn-icon">
                                                 Waiting for Collection
                                             </button>
                                         <?php elseif ($status === 'Collected'): ?>
-                                            <button onclick="updateOrderStatus(<?php echo $order['OrderNo']; ?>, 'Collected')"
+                                            <button onclick="updateOrderStatus(<?php echo $order['OrderNo']; ?>, 'Complete')"
                                                 class="status-btn complete">
                                                 <img src="../upload/icon/check.png" alt="Status" class="btn-icon">
                                                 Mark as Complete
@@ -148,4 +233,5 @@ foreach ($orders as $order) {
         </div>
     </div>
 </body>
+
 </html>

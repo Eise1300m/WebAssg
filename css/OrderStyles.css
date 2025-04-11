@@ -208,54 +208,6 @@
     font-weight: 500;
 }
 
-.order-status.preparing {
-    background: #e3f2fd;
-    color: #1976d2;
-}
-
-.order-status.delivering {
-    background: #fff3e0;
-    color: #f57c00;
-}
-
-.order-status.collected {
-    background: #e8f5e9;
-    color: #2e7d32;
-}
-
-.order-status.completed {
-    background: #e8f5e9;
-    color: #2e7d32;
-}
-
-@media (max-width: 768px) {
-    .profile-content {
-        flex-direction: column;
-        padding: 20px;
-    }
-
-    .profile-sidebar {
-        width: 100%;
-        text-align: center;
-    }
-
-    .order-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
-    }
-
-    .order-actions {
-        flex-direction: column;
-    }
-
-    .view-details-btn,
-    .collect-btn {
-        width: 100%;
-        justify-content: center;
-    }
-}
-
 .navigation-buttons {
     display: flex;
     gap: 15px;
@@ -291,22 +243,23 @@
 /* Add these styles if not already present */
 .floating-message {
     position: fixed;
-    top: 20px;
+    top: 150px;
     right: 20px;
     padding: 15px 25px;
-    border-radius: 5px;
+    border-radius: 4px;
+    color: white;
+    font-weight: 500;
     z-index: 1000;
-    animation: slideIn 0.5s ease-out;
+    animation: slideIn 0.3s ease-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .floating-message.success {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #28a745;
 }
 
 .floating-message.error {
-    background-color: #f44336;
-    color: white;
+    background-color: #dc3545;
 }
 
 @keyframes slideIn {
@@ -314,7 +267,6 @@
         transform: translateX(100%);
         opacity: 0;
     }
-
     to {
         transform: translateX(0);
         opacity: 1;
@@ -373,7 +325,6 @@
     font-weight: bold;
 }
 
-/* Status Badge Styles */
 .order-status {
     display: inline-block;
     padding: 5px 10px;
@@ -383,22 +334,27 @@
 }
 
 .order-status.preparing {
-    background: #3676bb;
+    background: #afafac;
     color: #ffffff;
 }
 
 .order-status.delivering {
-    background: #ffd700;
-    color: #000;
+    background: #3676bb;
+    color: #ffffff;
 }
 
 .order-status.collected {
     background: #6abb6a;
-    color: #000;
+    color: #f7f6f6;
 }
 
 .order-status.complete {
     background: #51ab56;
+    color: white;
+}
+
+.order-status.cancelled {
+    background: #ab5151;
     color: white;
 }
 
@@ -527,29 +483,3 @@
     transform: translateY(-2px);
 }
 
-@media (max-width: 768px) {
-    .order-item-card {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .item-image {
-        width: 100px;
-        height: 150px;
-    }
-
-    .item-details {
-        align-items: center;
-    }
-
-    .order-info p {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-
-    .order-info strong {
-        min-width: auto;
-    }
-}

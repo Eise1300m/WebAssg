@@ -108,10 +108,10 @@ class FormHelper {
 
     private static function getValue($key) {
         if (isset($_POST[$key])) {
-            return SecurityHelper::sanitizeInput($_POST[$key]);
+            return ValidationHelper::sanitizeInput($_POST[$key]);
         }
         if (isset($_GET[$key])) {
-            return SecurityHelper::sanitizeInput($_GET[$key]);
+            return ValidationHelper::sanitizeInput($_GET[$key]);
         }
         return '';
     }

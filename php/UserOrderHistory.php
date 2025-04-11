@@ -1,10 +1,17 @@
 <?php
 session_start();
-require_once("connection.php");
+require_once("base.php");
 
 if (!isset($_SESSION['user_name'])) {
     header("Location: UserLogin.php");
-    exit;
+    exit();
+}
+
+// Handle order collection confirmation
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'confirm_collection') {
+    $response = confirmOrderCollection($_POST['order_id']);
+    echo json_encode($response);
+    exit();
 }
 
 $username = $_SESSION['user_name'];

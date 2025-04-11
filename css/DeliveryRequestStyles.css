@@ -3,7 +3,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    
+
 }
 
 body {
@@ -12,7 +12,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     color: #fff;
-    
+
 }
 
 /* Container Layout */
@@ -76,7 +76,7 @@ body {
 /* Status Overview */
 .status-overview {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 25px;
     margin-bottom: 32px;
 }
@@ -97,6 +97,14 @@ body {
 }
 
 .status-card.delivering {
+    border-left: 5px solid #d6db4a;
+}
+
+.status-card.collected {
+    border-left: 5px solid #6947d6;
+}
+
+.status-card.complete {
     border-left: 5px solid #4CAF50;
 }
 
@@ -195,7 +203,8 @@ body {
     margin-top: 20px;
 }
 
-.view-btn, .status-btn {
+.view-btn,
+.status-btn {
     flex: 1;
     display: flex;
     align-items: center;
@@ -219,15 +228,6 @@ body {
     transform: translateY(-2px);
 }
 
-.status-btn.preparing {
-    background: rgba(255, 166, 0, 0.649);
-    color: #fff;
-}
-
-.status-btn.delivering {
-    background: rgba(76, 175, 79, 0.593);
-    color: #fff;
-}
 
 .status-btn:hover {
     opacity: 0.9;
@@ -257,7 +257,7 @@ body {
     cursor: pointer;
 }
 
-.back-icon{
+.back-icon {
     width: 35px;
     height: 35px;
 }
@@ -557,8 +557,13 @@ body {
 
 /* Animation */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .modal {
@@ -574,8 +579,42 @@ body {
         transform: translateY(-20px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
     }
-} 
+}
+
+/* Flash Messages */
+.flash-message {
+    position: fixed;
+    top: 150px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+}
+
+.flash-message.success {
+    background-color: #28a745;
+}
+
+.flash-message.error {
+    background-color: #dc3545;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

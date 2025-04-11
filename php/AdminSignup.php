@@ -1,18 +1,14 @@
 <?php
-session_start();
-require_once("../lib/FormHelper.php");
-require_once("../lib/SecurityHelper.php");
-
-if (isset($_SESSION['signup_errors'])) {
-    echo '<div class="error-box">';
-    foreach ($_SESSION['signup_errors'] as $error) {
-        echo "<p class='error-message'>$error</p>";
-    }
-    echo '</div>';
-    unset($_SESSION['signup_errors']); // Clear errors after displaying
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
 }
-?>
 
+require_once("base.php");
+require_once("../lib/FormHelper.php");
+require_once("../lib/ValidationHelper.php");
+
+$roleValue = "admin"; // Always set role to admin for this page
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,62 +16,70 @@ if (isset($_SESSION['signup_errors'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Registration - Secret Shelf</title>
-    <link rel="stylesheet" href="../css/CustomerSignUpStyles.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
+    <title><?= $_title ?? 'Secret Shelf / Admin SignUp' ?></title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../css/NavbarStyles.css">
+    <link rel="stylesheet" href="../css/CustomerSignUpStyles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <script src="../js/Scripts.js"></script>
-
 </head>
 
+<?php include 'navbaradmin.php' ?>
+
 <body>
+    <?php displayFlashMessage(); ?>
 
-    <?php include 'navbaradmin.php'; ?>
-
-    <!-- Back button to AdminMainPage.php -->
     <a class="back-button" onclick="window.history.back()">
-        <img src="../upload/icon/back.png" alt="Back" class="back-icon"> Back to Dashboard
+        <img src="../upload/icon/back.png" alt="Back" class="back-icon"> Back 
     </a>
 
     <div class="container">
         <h1>Admin Sign Up</h1>
 
-        <form id="signupForm" method="post" action="UserSignUpProcess.php">
-            <?php echo FormHelper::hidden('role', 'admin'); ?>
+        <form id="signupForm" method="post" action="UserSignUpProcess.php" novalidate>
+            <?php echo FormHelper::hidden('role', $roleValue); ?>
 
             <div class="input-container">
                 <img src="../upload/icon/personwhite.png" alt="Person" class="input-icon">
-                <?php echo FormHelper::text('UName', 'placeholder="Enter Username"'); ?>
-                <span class="error-message" id="nameError"><?php echo FormHelper::error('UName'); ?></span>
+                <?php 
+                echo FormHelper::text('UName', 'placeholder="Enter Username" required');
+                echo FormHelper::error('UName', $errors ?? []);
+                ?>
             </div>
 
             <div class="input-container">
                 <img src="../upload/icon/lock.png" alt="Lock" class="input-icon">
-                <?php echo FormHelper::password('psw', 'placeholder="Enter password"'); ?>
-                <span class="error-message" id="pswError"><?php echo FormHelper::error('psw'); ?></span>
+                <?php 
+                echo FormHelper::password('psw', 'placeholder="Enter password" required');
+                echo FormHelper::error('psw', $errors ?? []);
+                ?>
             </div>
 
             <div class="input-container">
                 <img src="../upload/icon/lock.png" alt="Lock" class="input-icon">
-                <?php echo FormHelper::password('pswcfm', 'placeholder="Confirm your password"'); ?>
-                <span class="error-message" id="pswcfmError"><?php echo FormHelper::error('pswcfm'); ?></span>
+                <?php 
+                echo FormHelper::password('pswcfm', 'placeholder="Confirm your password" required');
+                echo FormHelper::error('pswcfm', $errors ?? []);
+                ?>
             </div>
 
             <div class="input-container">
                 <img src="../upload/icon/info.png" alt="Info" class="input-icon">
-                <?php echo FormHelper::email('emails', 'placeholder="Email - Exp: Secret@example.com"'); ?>
-                <span class="error-message" id="emailError"><?php echo FormHelper::error('emails'); ?></span>
+                <?php 
+                echo FormHelper::email('emails', 'placeholder="Email - Exp: Secret@example.com" required');
+                echo FormHelper::error('emails', $errors ?? []);
+                ?>
             </div>
 
             <div class="input-container">
                 <img src="../upload/icon/phone.png" alt="Phone" class="input-icon">
-                <?php echo FormHelper::text('tel', 'placeholder="Phone number - Exp: 01XXXXXXXX"'); ?>
-                <span class="error-message" id="telError"><?php echo FormHelper::error('tel'); ?></span>
+                <?php 
+                echo FormHelper::phone('tel', '', 'placeholder="Phone number - Exp: 01XXXXXXXX" required');
+                echo FormHelper::error('tel', $errors ?? []);
+                ?>
             </div>
 
-            <?php echo FormHelper::submit('Submit', 'class="submit-but"'); ?>
+            <button type="submit" class="submit-but">Submit</button>
         </form>
 
         <div class="signup-container">
@@ -83,10 +87,5 @@ if (isset($_SESSION['signup_errors'])) {
             <a href="AdminLogin.php">Login</a>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/Scripts.js"></script>
 </body>
-
-
 </html>

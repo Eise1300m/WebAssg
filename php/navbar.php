@@ -25,9 +25,9 @@ $login = isset($_SESSION['user_name']);
 
     <div class="nav-container">
         <nav class="navtittle">
-            <a href="#Edu">Contact Us</a>
-            <a href="#Edu">Promo</a>
-            <a href="#Edu">Help</a>
+            <a href="#">Contact Us</a>
+            <a href="#">Promo</a>
+            <a href="#">Help</a>
         </nav>
 
         <?php if ($login): ?>
