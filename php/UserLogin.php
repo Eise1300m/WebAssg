@@ -36,18 +36,18 @@ includeNavbar();
 
         <form method="POST" action="UserLoginProcess.php" id="login-form" novalidate>
             <div class="input-container">
-                <?php echo FormHelper::text('Username', 'placeholder="Username.."'); ?>
+                <input type="text" id="UserID" name="Username" placeholder="Username..">
                 <img src="../upload/icon/personwhite.png" alt="Person" class="person-icon">
-                <small class="error-message" id="user-error"><?php echo FormHelper::error('Username'); ?></small>
+                <small class="error-message" id="user-error"></small>
             </div>
 
             <div class="input-container">
-                <?php echo FormHelper::password('Userpwd', 'placeholder="Password.."'); ?>
+                <input type="password" id="Userpwd" name="Userpwd" placeholder="Password..">
                 <img src="../upload/icon/lock.png" alt="Lock" class="lock-icon">
-                <small class="error-message" id="pass-error"><?php echo FormHelper::error('Userpwd'); ?></small>
+                <small class="error-message" id="pass-error"></small>
             </div>
 
-            <?php echo FormHelper::submit('Login', 'class="submit-but"'); ?>
+            <button type="submit" class="submit-but">Login</button>
         </form>
 
         <div class="signup-container">

@@ -19,7 +19,12 @@ if (!$user) {
 
 $user_id = $user['UserID'];
 
-// 🔹 Fetch all orders for the logged-in user
+// Get total number of orders for the user
+$stmt = $_db->prepare("SELECT COUNT(*) as total_orders FROM orders WHERE UserID = ?");
+$stmt->execute([$user_id]);
+$order_count = $stmt->fetch(PDO::FETCH_ASSOC)['total_orders'];
+
+// Fetch all orders for the logged-in user
 $stmt = $_db->prepare("SELECT * FROM orders WHERE UserID = ? ORDER BY OrderDate DESC");
 $stmt->execute([$user_id]);
 $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -60,7 +65,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <nav class="profile-nav">
                         <a href="UserEditProfile.php">Personal Information</a>
-                        <a href="UserEditProfile.php#security">Security</a>
+                        <a href="UserSecurity.php">Security</a>
                         <a href="UserOrderHistory.php" class="active">Order History</a>
                     </nav>
                 </div>
@@ -68,44 +73,45 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="profile-main">
                     <div class="orders-section">
                         <?php if (empty($orders)): ?>
-                            <p class="no-orders">No orders found.</p>
-                            <?php else:
-                            $order_count = count($orders);
-                            foreach ($orders as $order):
-                            ?>
+                            <div class="no-orders">
+                                <h3>No Orders Yet</h3>
+                                <p>You haven't placed any orders yet.</p>
+                                <a href="MainPage.php" class="browse-btn">Browse Books</a>
+                            </div>
+                        <?php else: ?>
+                            <?php foreach ($orders as $order): ?>
                                 <div class="order-card">
                                     <div class="order-header">
-                                        <h3>Order #<?php echo $order_count; ?></h3>
-                                        <span class="order-date"><?php echo date('F j, Y', strtotime($order['OrderDate'])); ?></span>
+                                        <h3>Order #<?php echo htmlspecialchars($order['OrderNo']); ?></h3>
+                                        <span class="order-date">
+                                            <?php echo date('F j, Y', strtotime($order['OrderDate'])); ?>
+                                        </span>
                                     </div>
                                     <div class="order-details">
-                                        <p><strong>Total Items:</strong> <?php echo $order['TotalQuantity']; ?></p>
+                                        <p><strong>Total Items:</strong> <?php echo htmlspecialchars($order['TotalQuantity']); ?></p>
                                         <p><strong>Total Price:</strong> RM <?php echo number_format($order['TotalAmount'], 2); ?></p>
                                         <p><strong>Status:</strong>
                                             <span class="order-status <?php echo strtolower($order['OrderStatus']); ?>">
-                                                <?php echo $order['OrderStatus']; ?>
+                                                <?php echo htmlspecialchars($order['OrderStatus']); ?>
                                             </span>
                                         </p>
                                         <div class="order-actions">
                                             <?php if ($order['OrderStatus'] === 'Delivering'): ?>
                                                 <button class="collect-btn" data-order-id="<?php echo htmlspecialchars($order['OrderNo']); ?>">
-                                                    <img src="../upload/icon/check.png" alt="Collect" style="width: 20px; height: 20px; filter: invert(1);">
+                                                    <img src="../upload/icon/check.png" alt="Collect" style="width: 12px; height: 12px; filter: invert(1);">
                                                     Confirm Collection
                                                 </button>
                                             <?php endif; ?>
-                                            <a href="UserOrderHistoryDetails.php?order_id=<?php echo $order['OrderNo']; ?>"
+                                            <a href="UserOrderHistoryDetails.php?order_id=<?php echo htmlspecialchars($order['OrderNo']); ?>"
                                                 class="view-details-btn">
-                                                <img src="../upload/icon/view.png" alt="View" style="width: 20px; height: 20px; filter: invert(1);">
+                                                <img src="../upload/icon/view.png" alt="View" style="width: 17px; height: 17px; filter: invert(1);">
                                                 View Details
                                             </a>
                                         </div>
                                     </div>
                                 </div>
-                        <?php
-                                $order_count--;
-                            endforeach;
-                        endif;
-                        ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -113,6 +119,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </main>
 
     <?php include 'footer.php'; ?>
+    <script src="../js/Scripts.js"></script>
 </body>
 
 </html>

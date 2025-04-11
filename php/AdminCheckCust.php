@@ -1,12 +1,8 @@
 <?php
-session_start();
-require_once("connection.php");
+require_once("base.php");
 
-// Ensure only admins can access
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    header("Location: UserLogin.php");
-    exit();
-}
+// Check if user is admin
+requireAdmin();
 
 // Replace the search query section with this simpler version
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';

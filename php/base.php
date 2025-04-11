@@ -51,7 +51,37 @@ function requireAdmin() {
     }
 }
 
+// Common customer check
+function requireCustomer() {
+    if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'customer') {
+        redirect('UserLogin.php');
+    }
+}
 
+// Check if user is logged in
+function isLoggedIn() {
+    return isset($_SESSION['user_name']);
+}
+
+// Check if user is admin
+function isAdmin() {
+    return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
+}
+
+// Check if user is customer
+function isCustomer() {
+    return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'customer';
+}
+
+// Get current user's role
+function getUserRole() {
+    return $_SESSION['user_role'] ?? null;
+}
+
+// Get current user's username
+function getUsername() {
+    return $_SESSION['user_name'] ?? null;
+}
 
 // Common navbar include
 function includeNavbar() {
@@ -139,7 +169,6 @@ function add_err($key, $message) {
 }
 
 /**
- * Display flash message if exists and remove it from session
  * @return void
  */
 function displayFlashMessage() {

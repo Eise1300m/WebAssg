@@ -3,6 +3,9 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+require_once("../lib/FormHelper.php");
+require_once("../lib/SecurityHelper.php");
+
 $errors = $_SESSION['signup_errors'] ?? [];
 $input_data = $_SESSION['signup_data'] ?? [];
 unset($_SESSION['signup_errors'], $_SESSION['signup_data']);
@@ -55,31 +58,31 @@ include 'navbar.php'
             <?php echo FormHelper::hidden('role', $roleValue); ?>
 
             <div class="input-container">
-                <span class="icon"><i class="fas fa-user"></i></span>
+                <img src="../upload/icon/personwhite.png" alt="Person" class="input-icon">
                 <?php echo FormHelper::text('UName', 'placeholder="Enter Username"'); ?>
                 <span class="error-message" id="nameError"><?php echo FormHelper::error('UName'); ?></span>
             </div>
 
             <div class="input-container">
-                <span class="icon"><i class="fas fa-lock"></i></span>
+                <img src="../upload/icon/lock.png" alt="Lock" class="input-icon">
                 <?php echo FormHelper::password('psw', 'placeholder="Enter password"'); ?>
                 <span class="error-message" id="pswError"><?php echo FormHelper::error('psw'); ?></span>
             </div>
 
             <div class="input-container">
-                <span class="icon"><i class="fas fa-lock"></i></span>
+                <img src="../upload/icon/lock.png" alt="Lock" class="input-icon">
                 <?php echo FormHelper::password('pswcfm', 'placeholder="Confirm your password"'); ?>
                 <span class="error-message" id="pswcfmError"><?php echo FormHelper::error('pswcfm'); ?></span>
             </div>
 
             <div class="input-container">
-                <span class="icon"><i class="fas fa-envelope"></i></span>
+                <img src="../upload/icon/info.png" alt="Info" class="input-icon">
                 <?php echo FormHelper::email('emails', 'placeholder="Email - Exp: Secret@example.com"'); ?>
                 <span class="error-message" id="emailError"><?php echo FormHelper::error('emails'); ?></span>
             </div>
 
             <div class="input-container">
-                <span class="icon"><i class="fas fa-phone"></i></span>
+                <img src="../upload/icon/phone.png" alt="Phone" class="input-icon">
                 <?php echo FormHelper::text('tel', 'placeholder="Phone number - Exp: 01XXXXXXXX"'); ?>
                 <span class="error-message" id="telError"><?php echo FormHelper::error('tel'); ?></span>
             </div>

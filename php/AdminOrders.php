@@ -1,11 +1,9 @@
 <?php
 session_start();
-require_once("connection.php");
+require_once("base.php");
 
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    header("Location: UserLogin.php");
-    exit();
-}
+// Check if user is admin
+requireAdmin();
 
 // Determine any filters from GET parameters
 $dateFilter = isset($_GET['filter-date']) ? $_GET['filter-date'] : 'all';
@@ -255,7 +253,7 @@ $paymentMethods = $stmt->fetchAll(PDO::FETCH_COLUMN);
                                 : '#'; 
                             ?>" 
                             class="page-link <?php echo $current_page <= 1 ? 'disabled' : ''; ?>">
-                            <img src="../upload/icon/arrowback.png" alt="Previous" class="arrow">
+                            <img src="../upload/icon/arrowback.png" alt="Previous" class="arrow" style="width: 13px; height: 13px;">
                         </a>
 
                         <!-- Page numbers -->
@@ -296,7 +294,7 @@ $paymentMethods = $stmt->fetchAll(PDO::FETCH_COLUMN);
                                 : '#'; 
                             ?>" 
                             class="page-link <?php echo $current_page >= $total_pages ? 'disabled' : ''; ?>">
-                            <img src="../upload/icon/arrowfoward.png" alt="Next" class="arrow">
+                            <img src="../upload/icon/arrowfoward.png" alt="Next" class="arrow" style="width: 13px; height: 13px;">
                         </a>
                     <?php endif; ?>
                 </div>
@@ -310,10 +308,8 @@ $paymentMethods = $stmt->fetchAll(PDO::FETCH_COLUMN);
             <span class="close" onclick="closeOrderModal()">&times;</span>
             <h2>Order Details</h2>
             <div id="orderDetailsContent">
-                <!-- Order details will be loaded here via AJAX -->
-                <div class="loading">
-                    <i class="fas fa-spinner fa-spin"></i> Loading order details...
-                </div>
+                <!-- Order details will load here using AJAX -->
+
             </div>
         </div>
     </div>

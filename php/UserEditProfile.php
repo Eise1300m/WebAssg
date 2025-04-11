@@ -1,6 +1,7 @@
 <?php
 require_once("base.php");
 
+// Check if user is logged in
 requireLogin();
 
 $username = $_SESSION['user_name'];
@@ -144,7 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
         <div class="profile-content">
             <div class="profile-sidebar">
                 <div class="profile-avatar">
-                    <img src="<?php echo htmlspecialchars($user['ProfilePic']); ?>" alt="Profile Picture" id="profile-pic">
+                    <img src="<?php echo !empty($user['ProfilePic']) ? htmlspecialchars($user['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>" alt="Profile Picture" id="profile-pic">
                     <form method="POST" action="" enctype="multipart/form-data" id="profile-pic-form">
                         <input type="file" name="profile_pic" id="profile-pic-input" style="display: none;" accept="image/jpeg,image/png,image/gif">
                         <div class="avatar-buttons">

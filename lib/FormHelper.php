@@ -96,9 +96,14 @@ class FormHelper {
     public static function error($key) {
         global $_err;
         if (isset($_err[$key])) {
-            return "<span class='err'>{$_err[$key]}</span>";
+            return "<span class='error-message'>{$_err[$key]}</span>";
         }
         return '';
+    }
+
+    public static function phone($key, $currentValue = '', $attr = '') {
+        $value = self::getValue($key) ?: $currentValue;
+        return "<input type='tel' id='$key' name='$key' value='$value' pattern='^(\+?6?01)[0-46-9]-*[0-9]{7,8}$' placeholder='01x-xxxxxxxx' required $attr>";
     }
 
     private static function getValue($key) {

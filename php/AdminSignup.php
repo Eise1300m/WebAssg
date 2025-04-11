@@ -1,6 +1,8 @@
-<!-- Display Error Messages if Any -->
 <?php
 session_start();
+require_once("../lib/FormHelper.php");
+require_once("../lib/SecurityHelper.php");
+
 if (isset($_SESSION['signup_errors'])) {
     echo '<div class="error-box">';
     foreach ($_SESSION['signup_errors'] as $error) {
@@ -40,40 +42,40 @@ if (isset($_SESSION['signup_errors'])) {
     <div class="container">
         <h1>Admin Sign Up</h1>
 
-        <form id="adminSignupForm" method="post" action="UserSignUpProcess.php">
+        <form id="signupForm" method="post" action="UserSignUpProcess.php">
+            <?php echo FormHelper::hidden('role', 'admin'); ?>
 
-            <!-- Hidden input field to mark this as an admin registration -->
             <div class="input-container">
-                <span class="icon"><i class="fas fa-user"></i></span>
-                <input type="text" id="UName" name="UName" placeholder="Enter Username">
-                <span class="error-message" id="nameError"></span>
+                <img src="../upload/icon/personwhite.png" alt="Person" class="input-icon">
+                <?php echo FormHelper::text('UName', 'placeholder="Enter Username"'); ?>
+                <span class="error-message" id="nameError"><?php echo FormHelper::error('UName'); ?></span>
             </div>
 
             <div class="input-container">
-                <span class="icon"><i class="fas fa-lock"></i></span>
-                <input type="password" id="psw" name="psw" placeholder="Enter password">
-                <span class="error-message" id="pswError"></span>
+                <img src="../upload/icon/lock.png" alt="Lock" class="input-icon">
+                <?php echo FormHelper::password('psw', 'placeholder="Enter password"'); ?>
+                <span class="error-message" id="pswError"><?php echo FormHelper::error('psw'); ?></span>
             </div>
 
             <div class="input-container">
-                <span class="icon"><i class="fas fa-lock"></i></span>
-                <input type="password" id="pswcfm" name="pswcfm" placeholder="Confirm your password">
-                <span class="error-message" id="pswcfmError"></span>
+                <img src="../upload/icon/lock.png" alt="Lock" class="input-icon">
+                <?php echo FormHelper::password('pswcfm', 'placeholder="Confirm your password"'); ?>
+                <span class="error-message" id="pswcfmError"><?php echo FormHelper::error('pswcfm'); ?></span>
             </div>
 
             <div class="input-container">
-                <span class="icon"><i class="fas fa-envelope"></i></span>
-                <input type="text" id="emails" placeholder="Email - Exp: Secret@example.com" name="emails">
-                <span class="error-message" id="emailError"></span>
+                <img src="../upload/icon/info.png" alt="Info" class="input-icon">
+                <?php echo FormHelper::email('emails', 'placeholder="Email - Exp: Secret@example.com"'); ?>
+                <span class="error-message" id="emailError"><?php echo FormHelper::error('emails'); ?></span>
             </div>
 
             <div class="input-container">
-                <span class="icon"><i class="fas fa-phone"></i></span>
-                <input type="text" id="tel" name="tel" placeholder="Phone number - Exp: 01XXXXXXXX">
-                <span class="error-message" id="telError"></span>
+                <img src="../upload/icon/phone.png" alt="Phone" class="input-icon">
+                <?php echo FormHelper::text('tel', 'placeholder="Phone number - Exp: 01XXXXXXXX"'); ?>
+                <span class="error-message" id="telError"><?php echo FormHelper::error('tel'); ?></span>
             </div>
 
-            <button type="submit" class="submit-but">Submit</button>
+            <?php echo FormHelper::submit('Submit', 'class="submit-but"'); ?>
         </form>
 
         <div class="signup-container">
@@ -82,6 +84,8 @@ if (isset($_SESSION['signup_errors'])) {
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/Scripts.js"></script>
 </body>
 
 

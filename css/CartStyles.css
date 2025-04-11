@@ -264,7 +264,7 @@
 /* Floating Messages */
 .floating-message {
     position: fixed;
-    top: 120px;
+    top: 140px;
     right: 20px;
     padding: 15px 25px;
     border-radius: 8px;

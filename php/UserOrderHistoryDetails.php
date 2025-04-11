@@ -1,17 +1,12 @@
 <?php
 session_start();
-require_once("connection.php");
+require_once("base.php");
 
-if (!isset($_SESSION['user_name']) || !isset($_GET['order_id'])) {
-    header("Location: UserOrderHistory.php");
-    exit;
-}
+requireLogin();
+$username = $_SESSION['user_name'];
 
-$order_id = $_GET['order_id'];
-
-// 🔹 Get the UserID from the users table
 $stmt = $_db->prepare("SELECT UserID, ProfilePic FROM users WHERE UserName = ?");
-$stmt->execute([$_SESSION['user_name']]);
+$stmt->execute([$username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
@@ -20,94 +15,131 @@ if (!$user) {
 
 $user_id = $user['UserID'];
 
-// 🔹 Fetch all orders for this user, sorted by date (newest first)
-$stmt = $_db->prepare("SELECT OrderNo FROM orders WHERE UserID = ? ORDER BY OrderDate DESC");
-$stmt->execute([$user_id]);
-$user_orders = $stmt->fetchAll(PDO::FETCH_COLUMN); // Get only OrderNo values
+// Get order ID from URL
+$order_id = isset($_GET['order_id']) ? $_GET['order_id'] : null;
 
-// 🔹 Find the position of the current order
-$order_index = array_search($order_id, $user_orders);
-if ($order_index === false) {
-    die("Order not found.");
+if (!$order_id) {
+    header("Location: UserOrderHistory.php");
+    exit;
 }
-$user_order_number = count($user_orders) - $order_index; // Convert index to display number
 
-// 🔹 Fetch order details
-$stmt = $_db->prepare("SELECT * FROM orders WHERE OrderNo = ?");
-$stmt->execute([$order_id]);
+// Fetch order details
+$stmt = $_db->prepare("SELECT * FROM orders WHERE OrderNo = ? AND UserID = ?");
+$stmt->execute([$order_id, $user_id]);
 $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// 🔹 Fetch books in this order
-$stmt = $_db->prepare("SELECT od.*, b.BookName, b.BookImage 
-                       FROM orderdetails od
-                       JOIN book b ON od.BookNo = b.BookNo
-                       WHERE od.OrderNo = ?");
+if (!$order) {
+    header("Location: UserOrderHistory.php");
+    exit;
+}
+
+// Fetch order items - using the correct table names
+$stmt = $_db->prepare("
+    SELECT od.*, b.BookName, b.BookImage 
+    FROM orderdetails od
+    JOIN book b ON od.BookNo = b.BookNo
+    WHERE od.OrderNo = ?
+");
 $stmt->execute([$order_id]);
 $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details - Secret Shelf</title>
     <link rel="stylesheet" href="../css/HomeStyles.css">
-    <link rel="stylesheet" href="../css/ProfileStyles.css">
     <link rel="stylesheet" href="../css/OrderStyles.css">
+    <link rel="stylesheet" href="../css/ProfileStyles.css">
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
-<body>
+<body data-page="orders">
     <?php include_once("navbar.php"); ?>
 
-    <main class="profile-container">
-        <div class="profile-header">
-            <h1>Order Details</h1>
-            <p>Order #<?php echo $user_order_number; ?></p>
-        </div>
-
-        <div class="profile-content">
-            <div class="profile-sidebar">
-                <div class="profile-avatar">
-                    <img src="<?php echo !empty($user['ProfilePic']) ? htmlspecialchars($user['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>"
-                         alt="Profile Picture" id="profile-pic">
-                </div>
-                <nav class="profile-nav">
-                    <a href="UserEditProfile.php">Personal Information</a>
-                    <a href="UserEditProfile.php#security">Security</a>
-                    <a href="UserOrderHistory.php" class="active">Order History</a>
-                </nav>
+    <main class="order-history-container">
+        <div class="profile-container">
+            <div class="profile-header">
+                <h1>Order Details</h1>
+                <p>Order #<?php echo $order_id; ?></p>
             </div>
 
-            <div class="profile-main">
-                <div class="order-details-section">
-                    <div class="order-summary">
-                        <p><strong>Date:</strong> <?php echo $order['OrderDate']; ?></p>
-                        <p><strong>Total Items:</strong> <?php echo $order['TotalQuantity']; ?></p>
-                        <p><strong>Total Price:</strong> RM <?php echo number_format($order['TotalAmount'], 2); ?></p>
+            <div class="profile-content">
+                <div class="profile-sidebar">
+                    <div class="profile-avatar">
+                        <img src="<?php echo !empty($user['ProfilePic']) ? htmlspecialchars($user['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>"
+                            alt="Profile Picture" id="profile-pic">
                     </div>
+                    <nav class="profile-nav">
+                        <a href="UserEditProfile.php">Personal Information</a>
+                        <a href="UserEditProfile.php#security">Security</a>
+                        <a href="UserOrderHistory.php" class="active">Order History</a>
+                    </nav>
+                </div>
 
-                    <h3>Books in this order:</h3>
-                    <div class="books-grid">
-                        <?php foreach ($order_items as $item): ?>
-                            <div class="book-card">
-                                <img src="<?php echo $item['BookImage'] ?: '../images/no-cover.png'; ?>" 
-                                     alt="<?php echo htmlspecialchars($item['BookName']); ?>">
-                                <div class="book-info">
-                                    <h4><?php echo htmlspecialchars($item['BookName']); ?></h4>
-                                    <p><strong>Quantity:</strong> <?php echo $item['Quantity']; ?></p>
-                                    <p><strong>Subtotal:</strong> RM <?php echo number_format($item['Price'], 2); ?></p>
-                                </div>
+                <div class="profile-main">
+                    <div class="order-details-section">
+                        <div class="order-summary-card">
+                            <div class="order-header">
+                                <h3>Order Summary</h3>
+                                <span class="order-date">
+                                    <?php echo date('F j, Y', strtotime($order['OrderDate'])); ?>
+                                </span>
                             </div>
-                        <?php endforeach; ?>
-                    </div>
+                            <div class="order-info">
+                                <p>
+                                   </i> Total Items:
+                                    <?php echo $order['TotalQuantity']; ?>
+                                </p>
+                                <p>
+                                   Total Price:
+                                    RM <?php echo number_format($order['TotalAmount'], 2); ?>
+                                </p>
+                                <p>
+                                    Status:
+                                    <span class="order-status <?php echo strtolower($order['OrderStatus']); ?>">
+                                        <?php echo $order['OrderStatus']; ?>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
 
-                    <div class="back-section">
-                        <a href="UserOrderHistory.php" class="back-btn">Back to Order History</a>
+                        <div class="order-items-section">
+                            <h3>Order Items</h3>
+                            <div class="order-items-list">
+                                <?php foreach ($order_items as $item): ?>
+                                    <div class="order-item-card">
+                                        <div class="item-image">
+                                            <img src="<?php echo htmlspecialchars($item['BookImage']); ?>" 
+                                                alt="<?php echo htmlspecialchars($item['BookName']); ?>">
+                                        </div>
+                                        <div class="item-details">
+                                            <h4><?php echo htmlspecialchars($item['BookName']); ?></h4>
+                                            <p class="quantity">Quantity: <?php echo $item['Quantity']; ?></p>
+                                            <p class="price">Price: RM <?php echo number_format($item['Price'], 2); ?></p>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                        <div class="order-actions">
+                            <?php if ($order['OrderStatus'] === 'Delivering'): ?>
+                                <button class="collect-btn" data-order-id="<?php echo htmlspecialchars($order['OrderNo']); ?>">
+                                    <i class="fa fa-check"></i>
+                                    Confirm Collection
+                                </button>
+                            <?php endif; ?>
+                            <a href="UserOrderHistory.php" class="back-btn">
+                                <i class="fa fa-arrow-left"></i>
+                                Back to Orders
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -116,5 +148,4 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <?php include 'footer.php'; ?>
 </body>
-
 </html>

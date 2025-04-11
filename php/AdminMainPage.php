@@ -1,7 +1,6 @@
 <?php
 require_once("base.php");
 
-// Ensure only admins can access
 requireAdmin();
 
 $username = $_SESSION['user_name'];

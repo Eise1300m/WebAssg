@@ -35,17 +35,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($password, $user['Password'])) {
                 // Login successful
                 $_SESSION['user_id'] = $user['UserID'];
-                $_SESSION['user_name'] = $user['Username'];
+                $_SESSION['user_name'] = $username;
                 $_SESSION['user_role'] = $user['Role'];
                 
-                
-                // Redirect based on role
-                if ($user['Role'] === 'admin') {
-                    header("Location: AdminMainPage.php");
-                } else {
-                    header("Location: " . ($_SESSION['return_to'] ?? 'MainPage.php'));
-                }
-                exit;
+                // Redirect to buffer page
+                header("Location: LoginBuffer.php");
+                exit();
             } else {
                 $_SESSION['flash_message'] = [
                     'type' => 'error',

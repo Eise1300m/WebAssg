@@ -5,7 +5,7 @@ require_once("../lib/BookHelper.php");
 // Initialize BookHelper with database connection
 BookHelper::init($_db);
 
-// Ensure only admins can access
+// Check if user is admin
 requireAdmin();
 
 // Determine any filters from GET parameters

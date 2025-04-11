@@ -62,15 +62,15 @@ form {
     position: relative;
     width: 85%;
     height: 50px;
-    margin-bottom: 25px; /* Adjusted to give space for error messages */
+    margin-bottom: 25px;
     display: flex;
-    flex-direction: column; /* Stack input and error message vertically */
-    align-items: flex-start; /* Align items to the left */}
+    flex-direction: column;
+    align-items: flex-start;
+}
 
-/* Style input */
 .input-container input {
     width: 100%;
-    padding: 12px 15px 12px 15px; /* Normal padding */
+    padding: 12px 15px 12px 45px;
     border-radius: 40px;
     border: 2px solid #ffffff;
     outline: none;
@@ -80,26 +80,22 @@ form {
 }
 
 .input-container input:focus {
-    border-color:rgb(53, 46, 109);
+    border-color: rgb(53, 46, 109);
 }
 
-.input-container .icon {
+.input-container .input-icon {
     position: absolute;
-    right: 15px;
+    left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 18px;
-    color: #ffffff;
+    width: 20px;
+    height: 20px;
     pointer-events: none;
 }
 
+.input-container .icon,
 .input-container .material-symbols-outlined {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    color: #ffffff;
+    display: none;
 }
 
 .signup-container {

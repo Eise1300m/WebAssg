@@ -44,6 +44,7 @@ displayFlashMessages();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,11 +53,13 @@ displayFlashMessages();
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/Dropdown.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/order.js"></script>
     <script src="../js/Scripts.js"></script>
+    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+
 </head>
+
 <body>
     <div class="wrapbox">
         <div class="page-header">
@@ -67,14 +70,14 @@ displayFlashMessages();
                 <p class="results-count">Showing <?php echo count($books); ?> books</p>
             <?php endif; ?>
         </div>
-        
+
         <div class="book-container">
             <?php foreach ($books as $book): ?>
                 <div class="book-card">
                     <div class="book-image">
                         <a href="BookPreview.php?book_id=<?php echo $book['BookNo']; ?>">
-                            <img src="<?php echo BookHelper::getBookImage($book); ?>" 
-                                 alt="<?php echo htmlspecialchars($book['BookName']); ?>">
+                            <img src="<?php echo BookHelper::getBookImage($book); ?>"
+                                alt="<?php echo htmlspecialchars($book['BookName']); ?>">
                         </a>
                     </div>
                     <div class="book-details">
@@ -87,7 +90,7 @@ displayFlashMessages();
                         <p class="book-price">
                             <strong>Price:</strong> <?php echo BookHelper::formatPrice($book['BookPrice']); ?>
                         </p>
-                        
+
                         <?php if (isset($_SESSION['user_name'])): ?>
                             <button class="cart-but" data-book-id="<?php echo $book['BookNo']; ?>">
                                 <img src="../upload/icon/shoppingcart.png" alt="Cart">
@@ -107,4 +110,5 @@ displayFlashMessages();
 
     <?php include 'footer.php'; ?>
 </body>
+
 </html>

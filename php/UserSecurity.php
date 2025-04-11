@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
         <div class="profile-content">
             <div class="profile-sidebar">
                 <div class="profile-avatar">
-                    <img src="<?php echo htmlspecialchars($user['ProfilePic']); ?>" alt="Profile Picture">
+                    <img src="<?php echo !empty($user['ProfilePic']) ? htmlspecialchars($user['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>" alt="Profile Picture">
                 </div>
                 <nav class="profile-nav">
                     <a href="UserEditProfile.php">Personal Information</a>

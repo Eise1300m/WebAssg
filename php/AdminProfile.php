@@ -1,11 +1,13 @@
 <?php
+require_once("base.php");
+
+// Check if user is admin
+requireAdmin();
+
 session_start();
 require_once("connection.php");
-
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    header("Location: UserLogin.php");
-    exit();
-}
+require_once("../lib/FormHelper.php");
+require_once("../lib/SecurityHelper.php");
 
 $username = $_SESSION['user_name'];
 
@@ -203,14 +205,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
                             <div class="input-with-icon">
-                                <input type="tel" id="phone" name="phone"
-                                    value="<?php echo htmlspecialchars($admin['ContactNo']); ?>"
-                                    pattern="^(\+?6?01)[0-46-9]-*[0-9]{7,8}$"
-                                    placeholder="01x-xxxxxxxx"
-                                    required>
+                                <?php echo FormHelper::phone('phone', $admin['ContactNo'] ?? ''); ?>
                                 <img src="../upload/icon/edit.png" alt="Edit" title="Click to edit" class="input-icon">
                             </div>
                             <small class="input-hint">Malaysian format: 01Xxxxxxxxx</small>
+                            <span class="error-message" id="phoneError"><?php echo FormHelper::error('phone'); ?></span>
                         </div>
 
                         <div class="admin-form-actions">
