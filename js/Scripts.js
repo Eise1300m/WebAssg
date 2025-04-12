@@ -5,6 +5,7 @@ $(document).ready(function () {
     initializeOrderHistory();
     initializeSignupForm();
     initializeSlider();
+    initializeSearch();
 });
 
 // Login Form Handling
@@ -278,4 +279,36 @@ function initializeSlider() {
 
     // Initialize slider
     updateSlider();
+}
+
+// Search functionality
+function initializeSearch() {
+    // Check if elements exist
+    const searchButton = $("#searchButton");
+    const searchInput = $("#searchInput");
+    
+    if (searchButton.length && searchInput.length) {
+        // Click handler for search button
+        searchButton.on('click', function() {
+            performSearch();
+        });
+        
+        // Enter key handler for search input
+        searchInput.on('keypress', function(event) {
+            if (event.key === "Enter") {
+                performSearch();
+            }
+        });
+    } 
+}
+
+function performSearch() {
+    const searchQuery = $("#searchInput").val().trim();
+    
+    if (searchQuery) {
+        const searchUrl = `MainPage.php?search=${encodeURIComponent(searchQuery)}`;
+        window.location.href = searchUrl;
+    } else {
+        alert("Please enter a search term");
+    }
 }

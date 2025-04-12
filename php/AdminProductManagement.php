@@ -42,15 +42,18 @@ if (!empty($searchQuery)) {
 $query .= " ORDER BY b.BookNo DESC";
 
 // Execute the filtered query
-$stmt = $db->query($query, $params);
+$stmt = $_db->prepare($query);
+$stmt->execute($params);
 $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Fetch categories for the add/edit form and filter dropdown
-$stmt = $db->query("SELECT * FROM category");
+$stmt = $_db->prepare("SELECT * FROM category");
+$stmt->execute();
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Fetch all subcategories
-$stmt = $db->query("SELECT * FROM subcategory");
+$stmt = $_db->prepare("SELECT * FROM subcategory");
+$stmt->execute();
 $allSubcategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Count books for stats

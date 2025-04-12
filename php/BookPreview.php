@@ -4,8 +4,14 @@ require_once("base.php");
 // Get book ID from URL
 $bookId = isset($_GET['book_id']) ? (int)$_GET['book_id'] : 0;
 
-// Fetch book details
-$query = "SELECT * FROM book WHERE BookNo = ?";
+// Fetch book details with category and subcategory information
+$query = "
+    SELECT b.*, s.SubcategoryName, c.CategoryName 
+    FROM book b 
+    JOIN subcategory s ON b.SubcategoryNo = s.SubcategoryNo 
+    JOIN category c ON s.CategoryNo = c.CategoryNo
+    WHERE b.BookNo = ?
+";
 $stmt = $_db->prepare($query);
 $stmt->execute([$bookId]);
 $book = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -78,6 +84,8 @@ include 'navbar.php';
                     <div class="book-info">
                         <div><?php echo htmlspecialchars($book['BookName']); ?></div>
                         <div>Author: <?php echo htmlspecialchars($book['Author']); ?></div>
+                        <div>Category: <?php echo htmlspecialchars($book['CategoryName']); ?></div>
+                        <div>Subcategory: <?php echo htmlspecialchars($book['SubcategoryName']); ?></div>
                         <div>Price: RM <?php echo number_format($book['BookPrice'], 2); ?></div>
 
                         <!-- Display Rating-->

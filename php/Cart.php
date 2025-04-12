@@ -67,12 +67,12 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
     <script src="../js/Scripts.js"></script>
     <script src="../js/order.js"></script>
 </head>
+
 <body>
-    <?php include_once("navbar.php") ?>
     
     <div class="cart-page-wrapper">
         <div class="cart-container">
-            <a class="continue-shopping-top" onclick="history.back()">
+            <a class="continue-shopping-top" onclick="window.location.href='MainPage.php'">
                 <img src="../upload/icon/arrowback.png" alt="Back" class="back-icon">
                 Back
             </a>
