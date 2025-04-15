@@ -689,83 +689,113 @@ body {
 /* Search and Filter Styles */
 .search-filter-container {
     margin-bottom: 20px;
+    background: #ffffff6e;
     padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .search-filter-form {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 15px;
-    align-items: center;
 }
 
-.search-input-group {
+.search-group {
     display: flex;
-    flex: 1;
-    min-width: 250px;
+    gap: 10px;
+    width: 100%;
 }
 
-.search-input-group input {
+.search-group input {
     flex: 1;
-    padding: 10px 10px;
+    padding: 10px 15px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
 }
 
 .search-btn {
-    background-color: #4a6fdc;
+    background: #47186e;
     color: white;
     border: none;
-    border-radius: 0 4px 4px 0;
     padding: 10px 15px;
+    border-radius: 4px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.search-btn:hover {
+    background: #5a1f8c;
 }
 
 .filter-group {
     display: flex;
     gap: 10px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .filter-group select {
-    padding: 10px;
+    padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    background-color: white;
-    min-width: 120px;
-    font-size: 14px;
+    background: white;
 }
 
 .apply-filter-btn {
-    background-color: #4a6fdc;
+    background: #47186e;
     color: white;
     border: none;
+    padding: 8px 15px;
     border-radius: 4px;
-    padding: 10px 15px;
     cursor: pointer;
-    font-size: 14px;
-}
-
-.reset-filter-btn {
-    background-color: #f0f0f0;
-    color: #333;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 10px 15px;
-    text-decoration: none;
-    font-size: 14px;
+    transition: background-color 0.3s;
 }
 
 .apply-filter-btn:hover {
-    background-color: #3b5db3;
+    background: #5a1f8c;
+}
+
+.reset-filter-btn {
+    background: #ffffff;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s;
 }
 
 .reset-filter-btn:hover {
-    background-color: #e3e3e3;
+    background: #e0e0e0;
+}
+
+.customer-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.customer-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.customer-email {
+    font-size: 12px;
+    color: #666;
+}
+
+.no-results {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+}
+
+.pagination-summary {
+    margin: 15px 0;
+    color: #666;
+    font-size: 14px;
 }

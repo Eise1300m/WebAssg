@@ -295,7 +295,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         
                         <div class="payment-option">
-                            <input type="radio" id="ewallet" name="payment_type" value="E-wallet" required>
+                            <input type="radio" id="ewallet" name="payment_type" value="EWallet" required>
                             <label for="ewallet">
                                 <span class="checkmark"></span>
                                 <span class="payment-option-name">E-Wallet</span>

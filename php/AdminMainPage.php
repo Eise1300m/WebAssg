@@ -81,14 +81,14 @@ displayFlashMessage();
 
                     <div class="admin-card redirect-button" data-redirect-url="AdminOrders.php">
                         <img src="../upload/icon/shoppingbag.png" alt="Order Management" class="card-icon">
-                        <h3>Order Management</h3>
-                        <p>View and manage orders</p>
+                        <h3>Order Listing</h3>
+                        <p>View Orders details and Status</p>
                     </div>
 
                     <div class="admin-card redirect-button" data-redirect-url="AdminSignUp.php">
                         <img src="../upload/icon/profile.png" alt="Admin Management" class="card-icon">
-                        <h3>Admin Management</h3>
-                        <p>Manage admin registeration</p>
+                        <h3>Admin Registration</h3>
+                        <p>Admin registeration page </p>
                     </div>
 
                     <div class="admin-card redirect-button" data-redirect-url="AdminDeliveryRequests.php">

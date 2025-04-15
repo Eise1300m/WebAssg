@@ -352,7 +352,66 @@ $(document).ready(function () {
             });
         }
     });
-});
+
+    // ==========================================
+    // Order Cancellation functionality
+    // ==========================================
+    
+    // Handle order cancellation
+    $('.cancel-btn').on('click', function() {
+        const orderId = $(this).data('order-id');
+        if (confirm('Are you sure you want to cancel this order?')) {
+            $.ajax({
+                url: 'UserOrderHistory.php',
+                type: 'POST',
+                data: {
+                    action: 'cancel_order',
+                    order_id: orderId
+                },
+                success: function(response) {
+                    try {
+                        const result = typeof response === 'string' ? JSON.parse(response) : response;
+                        
+                        if (result.success) {
+                            // Remove the order card from the UI
+                            const orderCard = $(`.cancel-btn[data-order-id="${orderId}"]`).closest('.order-card');
+                            orderCard.fadeOut(300, function() {
+                                $(this).remove();
+                                // If no orders left, show the no orders message
+                                if ($('.order-card').length === 0) {
+                                    $('.orders-section').html(`
+                                        <div class="no-orders">
+                                            <h3>No Orders Yet</h3>
+                                            <p>You haven't placed any orders yet.</p>
+                                            <a href="MainPage.php" class="browse-btn">Browse Books</a>
+                                        </div>
+                                    `);
+                                }
+                            });
+                            // Reload the page to show the flash message
+                            location.reload();
+                        } else {
+                            // Show error message and reload to display flash message
+                            location.reload();
+                        }
+                    } catch (e) {
+                        console.error('Error parsing response:', e);
+                        console.error('Response:', response);
+                        location.reload();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Ajax error:', {
+                        status: status,
+                        error: error,
+                        response: xhr.responseText
+                    });
+                    location.reload();
+                }
+            });
+        }
+    });
+}); // End of document.ready
 
 // ==========================================
 // Utility functions

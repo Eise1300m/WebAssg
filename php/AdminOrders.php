@@ -84,6 +84,11 @@ $orderStatuses = $stmt->fetchAll(PDO::FETCH_COLUMN);
             <!-- Search and Filter Form -->
             <div class="search-filter-container">
                 <form action="AdminOrders.php" method="GET" class="search-filter-form">
+                    <div class="search-group">
+                        <input type="text" name="search" placeholder="Search by order ID or customer name" 
+                               value="<?php echo htmlspecialchars($searchTerm); ?>">
+                        
+                    </div>
 
                     <div class="filter-group">
                         <select name="status">
@@ -158,12 +163,6 @@ $orderStatuses = $stmt->fetchAll(PDO::FETCH_COLUMN);
                                                 <img src="../upload/icon/view.png" alt="View" class="action-icon" style="width: 13px; height: 13px;">
                                                 View
                                             </button>
-                                            <?php if ($order['OrderStatus'] !== 'Complete' && $order['OrderStatus'] == 'Preparing'): ?>
-                                                <button class="cancel-btn" data-order-id="<?php echo $order['OrderNo']; ?>">
-                                                    <img src="../upload/icon/cancel.png" alt="Cancel" class="action-icon" style="width: 13px; height: 13px;">
-                                                    Cancel
-                                                </button>
-                                            <?php endif; ?>
                                         </div>
                                     </td>
                                 </tr>
@@ -201,22 +200,8 @@ $orderStatuses = $stmt->fetchAll(PDO::FETCH_COLUMN);
             </div>
         </div>
     </div>
-
-    <!-- Cancel Order Modal -->
-    <div id="cancelModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeCancelModal()">&times;</span>
-            <h2>Cancel Order</h2>
-            <p>Are you sure you want to cancel this order?</p>
-            <div class="modal-actions">
-                <button class="confirm-btn" onclick="confirmCancel()">Confirm</button>
-                <button class="cancel-btn" onclick="closeCancelModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
 </body>
 
 <script src="../js/Scripts.js"></script>
-
 
 </html>
