@@ -73,36 +73,34 @@ displayFlashMessage();
 
             <div class="admin-main">
                 <div class="admin-cards">
-                    <div class="admin-card" onclick="window.location.href='AdminProductManagement.php'">
-                        <img src="../upload/icon/product.png" alt="Products" class="card-icon">
+                    <div class="admin-card redirect-button" data-redirect-url="AdminProductManagement.php">
+                        <img src="../upload/icon/product.png" alt="Product Management" class="card-icon">
                         <h3>Product Management</h3>
                         <p>Add, edit, or remove books from inventory</p>
                     </div>
 
-
-                    <div class="admin-card" onclick="window.location.href='AdminOrders.php'">
-                        <img src="../upload/icon/shoppingcart.png" alt="Orders" class="card-icon">
+                    <div class="admin-card redirect-button" data-redirect-url="AdminOrders.php">
+                        <img src="../upload/icon/shoppingbag.png" alt="Order Management" class="card-icon">
                         <h3>Order Management</h3>
-                        <p>View and manage customer orders</p>
+                        <p>View and manage orders</p>
                     </div>
 
-                    <div class="admin-card" onclick="window.location.href='AdminSignUp.php'">
-                        <img src="../upload/icon/registration.png" alt="SignUp" class="card-icon">
-                        <h3>Admin Registeration</h3>
-                        <p>View and manage admin registeration</p>
+                    <div class="admin-card redirect-button" data-redirect-url="AdminSignUp.php">
+                        <img src="../upload/icon/profile.png" alt="Admin Management" class="card-icon">
+                        <h3>Admin Management</h3>
+                        <p>Manage admin registeration</p>
                     </div>
 
-                    <div class="admin-card" onclick="window.location.href='AdminDeliveryRequests.php'">
-                        <div class="notification-badge" id="pendingOrdersCount"></div>
-                        <img src="../upload/icon/delivery.png" alt="Delivery" class="card-icon">
+                    <div class="admin-card redirect-button" data-redirect-url="AdminDeliveryRequests.php">
+                        <img src="../upload/icon/delivery.png" alt="Delivery Requests" class="card-icon">
                         <h3>Delivery Requests</h3>
                         <p>Manage preparing and delivering orders</p>
                     </div>
 
-                    <div class="admin-card" onclick="window.location.href='AdminCheckCust.php'">
-                        <img src="../upload/icon/personwhite.png" alt="user" class="card-icon">
-                        <h3>User Management</h3>
-                        <p>View and manage customer details</p>
+                    <div class="admin-card redirect-button" data-redirect-url="AdminCheckCust.php">
+                        <img src="../upload/icon/customer.png" alt="Customer Management" class="card-icon">
+                        <h3>Customer Management</h3>
+                        <p>View customers</p>
                     </div>
                 </div>
             </div>

@@ -72,9 +72,8 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
     
     <div class="cart-page-wrapper">
         <div class="cart-container">
-            <a class="continue-shopping-top" onclick="window.location.href='MainPage.php'">
-                <img src="../upload/icon/arrowback.png" alt="Back" class="back-icon">
-                Back
+            <a class="continue-shopping-top redirect-button" data-redirect-url="MainPage.php">
+                <img src="../upload/icon/back.png" alt="Back" class="back-icon"> Continue Shopping
             </a>
             
             <div class="cart-content">

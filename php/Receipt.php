@@ -55,6 +55,7 @@ $address = $stmt->fetch(PDO::FETCH_ASSOC);
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/order.js" defer></script>
+    <script src="../js/Scripts.js"></script>
 </head>
 <body>
     <?php include_once("navbar.php") ?>
@@ -196,4 +197,5 @@ $address = $stmt->fetch(PDO::FETCH_ASSOC);
 
     <?php include_once('footer.php') ?>
 </body>
+
 </html>

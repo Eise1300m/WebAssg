@@ -3,6 +3,9 @@ session_start();
 require_once("base.php");
 
 requireLogin();
+
+includeNavbar();
+
 $username = $_SESSION['user_name'];
 
 $stmt = $_db->prepare("SELECT UserID, ProfilePic FROM users WHERE UserName = ?");
@@ -46,6 +49,7 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,7 +64,6 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body data-page="orders">
-    <?php include_once("navbar.php"); ?>
 
     <main class="order-history-container">
         <div class="profile-container">
@@ -93,11 +96,11 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                             <div class="order-info">
                                 <p>
-                                   </i> Total Items:
+                                    </i> Total Items:
                                     <?php echo $order['TotalQuantity']; ?>
                                 </p>
                                 <p>
-                                   Total Price:
+                                    Total Price:
                                     RM <?php echo number_format($order['TotalAmount'], 2); ?>
                                 </p>
                                 <p>
@@ -115,7 +118,7 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <?php foreach ($order_items as $item): ?>
                                     <div class="order-item-card">
                                         <div class="item-image">
-                                            <img src="<?php echo htmlspecialchars($item['BookImage']); ?>" 
+                                            <img src="<?php echo htmlspecialchars($item['BookImage']); ?>"
                                                 alt="<?php echo htmlspecialchars($item['BookName']); ?>">
                                         </div>
                                         <div class="item-details">
@@ -148,4 +151,5 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <?php include 'footer.php'; ?>
 </body>
+
 </html>

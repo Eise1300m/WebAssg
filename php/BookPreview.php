@@ -65,9 +65,9 @@ include 'navbar.php';
 
 <body>
     <!-- Back button -->
-    <button class="back-button" onclick="history.back()">
-        <img src="../upload/icon/back.png" alt="Back"> Back
-    </button>
+    <a class="back-button redirect-button" data-redirect-url="MainPage.php">
+        <img src="../upload/icon/back.png" class="back-icon" alt="Back"> Back to Main Page
+    </a>
 
     <div class="wrap-container">
         <div class="book-container">

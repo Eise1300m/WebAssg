@@ -2,7 +2,7 @@
 <footer>
     <div class="Bottom-Area">
         <div class="Bot1">
-            <p>&copy; 2025 Secret Shelf. All Rights Reserved.</p>
+            <p style="font-weight: bold;">&copy; 2025 Secret Shelf. All Rights Reserved.</p>
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>
             <a href="#">About Us</a>

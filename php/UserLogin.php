@@ -60,7 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <?php
-// Include navbar
 includeNavbar();
 ?>
 

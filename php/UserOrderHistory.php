@@ -2,10 +2,9 @@
 session_start();
 require_once("base.php");
 
-if (!isset($_SESSION['user_name'])) {
-    header("Location: UserLogin.php");
-    exit();
-}
+requireLogin();
+
+includeNavbar();
 
 // Handle order collection confirmation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'confirm_collection') {
@@ -55,8 +54,10 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body data-page="orders">
-    <?php include_once("navbar.php"); ?>
 
+    <a class="back-button" onclick="window.location.href='MainPage.php'">
+        <img src="../upload/icon/back.png" alt="Back" class="back-icon" style="width: 30px; height: 30px;"> Continue Shopping
+    </a>
     <main class="order-history-container">
         <div class="profile-container">
             <div class="profile-header">

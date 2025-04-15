@@ -10,8 +10,8 @@
 </head>
 
 <?php
-// Always use default profile picture
-$profile_pic = '../upload/icon/UnknownUser.jpg';
+require_once("base.php");
+$profile_pic = getUserProfilePic();
 ?>
 
 <!-- Profile dropdown menu -->

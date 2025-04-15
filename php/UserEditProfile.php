@@ -5,7 +5,9 @@ requireLogin();
 
 $username = $_SESSION['user_name'];
 
-$stmt = $db->query("SELECT * FROM users WHERE Username = ?", [$username]);
+// Get user details
+$stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
+$stmt->execute([$username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
@@ -14,7 +16,9 @@ if (!$user) {
 
 $user_id = $user['UserID'];
 
-$stmt = $db->query("SELECT * FROM address WHERE UserID = ?", [$user_id]);
+// Get user's address
+$stmt = $_db->prepare("SELECT * FROM address WHERE UserID = ?");
+$stmt->execute([$user_id]);
 $address = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $updateMessage = "";
@@ -32,17 +36,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
 
     if (!empty($new_street) && !empty($new_city) && !empty($new_state) && !empty($new_postal)) {
         if ($address) {
-            $stmt = $db->query("UPDATE address SET Street = ?, City = ?, State = ?, PostalCode = ? WHERE UserID = ?", [$new_street, $new_city, $new_state, $new_postal, $user_id]);
+            $stmt = $_db->prepare("UPDATE address SET Street = ?, City = ?, State = ?, PostalCode = ? WHERE UserID = ?");
+            $stmt->execute([$new_street, $new_city, $new_state, $new_postal, $user_id]);
             $updateMessage = "✅ Address updated successfully!";
         } else {
-            $stmt = $db->query("INSERT INTO address (UserID, Street, City, State, PostalCode) VALUES (?, ?, ?, ?, ?)", [$user_id, $new_street, $new_city, $new_state, $new_postal]);
+            $stmt = $_db->prepare("INSERT INTO address (UserID, Street, City, State, PostalCode) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$user_id, $new_street, $new_city, $new_state, $new_postal]);
             $updateMessage = "✅ Address added successfully!";
         }
     } else {
         $updateMessage = "❌ All address fields are required!";
     }
 
-    $stmt = $db->query("SELECT * FROM address WHERE UserID = ?", [$user_id]);
+    $stmt = $_db->prepare("SELECT * FROM address WHERE UserID = ?");
+    $stmt->execute([$user_id]);
     $address = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
@@ -51,10 +58,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_contact"])) {
     $new_phone = trim($_POST["phone"]);
 
     if (!empty($new_phone)) {
-        $stmt = $db->query("UPDATE users SET ContactNo = ? WHERE UserID = ?", [$new_phone, $user_id]);
+        $stmt = $_db->prepare("UPDATE users SET ContactNo = ? WHERE UserID = ?");
+        $stmt->execute([$new_phone, $user_id]);
         $updateMessage = "✅ Phone number updated successfully!";
 
-        $stmt = $db->query("SELECT * FROM users WHERE Username = ?", [$username]);
+        $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
+        $stmt->execute([$username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
     } else {
         $updateMessage = "❌ Phone number is required!";
@@ -90,11 +99,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
             }
 
             if (move_uploaded_file($fileTmpName, $uploadPath)) {
-                $stmt = $db->query("UPDATE users SET ProfilePic = ? WHERE UserID = ?", [$uploadPath, $user['UserID']]);
+                $stmt = $_db->prepare("UPDATE users SET ProfilePic = ? WHERE UserID = ?");
+                $stmt->execute([$uploadPath, $user['UserID']]);
                 if ($stmt->rowCount() > 0) {
                     $updateMessage = "✅ Profile picture updated successfully!";
 
-                    $stmt = $db->query("SELECT * FROM users WHERE Username = ?", [$username]);
+                    $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
+                    $stmt->execute([$username]);
                     $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 } else {
                     $updateMessage = "❌ Failed to update database.";
@@ -124,14 +135,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/Scripts.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="../js/order.js"></script>
-
 </head>
 
 <body>
 
-    <?php include_once("navbar.php") ?>
+
+    <a class="back-button redirect-button" data-redirect-url="MainPage.php">
+        <img src="../upload/icon/back.png" alt="Back" class="back-icon" style="width: 30px; height: 30px;"> Continue Shopping
+    </a>
 
     <main class="profile-container">
         <div class="profile-header">

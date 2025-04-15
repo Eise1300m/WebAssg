@@ -1,6 +1,6 @@
 .profile-container {
     max-width: 1200px;
-    margin: 32px auto;
+    margin: 120px auto;
     padding: 32px;
     color: white;
     min-height: calc(100vh - 150px);
@@ -326,4 +326,32 @@ input[readonly] {
     border-radius: 4px;
     text-align: center;
     background: rgba(255, 255, 255, 0.1);
+}
+
+.back-button {
+    position: absolute;
+    top: 150px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background: rgba(106, 142, 251, 0.2);
+    border-radius: 30px;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 100;
+    cursor: pointer;
+}
+
+.back-icon{
+    width: 35px;
+    height: 35px;
+}
+
+.back-button:hover {
+    background: rgba(106, 142, 251, 0.4);
+    transform: translateX(-5px);
 }

@@ -84,6 +84,31 @@ function getUsername() {
     return $_SESSION['user_name'] ?? null;
 }
 
+// Get user's profile picture
+function getUserProfilePic() {
+    global $_db;
+    $default_pic = '../upload/icon/UnknownUser.jpg';
+    
+    if (!isset($_SESSION['user_name'])) {
+        return $default_pic;
+    }
+    
+    try {
+        $stmt = $_db->prepare("SELECT ProfilePic FROM users WHERE Username = ?");
+        $stmt->execute([$_SESSION['user_name']]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($result && !empty($result['ProfilePic'])) {
+            return $result['ProfilePic'];
+        }
+    } catch (PDOException $e) {
+        // Log error if needed
+        error_log("Error fetching profile picture: " . $e->getMessage());
+    }
+    
+    return $default_pic;
+}
+
 // Common navbar include
 function includeNavbar() {
     include_once 'navbar.php';

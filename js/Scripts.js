@@ -6,6 +6,7 @@ $(document).ready(function () {
     initializeSignupForm();
     initializeSlider();
     initializeSearch();
+    initializeRedirectButtons();
 });
 
 // Login Form Handling
@@ -311,4 +312,13 @@ function performSearch() {
     } else {
         alert("Please enter a search term");
     }
+}
+
+function initializeRedirectButtons() {
+    $('.redirect-button').on('click', function() {
+        const url = $(this).data('redirect-url');
+        if (url) {
+            window.location.href = url;
+        }
+    });
 }

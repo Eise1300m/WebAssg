@@ -1,23 +1,16 @@
 <?php
 session_start();
-require_once("connection.php");
+require_once("base.php");
 
-if (!isset($_SESSION['user_name'])) {
-    header("Location: UserLogin.php");
-    exit;
-}
+requireLogin();
 
 $username = $_SESSION['user_name'];
 $updateMessage = "";
 
-// Get User Info
+// Get user details
 $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
 $stmt->execute([$username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$user) {
-    die("User not found.");
-}
 
 // Handle Password Change
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
@@ -36,6 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
         $updateMessage = "✅ Password updated successfully!";
     }
 }
+
+includeNavbar();
+
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
 </head>
 
 <body>
-    <?php include_once("navbar.php") ?>
+
+    <a class="back-button" onclick="window.location.href='MainPage.php'">
+        <img src="../upload/icon/back.png" alt="Back" class="back-icon" style="width: 30px; height: 30px;"> Continue Shopping
+    </a>
 
     <main class="profile-container">
         <div class="profile-header">
