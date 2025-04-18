@@ -2,11 +2,12 @@ $(document).ready(function () {
     // Initialize all necessary functions
     initializeLoginForm();
     initializeProfileMenu();
-    initializeOrderHistory();
     initializeSignupForm();
     initializeSlider();
     initializeSearch();
     initializeRedirectButtons();
+    initializeBackButtons();
+    initializeProfilePicture();
 });
 
 // Login Form Handling
@@ -64,38 +65,6 @@ function initializeProfileMenu() {
     });
 }
 
-// Order History Handling
-function initializeOrderHistory() {
-    $('.collect-btn').on('click', function() {
-        const orderId = $(this).data('order-id');
-        $.ajax({
-            url: 'UserOrderHistory.php',
-            type: 'POST',
-            data: {
-                action: 'confirm_collection',
-                order_id: orderId
-            },
-            success: function(response) {
-                try {
-                    const result = JSON.parse(response);
-                    if (result.success) {
-                        showFloatingMessage('Order collection confirmed successfully!', 'success');
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1500);
-                    } else {
-                        showFloatingMessage(result.message || 'Failed to confirm collection.', 'error');
-                    }
-                } catch (e) {
-                    showFloatingMessage('Error processing response.', 'error');
-                }
-            },
-            error: function() {
-                showFloatingMessage('Error confirming collection. Please try again.', 'error');
-            }
-        });
-    });
-}
 
 // Utility Functions
 function showFieldError(fieldName, message) {
@@ -228,6 +197,27 @@ function initializeSignupForm() {
     });
 }
 
+function initializeProfilePicture() {
+    // Show upload button and preview when a file is selected
+    $('#profile-pic-input').on('change', function() {
+        if (this.files && this.files[0]) {
+            
+            $('#upload-pic-btn').show();
+            
+            
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#profile-pic').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+    
+    $('#profile-pic-form').on('submit', function() {
+        console.log('Profile picture form submitted');
+    });
+}
+
 // Slider functionality
 function initializeSlider() {
     const sliderContent = $('.slider-content');
@@ -310,7 +300,7 @@ function performSearch() {
         const searchUrl = `MainPage.php?search=${encodeURIComponent(searchQuery)}`;
         window.location.href = searchUrl;
     } else {
-        alert("Please enter a search term");
+        alert("Please enter something to search");
     }
 }
 
@@ -320,5 +310,11 @@ function initializeRedirectButtons() {
         if (url) {
             window.location.href = url;
         }
+    });
+}
+
+function initializeBackButtons() {
+    $('.back-button').on('click', function() {
+        history.back(); // Go to the previous page in browser history
     });
 }

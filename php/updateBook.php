@@ -17,6 +17,7 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
 try {
     $bookId = $_POST['book_id'];
     $bookName = $_POST['book_name'];
+    $bookAuthor = $_POST['book_author'];
     $bookPrice = $_POST['book_price'];
     $description = $_POST['book_description']; 
     $subcategoryNo = $_POST['subcategory'];
@@ -24,11 +25,12 @@ try {
     // Start with base query
     $query = "UPDATE book SET 
               BookName = ?, 
+              Author = ?,
               BookPrice = ?, 
               Description = ?, 
               SubcategoryNo = ?";
     
-    $params = [$bookName, $bookPrice, $description, $subcategoryNo];
+    $params = [$bookName, $bookAuthor, $bookPrice, $description, $subcategoryNo];
     
     // Handle image upload if provided
     if (isset($_FILES['book_image']) && $_FILES['book_image']['error'] === 0) {

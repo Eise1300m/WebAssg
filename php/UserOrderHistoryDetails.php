@@ -139,7 +139,7 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </button>
                             <?php endif; ?>
                             <a href="UserOrderHistory.php" class="back-btn">
-                                <i class="fa fa-arrow-left"></i>
+                                <img src="../upload/icon/back.png" alt="Back" class="back-icon" style="width: 20px; height: 20px;">
                                 Back to Orders
                             </a>
                         </div>

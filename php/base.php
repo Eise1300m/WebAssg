@@ -123,17 +123,10 @@ function includeFooter() {
     include_once 'footer.php';
 }
 
-// Common flash message display
-function displayFlashMessages() {
-    if (isset($_SESSION['error_message'])) {
-        echo '<div class="error-message">' . htmlspecialchars($_SESSION['error_message']) . '</div>';
-        unset($_SESSION['error_message']);
-    }
-    if (isset($_SESSION['success_message'])) {
-        echo '<div class="success-message">' . htmlspecialchars($_SESSION['success_message']) . '</div>';
-        unset($_SESSION['success_message']);
-    }
+function includeDropDownNav() {
+    include_once 'DropDownNav.php';
 }
+
 
 // Utility functions for MainPage.php
 function get($key, $default = '') {

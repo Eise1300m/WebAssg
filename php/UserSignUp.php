@@ -75,7 +75,7 @@ $roleValue = ($signupType === 'admin') ? "admin" : "customer";
             <div class="input-container">
                 <img src="../upload/icon/phone.png" alt="Phone" class="input-icon">
                 <?php 
-                echo FormHelper::phone('tel', '', 'placeholder="Phone number - Exp: 01XXXXXXXX" required');
+                echo FormHelper::phone('tel', '', 'placeholder="Phone number - Exp: 01xxxxxxxx" required');
                 echo FormHelper::error('tel', $errors ?? []);
                 ?>
             </div>

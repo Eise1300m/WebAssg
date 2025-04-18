@@ -1,5 +1,7 @@
 <?php
 require_once("base.php");
+require_once("../lib/ValidationHelper.php");
+require_once("../lib/FormHelper.php");
 
 requireLogin();
 
@@ -22,6 +24,7 @@ $stmt->execute([$user_id]);
 $address = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $updateMessage = "";
+$errors = [];
 
 includeNavbar();
 
@@ -34,7 +37,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
     $new_state = trim($_POST["state"]);
     $new_postal = trim($_POST["postal"]);
 
-    if (!empty($new_street) && !empty($new_city) && !empty($new_state) && !empty($new_postal)) {
+    // Validate input fields
+    $errors = [];
+    
+    if (empty($new_street)) {
+        $errors['street'] = 'Street address is required';
+    }
+    
+    if (empty($new_city)) {
+        $errors['city'] = 'City is required';
+    } elseif (!ValidationHelper::validateCity($new_city)) {
+        $errors['city'] = 'City should contain only letters and be at least 2 characters';
+    }
+    
+    if (empty($new_state)) {
+        $errors['state'] = 'State is required';
+    } elseif (!ValidationHelper::validateState($new_state)) {
+        $errors['state'] = 'State should contain only letters';
+    }
+    
+    // Use new postal code validation
+    $postalValidation = ValidationHelper::validatePostalCode($new_postal);
+    if ($postalValidation !== true) {
+        $errors['postal'] = $postalValidation;
+    } else {
+        // If postal code is valid, get the state from it
+        $stateFromPostal = ValidationHelper::getStateFromPostalCode($new_postal);
+        if ($stateFromPostal && strtolower($new_state) != strtolower($stateFromPostal)) {
+            $errors['postal'] = "Postal code doesn't match the selected state";
+        }
+    }
+
+    if (empty($errors)) {
         if ($address) {
             $stmt = $_db->prepare("UPDATE address SET Street = ?, City = ?, State = ?, PostalCode = ? WHERE UserID = ?");
             $stmt->execute([$new_street, $new_city, $new_state, $new_postal, $user_id]);
@@ -44,13 +78,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
             $stmt->execute([$user_id, $new_street, $new_city, $new_state, $new_postal]);
             $updateMessage = "✅ Address added successfully!";
         }
-    } else {
-        $updateMessage = "❌ All address fields are required!";
-    }
 
-    $stmt = $_db->prepare("SELECT * FROM address WHERE UserID = ?");
-    $stmt->execute([$user_id]);
-    $address = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $_db->prepare("SELECT * FROM address WHERE UserID = ?");
+        $stmt->execute([$user_id]);
+        $address = $stmt->fetch(PDO::FETCH_ASSOC);
+    } else {
+        $updateMessage = "❌ Please correct the errors below.";
+    }
 }
 
 // Update contact number
@@ -73,49 +107,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_contact"])) {
 // profile picture upload
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
     $file = $_FILES["profile_pic"];
+    
+    // Use ValidationHelper for file validation
+    $validation = ValidationHelper::validateProfilePicture($file);
+    
+    if ($validation['success']) {
+        $uploadDir = "../upload/customerPfp/";
+        if (!file_exists($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
 
-    if ($file["error"] === UPLOAD_ERR_OK) {
-        $fileName = $file["name"];
-        $fileTmpName = $file["tmp_name"];
-        $fileSize = $file["size"];
-        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-        $allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+        $fileExt = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
+        $newFileName = $user['UserID'] . "_" . time() . "." . $fileExt;
+        $uploadPath = $uploadDir . $newFileName;
 
-        if (!in_array($fileExt, $allowedExtensions)) {
-            $updateMessage = "❌ Invalid file type! Only JPG, PNG & GIF files are allowed.";
-        } elseif ($fileSize > 5000000) {
-            $updateMessage = "❌ File is too large! Maximum size is 5MB.";
-        } else {
-            $uploadDir = "../upload/customerPfp/";
-            if (!file_exists($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
-            }
+        // Remove old profile picture if it exists
+        if (!empty($user['ProfilePic']) && file_exists($user['ProfilePic']) && strpos($user['ProfilePic'], 'customerPfp') !== false) {
+            unlink($user['ProfilePic']);
+        }
 
-            $newFileName = $user['UserID'] . "_" . time() . "." . $fileExt;
-            $uploadPath = $uploadDir . $newFileName;
-
-            if (!empty($user['ProfilePic']) && file_exists($user['ProfilePic']) && strpos($user['ProfilePic'], 'customerPfp') !== false) {
-                unlink($user['ProfilePic']);
-            }
-
-            if (move_uploaded_file($fileTmpName, $uploadPath)) {
-                $stmt = $_db->prepare("UPDATE users SET ProfilePic = ? WHERE UserID = ?");
-                $stmt->execute([$uploadPath, $user['UserID']]);
-                if ($stmt->rowCount() > 0) {
-                    $updateMessage = "✅ Profile picture updated successfully!";
-
-                    $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
-                    $stmt->execute([$username]);
-                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-                } else {
-                    $updateMessage = "❌ Failed to update database.";
-                }
+        // Use ValidationHelper to handle the file upload
+        $upload = ValidationHelper::handleFileUpload($file, $uploadDir, $user['UserID'] . "_");
+        
+        if ($upload['success']) {
+            $stmt = $_db->prepare("UPDATE users SET ProfilePic = ? WHERE UserID = ?");
+            $stmt->execute([$upload['path'], $user['UserID']]);
+            
+            if ($stmt->rowCount() > 0) {
+                $updateMessage = "✅ Profile picture updated successfully!";
+                
+                // Refresh user data
+                $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
+                $stmt->execute([$username]);
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
             } else {
-                $updateMessage = "❌ Failed to upload file.";
+                $updateMessage = "❌ Failed to update database.";
             }
+        } else {
+            $updateMessage = "❌ " . $upload['message'];
         }
     } else {
-        $updateMessage = "❌ Upload failed: " . $file["error"];
+        $updateMessage = "❌ " . $validation['message'];
     }
 }
 
@@ -140,8 +172,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
 
 <body>
 
-
-    <a class="back-button redirect-button" data-redirect-url="MainPage.php">
+    <a class="redirect-button" data-redirect-url="MainPage.php">
         <img src="../upload/icon/back.png" alt="Back" class="back-icon" style="width: 30px; height: 30px;"> Continue Shopping
     </a>
 
@@ -153,16 +184,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
 
         <div class="profile-content">
             <div class="profile-sidebar">
-                <div class="profile-avatar">
-                    <img src="<?php echo !empty($user['ProfilePic']) ? htmlspecialchars($user['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>" alt="Profile Picture" id="profile-pic">
-                    <form method="POST" action="" enctype="multipart/form-data" id="profile-pic-form">
-                        <input type="file" name="profile_pic" id="profile-pic-input" style="display: none;" accept="image/jpeg,image/png,image/gif">
-                        <div class="avatar-buttons">
-                            <button type="button" class="change-avatar-btn" onclick="document.getElementById('profile-pic-input').click()">Select Picture</button>
-                            <button type="submit" class="upload-avatar-btn" id="upload-pic-btn" style="display: none;">Upload Picture</button>
-                        </div>
-                    </form>
-                </div>
+                <?php echo FormHelper::profilePicture('profile-pic-input', 'profile-pic', $user['ProfilePic']); ?>
+                
                 <nav class="profile-nav">
                     <a href="#personal-info" class="active">Personal Information</a>
                     <a href="UserSecurity.php">Security</a>
@@ -172,7 +195,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
 
             <div class="profile-main">
                 <?php if ($updateMessage): ?>
-                    <div class="update-message"><?php echo $updateMessage; ?></div>
+                    <div class="update-message <?php echo strpos($updateMessage, '✅') !== false ? 'success-message' : ''; ?>">
+                        <?php echo $updateMessage; ?>
+                    </div>
                 <?php endif; ?>
 
                 <form class="profile-form" method="POST" action="">
@@ -198,7 +223,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
                             <div class="input-with-icon">
-                                <input type="tel" id="phone" name="phone" value="<?php echo htmlspecialchars($user['ContactNo'] ?? ''); ?>" pattern="^(\+?6?01)[0-46-9]-*[0-9]{7,8}$" placeholder="01x-xxxxxxxx" required>
+                                <?php echo FormHelper::phone('phone', $user['ContactNo']); ?>
                                 <img src="../upload/icon/edit.png" alt="Edit" title="Click to edit" class="input-icon">
                             </div>
                             <small class="input-hint">Malaysian format: 0123456789</small>
@@ -218,29 +243,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                             <div class="form-group">
                                 <label for="street">Street Address</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="street" name="street" value="<?php echo htmlspecialchars($address['Street']); ?>" required>
+                                    <?php echo FormHelper::street('street', $address['Street']); ?>
                                 </div>
+                                <?php if (isset($errors['street'])): ?>
+                                    <span class="error-message"><?php echo $errors['street']; ?></span>
+                                <?php endif; ?>
                             </div>
 
                             <div class="form-group">
                                 <label for="city">City</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="city" name="city" value="<?php echo htmlspecialchars($address['City']); ?>" required>
+                                    <?php echo FormHelper::city('city', $address['City']); ?>
                                 </div>
+                                <?php if (isset($errors['city'])): ?>
+                                    <span class="error-message"><?php echo $errors['city']; ?></span>
+                                <?php endif; ?>
                             </div>
 
                             <div class="form-group">
                                 <label for="state">State</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="state" name="state" value="<?php echo htmlspecialchars($address['State']); ?>" required>
+                                    <?php echo FormHelper::state('state', $address['State']); ?>
                                 </div>
+                                <?php if (isset($errors['state'])): ?>
+                                    <span class="error-message"><?php echo $errors['state']; ?></span>
+                                <?php endif; ?>
                             </div>
 
                             <div class="form-group">
                                 <label for="postal">Postal Code</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="postal" name="postal" value="<?php echo htmlspecialchars($address['PostalCode']); ?>" required>
+                                    <?php echo FormHelper::postalCode('postal', $address['PostalCode']); ?>
                                 </div>
+                                <?php if (isset($errors['postal'])): ?>
+                                    <span class="error-message"><?php echo $errors['postal']; ?></span>
+                                <?php endif; ?>
                             </div>
 
                         <?php else: ?>
@@ -252,29 +289,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                             <div class="form-group">
                                 <label for="street">Street Address</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="street" name="street" placeholder="Enter your street" required>
+                                    <?php echo FormHelper::street('street'); ?>
                                 </div>
+                                <?php if (isset($errors['street'])): ?>
+                                    <span class="error-message"><?php echo $errors['street']; ?></span>
+                                <?php endif; ?>
                             </div>
 
                             <div class="form-group">
                                 <label for="city">City</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="city" name="city" placeholder="Enter your city" required>
+                                    <?php echo FormHelper::city('city'); ?>
                                 </div>
+                                <?php if (isset($errors['city'])): ?>
+                                    <span class="error-message"><?php echo $errors['city']; ?></span>
+                                <?php endif; ?>
                             </div>
 
                             <div class="form-group">
                                 <label for="state">State</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="state" name="state" placeholder="Enter your state" required>
+                                    <?php echo FormHelper::state('state'); ?>
                                 </div>
+                                <?php if (isset($errors['state'])): ?>
+                                    <span class="error-message"><?php echo $errors['state']; ?></span>
+                                <?php endif; ?>
                             </div>
 
                             <div class="form-group">
                                 <label for="postal">Postal Code</label>
                                 <div class="input-with-icon">
-                                    <input type="text" id="postal" name="postal" placeholder="Enter postal code" required>
+                                    <?php echo FormHelper::postalCode('postal'); ?>
                                 </div>
+                                <?php if (isset($errors['postal'])): ?>
+                                    <span class="error-message"><?php echo $errors['postal']; ?></span>
+                                <?php endif; ?>
                             </div>
 
                         <?php endif; ?>
@@ -292,6 +341,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
     </main>
 
     <?php include 'footer.php'; ?>
+    
 </body>
 
 </html>

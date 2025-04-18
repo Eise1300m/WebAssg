@@ -72,7 +72,7 @@ $orderStatuses = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
     <main class="admin-container">
         <div class="admin-header">
-            <h1>Order Management</h1>
+            <h1>Order Listing</h1>
             <p>View and manage customer orders</p>
         </div>
 

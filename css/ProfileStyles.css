@@ -161,12 +161,12 @@
 }
 
 .save-btn {
-    background: #4CAF50;
+    background: #59c05d8f;
     color: white;
 }
 
 .cancel-btn {
-    background: rgba(170, 31, 31, 0.747);
+    background: rgba(139, 40, 40, 0.747);
     color: white;
 }
 
@@ -175,7 +175,7 @@
 }
 
 .cancel-btn:hover {
-    background: rgba(255, 6, 6, 0.897);
+    background: rgba(201, 57, 57, 0.897);
 }
 
 /* Flash Message Styling */
@@ -328,7 +328,7 @@ input[readonly] {
     background: rgba(255, 255, 255, 0.1);
 }
 
-.back-button {
+.redirect-button {
     position: absolute;
     top: 150px;
     left: 20px;
@@ -351,7 +351,17 @@ input[readonly] {
     height: 35px;
 }
 
-.back-button:hover {
+.redirect-button:hover {
     background: rgba(106, 142, 251, 0.4);
     transform: translateX(-5px);
+}
+
+.error-message {
+    color: #f44336;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: block;
+}
+.success-message {
+    color: #4CAF50;
 }

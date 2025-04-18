@@ -274,7 +274,6 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 try {
-                    // Response is already parsed as JSON due to dataType:'json'
                     if (response.success) {
                         alert(response.message);
                         location.reload();
@@ -698,7 +697,7 @@ function closeOrderModal() {
 // Order cancellation functionality
 (function() {
     // Private variable to store the order ID being cancelled
-    let orderIdToCancel = null;
+    // let orderIdToCancel = null;
     
     // Initialize event listeners when document is ready
     $(document).ready(function() {
@@ -724,13 +723,13 @@ function closeOrderModal() {
             closeCancelModal();
         });
         
-        // Use event delegation to handle cancel button clicks
-        $(document).on('click', '.cancel-btn[data-order-id]', function() {
-            const orderId = $(this).data('order-id');
-            if (orderId) {
-                showCancelModal(orderId);
-            }
-        });
+        // // Use event delegation to handle cancel button clicks
+        // $(document).on('click', '.cancel-btn[data-order-id]', function() {
+        //     const orderId = $(this).data('order-id');
+        //     if (orderId) {
+        //         showCancelModal(orderId);
+        //     }
+        // });
     });
     
     // Function to show the cancel modal
@@ -745,39 +744,39 @@ function closeOrderModal() {
         orderIdToCancel = null;
     }
     
-    // Function to process the order cancellation
-    function processOrderCancellation() {
-        if (!orderIdToCancel) return;
+    // // Function to process the order cancellation
+    // function processOrderCancellation() {
+    //     if (!orderIdToCancel) return;
         
-        $.ajax({
-            url: 'update_order_status.php',
-            type: 'POST',
-            data: { 
-                order_id: orderIdToCancel,
-                new_status: 'Cancelled'
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    showFloatingMessage('Order cancelled successfully!', 'success');
-                    setTimeout(function() {
-                    location.reload();
-                    }, 1500);
-                } else {
-                    showFloatingMessage(response.message || 'Failed to cancel order.', 'error');
-                }
-                closeCancelModal();
-            },
-            error: function() {
-                showFloatingMessage('Error cancelling order. Please try again.', 'error');
-                closeCancelModal();
-            }
-        });
-    }
+    //     $.ajax({
+    //         url: 'update_order_status.php',
+    //         type: 'POST',
+    //         data: { 
+    //             order_id: orderIdToCancel,
+    //             new_status: 'Cancelled'
+    //         },
+    //         dataType: 'json',
+    //         success: function(response) {
+    //             if (response.success) {
+    //                 showFloatingMessage('Order cancelled successfully!', 'success');
+    //                 setTimeout(function() {
+    //                 location.reload();
+    //                 }, 1500);
+    //             } else {
+    //                 showFloatingMessage(response.message || 'Failed to cancel order.', 'error');
+    //             }
+    //             closeCancelModal();
+    //         },
+    //         error: function() {
+    //             showFloatingMessage('Error cancelling order. Please try again.', 'error');
+    //             closeCancelModal();
+    //         }
+    //     });
+    // }
     
     // Expose functions to the global scope
     window.cancelOrder = showCancelModal;
     window.closeCancelModal = closeCancelModal;
-    window.confirmCancel = processOrderCancellation;
+    // window.confirmCancel = processOrderCancellation;
 })();
 

@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once("connection.php");
+require_once("base.php");
+includeNavbar();
 
 if (!isset($_SESSION['order_id'])) {
     header("Location: Cart.php");

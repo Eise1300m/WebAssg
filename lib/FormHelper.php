@@ -103,7 +103,46 @@ class FormHelper {
 
     public static function phone($key, $currentValue = '', $attr = '') {
         $value = self::getValue($key) ?: $currentValue;
-        return "<input type='tel' id='$key' name='$key' value='$value' pattern='^(\+?6?01)[0-46-9]-*[0-9]{7,8}$' placeholder='01x-xxxxxxxx' required $attr>";
+        return "<input type='tel' id='$key' name='$key' value='$value' pattern='^(\+?6?01)[0-46-9]-*[0-9]{7,8}$' placeholder='Malaysian format: 0123456789' required $attr>";
+    }
+
+    public static function street($key, $currentValue = '', $attr = '') {
+        $value = self::getValue($key) ?: $currentValue;
+        return "<input type='text' id='$key' name='$key' value='$value' placeholder='Enter your street address' required $attr>";
+    }
+
+    public static function city($key, $currentValue = '', $attr = '') {
+        $value = self::getValue($key) ?: $currentValue;
+        return "<input type='text' id='$key' name='$key' value='$value' placeholder='Enter your city' required $attr>";
+    }
+
+    public static function state($key, $currentValue = '', $attr = '') {
+        $value = self::getValue($key) ?: $currentValue;
+        return "<input type='text' id='$key' name='$key' value='$value' pattern='^[A-Za-z\s]+$' placeholder='Enter state (letters only)' required $attr>";
+    }
+
+    public static function postalCode($key, $currentValue = '', $attr = '') {
+        $value = self::getValue($key) ?: $currentValue;
+        return "<input type='text' id='$key' name='$key' value='$value' pattern='^[0-9]{5}$' placeholder='5-digit postal code' required $attr>";
+    }
+
+    // Profile picture upload field with preview
+    public static function profilePicture($inputId = 'profile-pic-input', $previewId = 'profile-pic', $currentPicture = '', $attr = '') {
+        $defaultImage = '../upload/icon/UnknownUser.jpg';
+        $currentImage = !empty($currentPicture) ? $currentPicture : $defaultImage;
+        
+        $html = '<div class="profile-avatar">';
+        $html .= '<img src="' . htmlspecialchars($currentImage) . '" alt="Profile Picture" id="' . $previewId . '">';
+        $html .= '<form method="POST" action="" enctype="multipart/form-data" id="profile-pic-form">';
+        $html .= '<input type="file" name="profile_pic" id="' . $inputId . '" style="display: none;" accept="image/jpeg,image/png,image/gif" ' . $attr . '>';
+        $html .= '<div class="avatar-buttons">';
+        $html .= '<button type="button" class="change-avatar-btn" onclick="document.getElementById(\'' . $inputId . '\').click()">Select Picture</button>';
+        $html .= '<button type="submit" class="upload-avatar-btn" id="upload-pic-btn" style="display: none;">Upload Picture</button>';
+        $html .= '</div>';
+        $html .= '</form>';
+        $html .= '</div>';
+        
+        return $html;
     }
 
     private static function getValue($key) {

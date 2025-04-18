@@ -32,7 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $order_id = $_POST['order_id'];
     
     try {
-        // First check if the order exists and belongs to the user
         $checkStmt = $_db->prepare("SELECT OrderStatus FROM orders WHERE OrderNo = ? AND UserID = ?");
         $checkStmt->execute([$order_id, $user_id]);
         $order = $checkStmt->fetch(PDO::FETCH_ASSOC);
@@ -89,7 +88,6 @@ $stmt = $_db->prepare("SELECT * FROM orders WHERE UserID = ? ORDER BY OrderDate 
 $stmt->execute([$user_id]);
 $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -110,7 +108,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body data-page="orders">
 
-    <a class="back-button" onclick="window.location.href='MainPage.php'">
+    <a class="redirect-button" data-redirect-url="MainPage.php">
         <img src="../upload/icon/back.png" alt="Back" class="back-icon" style="width: 30px; height: 30px;"> Continue Shopping
     </a>
     <main class="order-history-container">

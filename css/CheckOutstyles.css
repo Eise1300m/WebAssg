@@ -27,7 +27,7 @@ body {
     color: white;
     padding: 20px;
     text-align: center;
-
+    margin-top: 20px;
 }
 
 .payment-header h1 {
@@ -242,7 +242,6 @@ body {
     font-size: 16px;
 }
 
-/* Buttons */
 .action-buttons {
     display: flex;
     justify-content: space-between;
@@ -262,6 +261,7 @@ body {
 .btn-back {
     background-color: #f1f1f1;
     color: #333;
+    text-decoration: none;
 }
 
 .btn-back:hover {
@@ -278,33 +278,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* Error Message */
-.error-message {
-    background-color: #ffebee;
-    color: #f44336;
-    padding: 10px 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    font-weight: 500;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .payment-body {
-        flex-direction: column;
-    }
-
-    .order-summary {
-        border-right: none;
-        border-bottom: 1px solid #e0e0e0;
-        padding-bottom: 30px;
-        margin-bottom: 20px;
-    }
-
-    .payment-options {
-        grid-template-columns: 1fr;
-    }
-}
 
 /* Make radio buttons more visible */
 .payment-option input[type="radio"]:checked + label .checkmark {
@@ -314,5 +287,32 @@ body {
 .payment-option input[type="radio"]:checked + label .payment-option-name {
     color: #47186e;
     font-weight: 700;
+}
+
+.floating-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    max-width: 300px;
+}
+
+.floating-message.success {
+    background-color: #4caf50;
+    color: white;
+}
+
+.floating-message.error {
+    background-color: #f44336;
+    color: white;
+}
+
+.floating-message-container {
+    min-height: 10px;
 }
 

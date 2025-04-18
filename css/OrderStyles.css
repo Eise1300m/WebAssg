@@ -166,9 +166,9 @@
 .no-orders {
     text-align: center;
     padding: 40px;
-    background: #f8f9fa;
+    background: #f8f9fa79;
     border-radius: 12px;
-    color: #666;
+    color: #ffffff;
 }
 
 .no-orders i {
@@ -178,7 +178,7 @@
 
 .no-orders h3 {
     margin: 10px 0;
-    color: #333;
+    color: #ffffff;
 }
 
 .no-orders p {
@@ -187,7 +187,7 @@
 
 .browse-btn {
     display: inline-block;
-    background: #007bff;
+    background: #2982e2;
     color: white;
     padding: 10px 20px;
     border-radius: 8px;
@@ -262,6 +262,22 @@
     background-color: #dc3545;
 }
 
+.floating-message.info {
+    background-color: #17a2b8;
+}
+
+.close-message {
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    opacity: 0.7;
+}
+
+.close-message:hover {
+    opacity: 1;
+}
+
 @keyframes slideIn {
     from {
         transform: translateX(100%);
@@ -273,7 +289,6 @@
     }
 }
 
-/* Status Timeline Styles */
 .status-timeline {
     display: flex;
     justify-content: space-between;

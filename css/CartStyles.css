@@ -6,7 +6,6 @@
 
 }
 
-
 .cart-page-wrapper {
     background-color: #f0f0f0e8;
     height: 100%;
@@ -261,17 +260,17 @@
 /* Floating Messages */
 .floating-message {
     position: fixed;
-    top: 140px;
+    top: 100px;
     right: 20px;
-    padding: 15px 25px;
-    border-radius: 8px;
-    z-index: 9999;
+    padding: 15px 20px;
+    border-radius: 5px;
     color: white;
-    font-weight: 500;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    animation: slideIn 0.3s ease-out;
-    max-width: 300px;
-    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    max-width: 80%;
+    word-wrap: break-word;
+    animation: slideIn 0.3s forwards;
 }
 
 .floating-message.error {
@@ -282,49 +281,20 @@
     background-color: #4CAF50;
 }
 
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+.floating-message.info {
+    background-color: #17a2b8;
 }
 
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
+.close-message {
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    opacity: 0.7;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .cart-content {
-        flex-direction: column;
-    }
-
-    .order-summary {
-        width: 100%;
-    }
-
-    .cart-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-
-    .item-section {
-        width: 100%;
-    }
-
-    .book-details {
-        width: 100%;
-    }
+.close-message:hover {
+    opacity: 1;
 }
 
 /* Add these styles */
@@ -344,15 +314,7 @@
     animation: fadeIn 0.3s ease-out;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
 
-    to {
-        opacity: 1;
-    }
-}
 
 /* Empty cart styles */
 .empty-cart {
@@ -384,7 +346,11 @@
     transform: translateY(-2px);
 }
 
-/* Animation for the error message */
+
+.item-title {
+    font-size: 20px;
+}
+
 @keyframes slideIn {
     from {
         transform: translateX(100%);
@@ -405,6 +371,11 @@
     }
 }
 
-.item-title {
-    font-size: 20px; /* 1.25rem */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

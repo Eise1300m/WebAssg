@@ -22,24 +22,22 @@ if (!empty($searchQuery)) {
     $filters['search'] = $searchQuery;
 }
 
-// Get books using BookHelper
+// Get book 
 $books = BookHelper::getBooks($filters);
 
-// Get categories for filter dropdown
+// Get categories 
 $categories = BookHelper::getCategories();
 
-// Get subcategories for filter dropdown
+// Get subcategories 
 $subcategories = [];
 if ($categoryFilter !== 'all') {
     $subcategories = BookHelper::getSubcategories($categoryFilter);
 }
 
 // Include navbar
-include 'navbar.php';
-include 'DropDownNav.php';
+includeNavbar();
+includeDropDownNav();
 
-// Display any flash messages
-displayFlashMessages();
 ?>
 
 <!DOCTYPE html>
@@ -107,7 +105,7 @@ displayFlashMessages();
         </div>
     </div>
 
-    <?php include 'footer.php'; ?>
+    <?php includeFooter(); ?>
 </body>
 
 </html>

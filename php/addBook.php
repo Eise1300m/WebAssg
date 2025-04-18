@@ -13,7 +13,7 @@ requireAdmin();
 
 try {
     $bookName = $_POST['book_name'];
-    $bookAuthor = isset($_POST['book_author']) ? $_POST['book_author'] : '';
+    $bookAuthor = $_POST['book_author'];
     $bookPrice = $_POST['book_price'];
     $description = $_POST['book_description'];
     $subcategoryNo = $_POST['subcategory'];

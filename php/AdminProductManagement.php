@@ -2,18 +2,14 @@
 require_once("base.php");
 require_once("../lib/BookHelper.php");
 
-// Initialize BookHelper with database connection
 BookHelper::init($_db);
 
-// Check if user is admin
 requireAdmin();
 
-// Determine any filters from GET parameters
 $categoryFilter = isset($_GET['category']) ? $_GET['category'] : 'all';
 $subcategoryFilter = isset($_GET['subcategory']) ? $_GET['subcategory'] : 'all';
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-// Prepare the query with potential filters
 $query = "
     SELECT b.*, s.SubcategoryName, s.CategoryNo, c.CategoryName 
     FROM book b 
@@ -59,15 +55,11 @@ $allSubcategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // Count books for stats
 $bookCount = count($books);
 
-// Output header with custom title
 
-// Include navbar
 includeAdminNav();
 
-// Display any flash messages
-displayFlashMessages();
+displayFlashMessage();
 
-// Add this after your existing database queries, before the HTML
 $subcategoriesMap = [];
 foreach ($allSubcategories as $sub) {
     if (!isset($subcategoriesMap[$sub['CategoryNo']])) {
@@ -256,6 +248,13 @@ foreach ($allSubcategories as $sub) {
                     <div class="form-group">
                         <label for="book_name">Book Name</label>
                         <input type="text" id="book_name" name="book_name" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="book_author">Author</label>
+                        <input type="text" id="book_author" name="book_author" required>
                     </div>
                 </div>
 

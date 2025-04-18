@@ -52,7 +52,7 @@ includeNavbar();
 
 <body>
 
-    <a class="back-button" onclick="window.location.href='MainPage.php'">
+    <a class="redirect-button" data-redirect-url="MainPage.php">
         <img src="../upload/icon/back.png" alt="Back" class="back-icon" style="width: 30px; height: 30px;"> Continue Shopping
     </a>
 

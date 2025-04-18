@@ -1,40 +1,26 @@
 <?php
 require_once("base.php");
 
-// Ensure user is logged in
 requireLogin();
 
 $username = $_SESSION['user_name'];
 
-// Get user information
 $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
 $stmt->execute([$username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$user) {
-    handleError("User not found.", "UserLogin.php");
-}
-
 $user_id = $user['UserID'];
 
-// Get user's address
 $stmt = $_db->prepare("SELECT * FROM address WHERE UserID = ?");
 $stmt->execute([$user_id]);
 $address = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Include navbar
 includeNavbar();
-
-// Display any flash messages
-displayFlashMessages();
 
 $cart = $_SESSION['cart'] ?? [];
 $subtotal = 0;
 $shipping = 5.00;
 
-require_once "connection.php";
-
-// Fetch book details for all items in cart
 if (!empty($cart)) {
     $bookIds = array_keys($cart);
     $placeholders = str_repeat('?,', count($bookIds) - 1) . '?';
@@ -59,11 +45,11 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart - Secret Shelf</title>
+    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="stylesheet" href="../css/CartStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <script src="../js/Scripts.js"></script>
     <script src="../js/order.js"></script>
 </head>
@@ -176,8 +162,10 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
     </div>
 
     <?php 
+
     // Recalculate total after the cart items loop is complete
     $total = $subtotal + $shipping;
+
     // Store the total in session for use in checkout
     $_SESSION['cart_total'] = $total;
     $_SESSION['cart_subtotal'] = $subtotal;

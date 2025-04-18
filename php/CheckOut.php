@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once("connection.php");
 require_once("base.php");
 
 if (!isset($_SESSION['user_name']) || empty($_SESSION['cart'])) {
@@ -64,7 +63,6 @@ try {
         $isFirstOrder = false;
     }
 } catch (Exception $e) {
-    // Handle error silently, default to no discount if check fails
     $isFirstOrder = false;
 }
 
@@ -117,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Start transaction
             $_db->beginTransaction();
             
-            // 1. Create the order - now including AddressID
+            // Create the order - now including AddressID
             $stmt = $_db->prepare("INSERT INTO orders (OrderDate, TotalQuantity, TotalAmount, PaymentType, UserID, AddressID) 
                                   VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->execute([$order_date, $totalQuantity, $totalPrice, $payment_type, $user_id, $address['AddressID']]);
@@ -125,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Get the new order ID
             $order_id = $_db->lastInsertId();
             
-            // 2. Add order items
+            // Add order items
             foreach ($_SESSION['cart'] as $book) {
                 $subtotal = $book['Price'] * $book['Quantity'];
                 $stmt = $_db->prepare("INSERT INTO orderdetails (OrderNo, BookNo, Quantity, Price) 
@@ -133,16 +131,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->execute([$order_id, $book['BookNo'], $book['Quantity'], $subtotal]);
             }
             
-            // 3. Complete the transaction
+            // Complete the transaction
             $_db->commit();
             
-            // 4. Store order ID in session for receipt
+            // Store order ID in session for receipt
             $_SESSION['order_id'] = $order_id;
             
-            // 5. Clear cart after successful order
+            // Clear cart after successful order
             unset($_SESSION['cart']);
             
-            // 6. Redirect to receipt
+           
             header("Location: Receipt.php");
             exit;
             
@@ -168,11 +166,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Checkout - Secret Shelf</title>
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="stylesheet" href="../css/Paymentstyles.css">
+    <link rel="stylesheet" href="../css/CheckOutstyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/Scripts.js"></script>
-
->
 
 </head>
 <body>
@@ -185,9 +181,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         
         <?php if (!empty($payment_error)): ?>
-        <div class="error-message">
-            <p><?php echo htmlspecialchars($payment_error); ?></p>
+        <div class="floating-message error">
+            <?php echo htmlspecialchars($payment_error); ?>
         </div>
+
         <?php endif; ?>
         
         <div class="payment-body">
@@ -312,7 +309,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     
                     <div class="action-buttons">
-                        <button type="submit" name="cancel_checkout" value="1" class="btn btn-back">Back to Cart</button>
+                        <a href="Cart.php" class="btn btn-back">Back to Cart</a>
                         <button type="submit" name="confirm_payment" value="1" class="btn btn-pay">Confirm & Pay</button>
                     </div>
                 </form>

@@ -37,7 +37,6 @@ displayFlashMessage();
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/HomeStyles.css">
     <link rel="stylesheet" href="../css/AdminStyles.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
 </head>
 
@@ -102,6 +101,13 @@ displayFlashMessage();
                         <h3>Customer Management</h3>
                         <p>View customers</p>
                     </div>
+
+                    <div class="admin-card redirect-button" data-redirect-url="AdminSalesReport.php">
+                        <img src="../upload/icon/sales.png" alt="Sales Report" class="card-icon">
+                        <h3>Sales Report</h3>
+                        <p>View sales report</p>
+                    </div>
+
                 </div>
             </div>
         </div>

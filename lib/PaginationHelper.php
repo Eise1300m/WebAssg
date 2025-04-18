@@ -1,6 +1,6 @@
 <?php
 /**
- * PaginationHelper - A utility class to handle pagination for database queries
+ * A utility class to handle pagination for database queries
  */
 class PaginationHelper {
     private static $_instance = null;
@@ -11,7 +11,7 @@ class PaginationHelper {
     }
     
     /**
-     * Initialize the PaginationHelper with database connection
+     * Initialize with database connection
      */
     public static function init($db) {
         if (self::$_instance === null) {
@@ -19,9 +19,6 @@ class PaginationHelper {
         }
     }
     
-    /**
-     * Get the singleton instance
-     */
     public static function getInstance() {
         if (self::$_instance === null) {
             throw new Exception("PaginationHelper is not initialized. Call init() first.");

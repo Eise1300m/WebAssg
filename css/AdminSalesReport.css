@@ -1,0 +1,276 @@
+.contentcontainer{
+
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    min-height: calc(100vh - 400px);
+    padding: 32px;
+    margin-top: 32px;
+}
+
+.container{
+    max-width: 1600px;
+    margin: 40px auto;
+    padding: 32px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+
+
+.date-filter-container {
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.date-filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.date-range-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.date-input {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.date-input label {
+    color: #fff;
+    font-size: 14px;
+}
+
+.date-input input {
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 14px;
+}
+
+.apply-date-btn {
+    background: #47186e;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    align-self: flex-end;
+}
+
+.apply-date-btn:hover {
+    background: #5a1f8c;
+}
+
+/* Summary Cards */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.3s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-icon i {
+    font-size: 24px;
+    color: #fff;
+}
+
+.card-info {
+    flex: 1;
+}
+
+.card-info span {
+    display: block;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.card-info h3 {
+    color: #fff;
+    margin: 0;
+    font-size: 24px;
+}
+
+/* Sales Table */
+.sales-table-container {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.sales-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.sales-table th {
+    background: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.sales-table td {
+    padding: 12px;
+    color: #f0f0f0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sales-table tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sales-table tr:last-child td {
+    border-bottom: none;
+}
+
+.no-results {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+}
+
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    padding: 0;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.page-link {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    min-width: 40px;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+.page-link:hover:not(.disabled):not(.current):not(.dots) {
+    background-color: #f0f0f0;
+    border-color: #ccc;
+}
+
+.page-link.current {
+    background-color: #4a6fdc;
+    color: white;
+    border-color: #4a6fdc;
+    cursor: default;
+}
+
+.page-link.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+    background-color: #f5f5f5;
+}
+
+.page-link.dots {
+    border: none;
+    background: none;
+    cursor: default;
+    min-width: 20px;
+}
+
+.page-link.prev,
+.page-link.next {
+    min-width: 40px;
+    font-weight: bold;
+}
+
+/* Summary text */
+.pagination-summary {
+    text-align: center;
+    color: #e9e9e9;
+    margin: 20px 0;
+    font-size: 1em;
+    width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .date-range-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .apply-date-btn {
+        align-self: stretch;
+    }
+
+    .summary-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .sales-table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .pagination {
+        gap: 3px;
+    }
+    
+    .page-link {
+        padding: 6px 10px;
+        min-width: 35px;
+        font-size: 1em;
+    }
+    
+    .page-link.prev,
+    .page-link.next {
+        min-width: 35px;
+    }
+} 

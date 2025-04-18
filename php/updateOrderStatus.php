@@ -1,20 +1,20 @@
 <?php
 session_start();
-require_once("connection.php");
+require_once("base.php");
 
 header('Content-Type: application/json');
 
-// Check if user is logged in
-if (!isset($_SESSION['user_name'])) {
-    echo json_encode(['success' => false, 'message' => 'Not authorized']);
-    exit;
-}
+// // Check if user is logged in
+// if (!isset($_SESSION['user_name'])) {
+//     echo json_encode(['success' => false, 'message' => 'Not authorized']);
+//     exit;
+// }
 
-// Check if required parameters are present
-if (!isset($_POST['order_id']) || !isset($_POST['status'])) {
-    echo json_encode(['success' => false, 'message' => 'Missing parameters']);
-    exit;
-}
+// // Check if required parameters are present
+// if (!isset($_POST['order_id']) || !isset($_POST['status'])) {
+//     echo json_encode(['success' => false, 'message' => 'Missing parameters']);
+//     exit;
+// }
 
 $order_id = $_POST['order_id'];
 $status = $_POST['status'];
@@ -44,7 +44,7 @@ try {
 
     // Define valid status transitions
     $valid_transitions = [
-        'Preparing' => ['Delivering'],
+        'Preparing' => ['Delivering','Cancelled'],
         'Delivering' => ['Collected'],
         'Collected' => ['Complete'],
         'Complete' => [],

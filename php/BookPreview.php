@@ -44,7 +44,7 @@ $rating_data = $stmt->fetch(PDO::FETCH_ASSOC);
 $average_rating = $rating_data['average_rating'] ? round($rating_data['average_rating'], 1) : 0;
 $review_count = $rating_data['review_count'];
 
-include 'navbar.php';
+includeNavbar();
 ?>
 
 <!DOCTYPE html>
@@ -65,9 +65,10 @@ include 'navbar.php';
 
 <body>
     <!-- Back button -->
-    <a class="back-button redirect-button" data-redirect-url="MainPage.php">
-        <img src="../upload/icon/back.png" class="back-icon" alt="Back"> Back to Main Page
-    </a>
+    <a class="back-button">
+    <img src="../upload/icon/back.png" alt="Back"> Go Back
+</a>
+
 
     <div class="wrap-container">
         <div class="book-container">
@@ -198,7 +199,8 @@ include 'navbar.php';
         </div>
     </div>
 
-    <?php include 'footer.php'; ?>
 </body>
+
+<?php includeFooter(); ?>
 
 </html>

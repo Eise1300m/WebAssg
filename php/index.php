@@ -16,8 +16,8 @@
 
 <?php 
     require_once("base.php");
-    include_once("navbar.php");
-    include_once("DropDownNav.php");
+    includeNavbar();
+    includeDropDownNav();
 
     function fetchBooks($query, $limit = 5) {
         global $_db;
@@ -39,11 +39,9 @@
                         LIMIT ?";
     $bestSellers = fetchBooks($bestSellersQuery);
 
-    $latestBooksQuery = "SELECT DISTINCT b.* 
+    $latestBooksQuery = "SELECT b.* 
                         FROM book b 
-                        LEFT JOIN orderdetails od ON b.BookNo = od.BookNo 
-                        LEFT JOIN orders o ON od.OrderNo = o.OrderNo 
-                        ORDER BY COALESCE(o.OrderDate, '1970-01-01') DESC, b.BookNo DESC 
+                        ORDER BY b.BookNo DESC 
                         LIMIT ?";
     $latestBooks = fetchBooks($latestBooksQuery);
 
@@ -134,6 +132,10 @@
         </div>
     </div>
 
-    <?php include 'footer.php'; ?>
+    
+    
 </body>
+
+<?php includeFooter(); ?>
+
 </html>
