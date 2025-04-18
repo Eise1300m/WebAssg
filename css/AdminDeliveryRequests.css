@@ -126,23 +126,3 @@
     background-color: #1976d2;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .status-overview {
-        flex-direction: column;
-    }
-    
-    .status-card {
-        width: 100%;
-    }
-    
-    .action-buttons {
-        flex-direction: column;
-    }
-    
-    .view-details,
-    .status-btn {
-        width: 100%;
-        justify-content: center;
-    }
-} 

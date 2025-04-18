@@ -16,8 +16,11 @@
 
 <?php 
     require_once("base.php");
+
+    isCustomer();
     includeNavbar();
     includeDropDownNav();
+    
 
     function fetchBooks($query, $limit = 5) {
         global $_db;

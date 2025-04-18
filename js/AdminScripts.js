@@ -421,36 +421,65 @@ function initializePasswordValidation() {
 }
 
 function initializeProfilePicture() {
-    // Show preview and upload button when file is selected
-    $('#profile-pic-input').on('change', function (e) {
+    // Show upload button and preview when a file is selected
+    $('#profile-pic-input').on('change', function() {
         if (this.files && this.files[0]) {
+            // Get the file
             const file = this.files[0];
-
-            // Validate file size (5MB max)
-            if (file.size > 5000000) {
-                alert('File is too large. Maximum size is 5MB.');
-                this.value = '';
-                return;
-            }
-
-            // Validate file type
-            if (!file.type.match('image.*')) {
-                alert('Only image files are allowed.');
-                this.value = '';
-                return;
-            }
-
-            // Show preview
+            
+            // Show the upload button
+            $('#upload-pic-btn').show();
+            
+            // Preview the image
             const reader = new FileReader();
-            reader.onload = function (e) {
-                $('.admin-avatar').attr('src', e.target.result);
+            reader.onload = function(e) {
+                $('#profile-pic').attr('src', e.target.result);
             }
             reader.readAsDataURL(file);
-
-            // Show upload button
-            $('#upload-pic-btn').show();
+            
+            // Log file info for debugging
+            console.log('File selected:', file.name, file.type, file.size);
         }
     });
+    
+    // Handle form submission
+    $('#profile-pic-form').on('submit', function(e) {
+        console.log('Profile picture form submitted');
+        
+        // Check if a file is selected
+        const fileInput = $('#profile-pic-input')[0];
+        if (!fileInput.files || !fileInput.files[0]) {
+            console.error('No file selected');
+            e.preventDefault();
+            return false;
+        }
+        
+        // Validate file type (additional client-side check)
+        const file = fileInput.files[0];
+        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        
+        if (!validTypes.includes(file.type)) {
+            alert('Invalid file type. Please select a JPEG, PNG, or GIF image.');
+            e.preventDefault();
+            return false;
+        }
+        
+        // Validate file size (less than 2MB)
+        const maxSize = 2 * 1024 * 1024; // 2MB
+        if (file.size > maxSize) {
+            alert('File is too large. Maximum size is 2MB.');
+            e.preventDefault();
+            return false;
+        }
+        
+        // Continue with form submission
+        return true;
+    });
+    
+    // If upload button exists, ensure it's initially hidden
+    if ($('#upload-pic-btn').length) {
+        $('#upload-pic-btn').hide();
+    }
 }
 
 function updateOrderStatus(orderId, newStatus) {

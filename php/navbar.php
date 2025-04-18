@@ -5,6 +5,8 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 $login = isset($_SESSION['user_name']);
+
+
 ?>
 
 <div class="navbar">

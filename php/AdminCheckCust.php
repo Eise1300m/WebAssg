@@ -31,6 +31,8 @@ if (!empty($search)) {
 }
 $customers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $totalCustomers = count($customers);
+
+includeAdminNav();
 ?>
 
 <!DOCTYPE html>
@@ -49,9 +51,8 @@ $totalCustomers = count($customers);
 </head>
 
 <body>
-    <?php require_once("navbaradmin.php") ?>
 
-    <a class="back-button" onclick="window.location.href='AdminMainPage.php'">
+    <a class="back-button" href='AdminMainPage.php'">
         <img src="../upload/icon/back.png" alt="Back" class="back-icon"> Back to Dashboard
     </a>
 

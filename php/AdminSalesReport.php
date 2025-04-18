@@ -3,7 +3,6 @@ session_start();
 require_once("base.php");
 require_once("../lib/PaginationHelper.php");
 
-// Check if user is admin
 requireAdmin();
 
 // Get pagination parameters
@@ -11,13 +10,22 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $itemsPerPage = isset($_GET['items_per_page']) ? intval($_GET['items_per_page']) : 10;
 $itemsPerPage = in_array($itemsPerPage, [10, 25, 50, 100]) ? $itemsPerPage : 10;
 
-// Get date range parameters
-$startDate = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01'); // Default to start of current month
-$endDate = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d'); // Default to current date
+// Determine if showing all sales or date-filtered sales
+$showAllSales = empty($_GET['start_date']) || empty($_GET['end_date']);
 
-// Add time component to include the full day
-$startDate = $startDate . ' 00:00:00';
-$endDate = $endDate . ' 23:59:59';
+if ($showAllSales) {
+    // Show all-time sales
+    $startDate = '2000-01-01 00:00:00'; // A date far in the past
+    $endDate = date('Y-m-d') . ' 23:59:59'; // Today
+    $displayStartDate = '';
+    $displayEndDate = '';
+} else {
+    // Show filtered sales based on date range
+    $startDate = $_GET['start_date'] . ' 00:00:00';
+    $endDate = $_GET['end_date'] . ' 23:59:59';
+    $displayStartDate = $_GET['start_date'];
+    $displayEndDate = $_GET['end_date'];
+}
 
 // Build query for book sales
 $baseQuery = "SELECT b.BookNo, b.BookName, b.BookPrice, 
@@ -48,6 +56,28 @@ $totalSalesQuery = "SELECT SUM(od.Quantity * b.BookPrice) as GrandTotal
 $stmt = $_db->prepare($totalSalesQuery);
 $stmt->execute([$startDate, $endDate]);
 $totalSales = $stmt->fetch(PDO::FETCH_ASSOC)['GrandTotal'] ?? 0;
+
+// Calculate total books sold
+$totalBooksQuery = "SELECT SUM(od.Quantity) as TotalBooksSold
+                   FROM orderdetails od
+                   JOIN orders o ON od.OrderNo = o.OrderNo
+                   WHERE o.OrderDate BETWEEN ? AND ?";
+$stmt = $_db->prepare($totalBooksQuery);
+$stmt->execute([$startDate, $endDate]);
+$totalBooksSold = $stmt->fetch(PDO::FETCH_ASSOC)['TotalBooksSold'] ?? 0;
+
+// Calculate total orders
+$totalOrdersQuery = "SELECT COUNT(DISTINCT o.OrderNo) as TotalOrders
+                    FROM orders o
+                    WHERE o.OrderDate BETWEEN ? AND ?";
+$stmt = $_db->prepare($totalOrdersQuery);
+$stmt->execute([$startDate, $endDate]);
+$totalOrders = $stmt->fetch(PDO::FETCH_ASSOC)['TotalOrders'] ?? 0;
+
+// Get date range
+$dateRangeText = $showAllSales ? "All Time" : "From " . date('M j, Y', strtotime($startDate)) . " to " . date('M j, Y', strtotime($endDate));
+
+includeAdminNav();
 ?>
 
 <!DOCTYPE html>
@@ -61,16 +91,14 @@ $totalSales = $stmt->fetch(PDO::FETCH_ASSOC)['GrandTotal'] ?? 0;
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/HomeStyles.css">
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <?php include_once("navbaradmin.php") ?>
 
     <main class="container">
         <div class="admin-header">
             <h1>Sales Report</h1>
-            <p>View book sales and revenue</p>
+            <p>View book sales and revenue <?php echo $dateRangeText; ?></p>
         </div>
 
         <div class="contentcontainer">
@@ -85,14 +113,16 @@ $totalSales = $stmt->fetch(PDO::FETCH_ASSOC)['GrandTotal'] ?? 0;
                         <div class="date-input">
                             <label for="start_date">From:</label>
                             <input type="date" id="start_date" name="start_date" 
-                                   value="<?php echo htmlspecialchars($startDate); ?>" required>
+                                   value="<?php echo htmlspecialchars($displayStartDate); ?>" required>
                         </div>
                         <div class="date-input">
                             <label for="end_date">To:</label>
                             <input type="date" id="end_date" name="end_date" 
-                                   value="<?php echo htmlspecialchars($endDate); ?>" required>
+                                   value="<?php echo htmlspecialchars($displayEndDate); ?>" required>
                         </div>
                         <button type="submit" class="apply-date-btn">Apply</button>
+
+                        <a href="AdminSalesReport.php" class="reset">Reset</a>
                     </div>
                 </form>
             </div>
@@ -101,25 +131,25 @@ $totalSales = $stmt->fetch(PDO::FETCH_ASSOC)['GrandTotal'] ?? 0;
             <div class="summary-cards">
                 <div class="summary-card">
                     <div class="card-icon">
-                        <i class="fas fa-book"></i>
+                        <img src="../upload/icon/book.png" alt="Book" style="width: 25px; height: 25px;">
                     </div>
                     <div class="card-info">
                         <span>Total Books Sold</span>
-                        <h3><?php echo number_format(array_sum(array_column($salesData, 'TotalQuantity'))); ?></h3>
+                        <h3><?php echo number_format($totalBooksSold); ?></h3>
                     </div>
                 </div>
                 <div class="summary-card">
                     <div class="card-icon">
-                        <i class="fas fa-shopping-cart"></i>
+                        <img src="../upload/icon/shoppingcart.png" alt="Shopping Cart" style="width: 25px; height: 25px;">
                     </div>
                     <div class="card-info">
                         <span>Total Orders</span>
-                        <h3><?php echo number_format(array_sum(array_column($salesData, 'TotalOrders'))); ?></h3>
+                        <h3><?php echo number_format($totalOrders); ?></h3>
                     </div>
                 </div>
                 <div class="summary-card">
                     <div class="card-icon">
-                        <i class="fas fa-dollar-sign"></i>
+                        <img src="../upload/icon/sales.png" alt="Money" style="width: 25px; height: 25px;">
                     </div>
                     <div class="card-info">
                         <span>Total Revenue</span>

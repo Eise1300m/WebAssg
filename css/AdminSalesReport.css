@@ -21,7 +21,6 @@
 }
 
 
-
 .date-filter-container {
     margin-bottom: 20px;
     background: rgba(255, 255, 255, 0.1);
@@ -67,7 +66,7 @@
     background: #47186e;
     color: white;
     border: none;
-    padding: 8px 15px;
+    padding: 7px 15px;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -76,6 +75,23 @@
 
 .apply-date-btn:hover {
     background: #5a1f8c;
+}
+
+.reset{
+    background: #2c3d4e;
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    text-align: center;
+    align-self: flex-end;
+}
+
+.reset:hover {
+    background: #33863e;
 }
 
 /* Summary Cards */

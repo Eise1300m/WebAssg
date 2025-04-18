@@ -109,9 +109,22 @@ function getUserProfilePic() {
     return $default_pic;
 }
 
-// Common navbar include
+/**
+ * Include the navbar file based on user role
+ */
 function includeNavbar() {
-    include_once 'navbar.php';
+    // Check if user is logged in and has admin role
+    if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
+        // If admin is trying to access customer pages, redirect to admin main page
+        if (strpos($_SERVER['PHP_SELF'], 'AdminMainPage.php') === false && 
+            strpos($_SERVER['PHP_SELF'], 'Admin') === false) {
+            header("Location: AdminMainPage.php");
+            exit();
+        }
+        include 'navbaradmin.php';
+    } else {
+        include 'navbar.php';
+    }
 }
 
 function includeAdminNav() {

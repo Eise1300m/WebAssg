@@ -4,7 +4,6 @@ require_once("base.php");
 
 // Check if user is admin
 requireAdmin();
-
 // Handle order status update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_status') {
     // Set JSON content type header
@@ -90,6 +89,9 @@ $statusCounts = [
 foreach ($orders as $order) {
     $statusCounts[$order['OrderStatus']]++;
 }
+
+includeAdminNav();
+displayFlashMessage();
 ?>
 
 <!DOCTYPE html>
@@ -104,16 +106,14 @@ foreach ($orders as $order) {
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../css/DeliveryRequestStyles.css">
     <script src="../js/AdminScripts.js"></script>
 </head>
 
 <body data-page="admin">
-    <?php include_once("navbaradmin.php") ?>
-    <?php displayFlashMessage(); ?>
+    
 
-    <a class="back-button" onclick="window.history.back()">
+    <a class="back-button" href="AdminMainPage.php">
         <img src="../upload/icon/back.png" alt="Back" class="back-icon"> Back to Dashboard
     </a>
 

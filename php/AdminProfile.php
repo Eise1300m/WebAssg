@@ -22,40 +22,39 @@ $updateMessage = "";
 
 // Handle profile picture upload
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
-    $file = $_FILES["profile_pic"];
     
-    if ($file["error"] === UPLOAD_ERR_OK) {
-        $fileName = $file["name"];
-        $fileTmpName = $file["tmp_name"];
-        $fileSize = $file["size"];
-        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-        $allowedExtensions = ["jpg", "jpeg", "png", "gif"];
-
-        if (!in_array($fileExt, $allowedExtensions)) {
-            $updateMessage = "❌ Invalid file type! Only JPG, PNG & GIF files are allowed.";
-        } elseif ($fileSize > 5000000) { // 5MB max
-            $updateMessage = "❌ File is too large! Maximum size is 5MB.";
+    $file = $_FILES["profile_pic"];   
+    
+    // Use ValidationHelper for file validation
+    $validation = ValidationHelper::validateProfilePicture($file);
+    
+    if ($validation['success']) {
+        $uploadDir = "../upload/adminPfp/";
+        
+        // Ensure upload directory exists with proper permissions
+        if (!is_dir($uploadDir)) {
+            if (!mkdir($uploadDir, 0777, true)) {
+                $updateMessage = "❌ Failed to create upload directory. Please contact support.";
+            }
+        }
+        
+        // Check if directory exists and is writable
+        if (!is_dir($uploadDir) || !is_writable($uploadDir)) {
+            $updateMessage = "❌ Upload directory is not writable. Please check permissions.";
         } else {
-            // Set the correct upload directory for admins
-            $uploadDir = "../upload/adminPfp/";
-            if (!file_exists($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
+            // Remove old profile picture if it exists
+            if (!empty($admin['ProfilePic']) && file_exists($admin['ProfilePic']) && strpos($admin['ProfilePic'], 'adminPfp') !== false) {
+                @unlink($admin['ProfilePic']);
             }
 
-            // Create unique filename using admin ID and timestamp
-            $newFileName = $admin['UserID'] . "_" . time() . "." . $fileExt;
-            $uploadPath = $uploadDir . $newFileName;
-
-            // Delete old profile picture if exists
-            if (!empty($admin['ProfilePic']) && 
-                file_exists($admin['ProfilePic']) && 
-                strpos($admin['ProfilePic'], 'adminPfp') !== false) {
-                unlink($admin['ProfilePic']);
-            }
-
-            if (move_uploaded_file($fileTmpName, $uploadPath)) {
+            // Use ValidationHelper to handle the file upload
+            $upload = ValidationHelper::handleFileUpload($file, $uploadDir, $admin['UserID'] . "_");
+            
+            if ($upload['success']) {
                 $stmt = $_db->prepare("UPDATE users SET ProfilePic = ? WHERE UserID = ?");
-                if ($stmt->execute([$uploadPath, $admin['UserID']])) {
+                $stmt->execute([$upload['path'], $admin['UserID']]);
+                
+                if ($stmt->rowCount() > 0) {
                     $updateMessage = "✅ Profile picture updated successfully!";
                     
                     // Refresh admin data
@@ -66,11 +65,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                     $updateMessage = "❌ Failed to update database.";
                 }
             } else {
-                $updateMessage = "❌ Failed to upload file.";
+                $updateMessage = "❌ " . $upload['message'];
             }
         }
     } else {
-        $updateMessage = "❌ Upload failed: " . $file["error"];
+        $updateMessage = "❌ " . $validation['message'];
     }
 }
 
@@ -79,15 +78,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_contact"])) {
     $new_phone = trim($_POST["phone"]);
     
     if (!empty($new_phone)) {
-        $stmt = $_db->prepare("UPDATE users SET ContactNo = ? WHERE UserID = ?");
-        if ($stmt->execute([$new_phone, $admin['UserID']])) {
-            $updateMessage = "✅ Phone number updated successfully!";
-            
-            // Refresh admin data
-            $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
-            $stmt->execute([$username]);
-            $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+        // Validate phone number using ValidationHelper
+        if (ValidationHelper::validatePhone($new_phone)) {
+            $stmt = $_db->prepare("UPDATE users SET ContactNo = ? WHERE UserID = ?");
+            if ($stmt->execute([$new_phone, $admin['UserID']])) {
+                $updateMessage = "✅ Phone number updated successfully!";
+                
+                // Refresh admin data
+                $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
+                $stmt->execute([$username]);
+                $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+            } else {
+                $updateMessage = "❌ Failed to update phone number.";
+            }
+        } else {
+            $updateMessage = "❌ Invalid phone number format. Please use Malaysian format (01xxxxxxxxx).";
         }
+    } else {
+        $updateMessage = "❌ Phone number is required!";
     }
 }
 
@@ -102,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
     } elseif ($new_password !== $confirm_password) {
         $updateMessage = "❌ New passwords do not match!";
     } else {
-        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+        $hashed_password = ValidationHelper::hashPassword($new_password);
         $stmt = $_db->prepare("UPDATE users SET Password = ? WHERE UserID = ?");
         if ($stmt->execute([$hashed_password, $admin['UserID']])) {
             $updateMessage = "✅ Password updated successfully!";
@@ -122,6 +130,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/AdminScripts.js"></script>
 </head>
 <body>
     <?php include_once("navbaradmin.php") ?>
@@ -134,13 +144,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
 
         <div class="admin-content">
             <div class="admin-sidebar">
-                <div class="admin-profile">
                 <div class="admin-profile" style="text-align: center;">
                     <img src="<?php echo !empty($admin['ProfilePic']) ? htmlspecialchars($admin['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>"
-                        alt="Admin Profile" class="admin-avatar" style="display: block; margin: 0 auto;">
+                        alt="Admin Profile" class="admin-avatar" id="profile-pic" style="display: block; margin: 0 auto;">
                     <h3><?php echo htmlspecialchars($admin['Username']); ?></h3>
                     <p>Administrator</p>
-                </div>
+                    
                     <form method="POST" action="" enctype="multipart/form-data" id="profile-pic-form">
                         <input type="file" name="profile_pic" id="profile-pic-input" 
                                style="display: none;" 
@@ -166,14 +175,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                     </a>
                     <a href="AdminMainPage.php" class="admin-nav-item">
                         <img src="../upload/icon/dashboard.png" alt="Dashboard" class="nav-icon">
-                        Back toDashboard
+                        Back to Dashboard
                     </a>
                 </nav>
             </div>
 
             <div class="admin-main">
                 <?php if ($updateMessage): ?>
-                    <div class="admin-message"><?php echo $updateMessage; ?></div>
+                    <div class="admin-message <?php echo strpos($updateMessage, '✅') !== false ? 'success-message' : 'error-message'; ?>">
+                        <?php echo $updateMessage; ?>
+                    </div>
                 <?php endif; ?>
 
                 <div class="admin-form-section">
@@ -221,6 +232,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
         </div>
     </main>
 
-
+    <!-- No inline scripts - functionality moved to AdminScripts.js -->
 </body>
 </html> 

@@ -46,28 +46,6 @@ class ValidationHelper {
         return ['success' => true];
     }
 
-    // public static function isLoggedIn() {
-    //     return isset($_SESSION['user_name']);
-    // }
-
-    // public static function isAdmin() {
-    //     return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
-    // }
-
-    // public static function requireLogin() {
-    //     if (!self::isLoggedIn()) {
-    //         header('Location: UserLogin.php');
-    //         exit();
-    //     }
-    // }
-
-    // public static function requireAdmin() {
-    //     if (!self::isAdmin()) {
-    //         header('Location: index.php');
-    //         exit();
-    //     }
-    // }
-
     // New method to validate address fields
     public static function validateAddress($street, $city, $state, $postal) {
         $errors = [];
@@ -114,12 +92,12 @@ class ValidationHelper {
         if (empty($city)) {
             return false;
         }
-        // City should be letters only and at least 2 characters
+        // letters only and at least 2 characters
         return (strlen($city) >= 2 && preg_match('/^[A-Za-z\s]+$/', $city));
     }
 
     /**
-     * Validate a postal code
+     * 
      * 
      * @param string $postal The postal code to validate
      * @return bool|string True if valid, error message if invalid
@@ -144,7 +122,7 @@ class ValidationHelper {
     }
     
     /**
-     * Check if a postal code is valid for Malaysian states
+     * Check if postal code is valid
      * 
      * @param string $postal The postal code to validate
      * @return bool True if valid, false if invalid
