@@ -1,8 +1,7 @@
 <?php
 session_start();
-require_once("base.php");
+require_once("../base.php");
 
-// Check if user is admin
 requireAdmin();
 // Handle order status update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_status') {
@@ -65,7 +64,7 @@ $stmt = $_db->prepare("
 ");
 $stmt->execute();
 
-// Query to get all relevant orders
+// Query to get all orders
 $query = "
     SELECT o.*, u.Username, u.Email 
     FROM orders o 
@@ -78,7 +77,6 @@ $stmt = $_db->prepare($query);
 $stmt->execute();
 $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Count orders by status
 $statusCounts = [
     'Preparing' => 0,
     'Delivering' => 0,
@@ -101,10 +99,10 @@ displayFlashMessage();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delivery Requests - Secret Shelf</title>
-    <link rel="stylesheet" href="../css/HomeStyles.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <link rel="stylesheet" href="../../css/HomeStyles.css">
+    <link rel="stylesheet" href="../../css/NavbarStyles.css">
+    <link rel="stylesheet" href="../../css/FooterStyles.css">
+    <link rel="icon" type="image/x-icon" href="../../img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="../css/DeliveryRequestStyles.css">
     <script src="../js/AdminScripts.js"></script>

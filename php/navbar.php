@@ -6,14 +6,13 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $login = isset($_SESSION['user_name']);
 
-
 ?>
 
 <div class="navbar">
 
-    <a href="index.php" class="logo-link">
+    <a href="/WebAssg/php/index.php" class="logo-link">
         <div class="logo-container">
-            <img src="../img/Logo.png" alt="Logo">
+            <img src="/WebAssg/img/Logo.png" alt="Logo">
             <p>Secret Shelf</p>
         </div>
     </a>
@@ -21,7 +20,7 @@ $login = isset($_SESSION['user_name']);
     <div class="search-container">
         <input type="text" class="searchbar" placeholder="Search..." id="searchInput">
         <button id="searchButton" class="search-btn">
-            <img src="../upload/icon/search.png" alt="Search" class="search-icon">
+            <img src="/WebAssg/upload/icon/search.png" alt="Search" class="search-icon">
         </button>
     </div>
 
@@ -34,14 +33,17 @@ $login = isset($_SESSION['user_name']);
 
         <?php if ($login): ?>
             <div class="user-actions">
-                <a href="Cart.php" class="cart-btn">
-                    <img src="../upload/icon/shoppingcart.png" alt="Cart" class="cart-icon">
+                <a href="/WebAssg/php/Order/Cart.php" class="cart-btn">
+                    <img src="/WebAssg/upload/icon/shoppingcart.png" alt="Cart" class="cart-icon">
                     <span class="cart-count"><?= isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?></span>
                 </a> 
-                <?php include 'ProfileMenu.php'; ?>
+                <?php 
+                // Include ProfileMenu.php with absolute path
+                include_once dirname(__FILE__) . '/ProfileMenu.php';
+                ?>
             </div>
         <?php else: ?>
-            <a href="UserLogin.php" class="Login-Btn">Login / Sign up</a>
+            <a href="Authentication/UserLogin.php" class="Login-Btn">Login / Sign up</a>
         <?php endif; ?>
     </div>
 </div>

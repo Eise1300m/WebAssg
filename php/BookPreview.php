@@ -1,7 +1,6 @@
 <?php
 require_once("base.php");
 
-// Get book ID from URL
 $bookId = isset($_GET['book_id']) ? (int)$_GET['book_id'] : 0;
 
 // Fetch book details with category and subcategory information
@@ -158,11 +157,11 @@ includeNavbar();
                 </div>
 
                 <?php if (isset($_SESSION['user_name'])): ?>
-                    <button class="write-review-btn" onclick="location.href='WriteReview.php?book_id=<?php echo $bookId; ?>'">
+                    <button class="redirect-button write-review-btn" data-redirect-url='/WebAssg/php/WriteReview.php?book_id=<?php echo $bookId; ?>'>
                         <img src="../upload/icon/edit.png" alt="Edit" class="btn-icon"> Write a Review
                     </button>
                 <?php else: ?>
-                    <button class="write-review-btn" onclick="location.href='UserLogin.php?redirect=BookPreview.php?book_id=<?php echo $bookId; ?>'">
+                    <button class="redirect-button write-review-btn" data-redirect-url='/WebAssg/php/Authentication/UserLogin.php?redirect=BookPreview.php?book_id=<?php echo $bookId; ?>'>
                         <img src="../upload/icon/login.png" alt="Login" class="btn-icon"> Login to Write a Review
                     </button>
                 <?php endif; ?>

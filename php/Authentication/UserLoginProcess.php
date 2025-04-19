@@ -1,24 +1,34 @@
 <?php
-require_once("base.php");
+require_once("../base.php");
+require_once("../../lib/ValidationHelper.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['Username'] ?? '';
     $password = $_POST['Userpwd'] ?? '';
     
+    // Store redirect URL from form if provided
+    if (isset($_POST['redirect'])) {
+        $_SESSION['return_to'] = $_POST['redirect'];
+    }
+    
+    // Initialize errors array
+    $errors = [];
+    
     // Basic validation
     if (empty($username)) {
-        $_SESSION['flash_message'] = [
-            'type' => 'error',
-            'message' => 'Please enter your username.'
-        ];
-        header("Location: UserLogin.php");
-        exit;
+        $errors['Username'] = 'Username is required';
     }
     
     if (empty($password)) {
+        $errors['Userpwd'] = 'Password is required';
+    }
+    
+    // If there are validation errors, store them in session and redirect back
+    if (!empty($errors)) {
+        $_SESSION['login_errors'] = $errors;
         $_SESSION['flash_message'] = [
             'type' => 'error',
-            'message' => 'Please enter your password.'
+            'message' => 'Password or Username is incorrect'
         ];
         header("Location: UserLogin.php");
         exit;
@@ -38,13 +48,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_name'] = $username;
                 $_SESSION['user_role'] = $user['Role'];
                 
-                // Redirect to buffer page
-                header("Location: LoginBuffer.php");
-                exit();
+                // Redirect the user based on role
+                if ($user['Role'] == 'admin') {
+                    // Admin redirect
+                    header("Location: /WebAssg/php/Admin/AdminIndex.php");
+                    exit();
+                } else {
+                    // Regular user redirect
+                    // Check if we have a return URL saved in the session
+                    if (isset($_SESSION['return_to'])) {
+                        $redirect_url = $_SESSION['return_to'];
+                        unset($_SESSION['return_to']); // Clear it after use
+                        header("Location: $redirect_url");
+                        exit();
+                    } else {
+                        // Default redirect to main page
+                        header("Location: /WebAssg/php/MainPage.php");
+                        exit();
+                    }
+                }
             } else {
                 $_SESSION['flash_message'] = [
                     'type' => 'error',
-                    'message' => 'Invalid login credentials.'
+                    'message' => 'Invalid username or password'
                 ];
                 header("Location: UserLogin.php");
                 exit;
@@ -52,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $_SESSION['flash_message'] = [
                 'type' => 'error',
-                'message' => 'Invalid login credentials.'
+                'message' => 'Invalid username or password'
             ];
             header("Location: UserLogin.php");
             exit;

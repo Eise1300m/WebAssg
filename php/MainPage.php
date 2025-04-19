@@ -94,7 +94,7 @@ includeDropDownNav();
                                 Add to Cart
                             </button>
                         <?php else: ?>
-                            <button class="cart-but redirect-button" data-redirect-url="UserLogin.php">
+                            <button class="cart-but redirect-button" data-redirect-url="Authentication/UserLogin.php">
                                 <img src="../upload/icon/shoppingcart.png" alt="Cart">
                                 Login to Add
                             </button>

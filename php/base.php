@@ -4,18 +4,23 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+// Add this function at the top of the file after the session_start() code
+// This will help with path resolution across the site
+
+// REMOVING getBasePath function as it's no longer needed with absolute paths
+
 // Database connection
 require_once("connection.php");
 
 // Include helper classes
-require_once("../lib/ValidationHelper.php");
-require_once("../lib/FormHelper.php");
-require_once("../lib/BookHelper.php");
-require_once("../lib/PaginationHelper.php");
+// require_once("../lib/ValidationHelper.php");
+// require_once("../lib/FormHelper.php");
+// require_once("../lib/BookHelper.php");
+// require_once("../lib/PaginationHelper.php");
 
 // Initialize helpers
-BookHelper::init($_db);
-PaginationHelper::init($_db);
+// BookHelper::init($_db);
+// PaginationHelper::init($_db);
 
 // Common error handling function
 function handleError($message, $redirect = null) {
@@ -87,7 +92,9 @@ function getUsername() {
 // Get user's profile picture
 function getUserProfilePic() {
     global $_db;
-    $default_pic = '../upload/icon/UnknownUser.jpg';
+    
+    // Use an absolute path for the default picture
+    $default_pic = '/WebAssg/upload/icon/UnknownUser.jpg';
     
     if (!isset($_SESSION['user_name'])) {
         return $default_pic;
@@ -99,7 +106,16 @@ function getUserProfilePic() {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($result && !empty($result['ProfilePic'])) {
-            return $result['ProfilePic'];
+            // Convert relative paths to absolute if needed
+            $profilePic = $result['ProfilePic'];
+            
+            // If the profile pic is stored with a relative path, convert to absolute
+            if (strpos($profilePic, '../') === 0) {
+                // Convert "../upload/..." to "/WebAssg/upload/..."
+                $profilePic = '/WebAssg/' . substr($profilePic, 3);
+            }
+            
+            return $profilePic;
         }
     } catch (PDOException $e) {
         // Log error if needed
@@ -113,31 +129,25 @@ function getUserProfilePic() {
  * Include the navbar file based on user role
  */
 function includeNavbar() {
-    // Check if user is logged in and has admin role
-    if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
-        // If admin is trying to access customer pages, redirect to admin main page
-        if (strpos($_SERVER['PHP_SELF'], 'AdminMainPage.php') === false && 
-            strpos($_SERVER['PHP_SELF'], 'Admin') === false) {
-            header("Location: AdminMainPage.php");
-            exit();
-        }
-        include 'navbaradmin.php';
-    } else {
-        include 'navbar.php';
-    }
+   
+        include_once dirname(__FILE__) . '/navbar.php';
+    
 }
 
 function includeAdminNav() {
-    include_once 'navbaradmin.php';
+    // Include with absolute path
+    include_once dirname(__FILE__) . '/navbaradmin.php';
 }
 
 // Common footer include
 function includeFooter() {
-    include_once 'footer.php';
+    // Include with absolute path
+    include_once dirname(__FILE__) . '/footer.php';
 }
 
 function includeDropDownNav() {
-    include_once 'DropDownNav.php';
+    // Include with absolute path
+    include_once dirname(__FILE__) . '/DropDownNav.php';
 }
 
 

@@ -126,9 +126,8 @@ class FormHelper {
         return "<input type='text' id='$key' name='$key' value='$value' pattern='^[0-9]{5}$' placeholder='5-digit postal code' required $attr>";
     }
 
-    // Profile picture upload field with preview
     public static function profilePicture($inputId = 'profile-pic-input', $previewId = 'profile-pic', $currentPicture = '', $attr = '') {
-        $defaultImage = '../upload/icon/UnknownUser.jpg';
+        $defaultImage = '/WebAssg/upload/icon/UnknownUser.jpg';
         $currentImage = !empty($currentPicture) ? $currentPicture : $defaultImage;
         
         $html = '<div class="profile-avatar">';

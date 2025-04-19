@@ -5,5 +5,4 @@ if (!$_db){
     echo"Could not connected!";
 }
 
-
 ?>

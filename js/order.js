@@ -20,7 +20,7 @@ $(document).ready(function () {
 
 
         $.ajax({
-            url: "Addtocart.php",
+            url: "/WebAssg/php/Order/Addtocart.php",
             method: "POST",
             data: {
                 book_id: bookId,
@@ -165,7 +165,7 @@ $(document).ready(function () {
         const cartItem = button.closest('.cart-item');
 
         $.ajax({
-            url: "UpdateCart.php",
+            url: "/WebAssg/php/Order/UpdateCart.php",
             method: "POST",
             data: {
                 book_id: bookId,

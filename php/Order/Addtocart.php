@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("base.php");
+require_once("../base.php");
 header('Content-Type: application/json'); // use json to reponse to the scripts
 
 if (!isset($_SESSION['user_name'])) {

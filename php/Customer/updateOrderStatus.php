@@ -1,20 +1,10 @@
 <?php
 session_start();
-require_once("base.php");
+require_once("../base.php");
 
 header('Content-Type: application/json');
 
-// // Check if user is logged in
-// if (!isset($_SESSION['user_name'])) {
-//     echo json_encode(['success' => false, 'message' => 'Not authorized']);
-//     exit;
-// }
-
-// // Check if required parameters are present
-// if (!isset($_POST['order_id']) || !isset($_POST['status'])) {
-//     echo json_encode(['success' => false, 'message' => 'Missing parameters']);
-//     exit;
-// }
+// User is customer
 
 $order_id = $_POST['order_id'];
 $status = $_POST['status'];

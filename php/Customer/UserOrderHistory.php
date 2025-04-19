@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("base.php");
+require_once("../base.php");
 
 requireLogin();
 
@@ -95,21 +95,20 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order History - Secret Shelf</title>
-    <link rel="stylesheet" href="../css/HomeStyles.css">
-    <link rel="stylesheet" href="../css/OrderStyles.css">
-    <link rel="stylesheet" href="../css/ProfileStyles.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <link rel="stylesheet" href="../../css/HomeStyles.css">
+    <link rel="stylesheet" href="../../css/OrderStyles.css">
+    <link rel="stylesheet" href="../../css/ProfileStyles.css">
+    <link rel="stylesheet" href="../../css/NavbarStyles.css">
+    <link rel="stylesheet" href="../../css/FooterStyles.css">
+    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="../js/order.js"></script>
+    <script src="../../js/order.js"></script>
 </head>
 
 <body data-page="orders">
 
-    <a class="redirect-button" data-redirect-url="MainPage.php">
-        <img src="../upload/icon/back.png" alt="Back" class="back-icon" style="width: 30px; height: 30px;"> Continue Shopping
+    <a class="redirect-button" data-redirect-url="/WebAssg/php/MainPage.php">
+        <img src="/WebAssg/upload/icon/back.png" alt="Back" class="back-icon" style="width: 30px; height: 30px;"> Continue Shopping
     </a>
     <main class="order-history-container">
         <div class="profile-container">
@@ -137,7 +136,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <div class="no-orders">
                                 <h3>No Orders Yet</h3>
                                 <p>You haven't placed any orders yet.</p>
-                                <a href="MainPage.php" class="browse-btn">Browse Books</a>
+                                <a href="/WebAssg/php/MainPage.php" class="browse-btn">Browse Books</a>
                             </div>
                         <?php else: ?>
                             <?php foreach ($orders as $order): ?>
@@ -159,19 +158,19 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <div class="order-actions">
                                             <?php if ($order['OrderStatus'] === 'Delivering'): ?>
                                                 <button class="collect-btn" data-order-id="<?php echo htmlspecialchars($order['OrderNo']); ?>">
-                                                    <img src="../upload/icon/check.png" alt="Collect" style="width: 12px; height: 12px; filter: invert(1);">
+                                                    <img src="/WebAssg/upload/icon/check.png" alt="Collect" style="width: 12px; height: 12px; filter: invert(1);">
                                                     Confirm Collection
                                                 </button>
                                             <?php endif; ?>
                                             <?php if ($order['OrderStatus'] === 'Preparing'): ?>
                                                 <button class="cancel-btn" data-order-id="<?php echo htmlspecialchars($order['OrderNo']); ?>">
-                                                    <img src="../upload/icon/cancel.png" alt="Cancel" style="width: 15px; height: 15px; filter: invert(1);">
+                                                    <img src="/WebAssg/upload/icon/cancel.png" alt="Cancel" style="width: 15px; height: 15px; filter: invert(1);">
                                                     Cancel Order
                                                 </button>
                                             <?php endif; ?>
                                             <a href="UserOrderHistoryDetails.php?order_id=<?php echo htmlspecialchars($order['OrderNo']); ?>"
                                                 class="view-details-btn">
-                                                <img src="../upload/icon/view.png" alt="View" style="width: 17px; height: 17px; filter: invert(1);">
+                                                <img src="/WebAssg/upload/icon/view.png" alt="View" style="width: 17px; height: 17px; filter: invert(1);">
                                                 View Details
                                             </a>
                                         </div>
@@ -185,8 +184,8 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </main>
 
-    <?php include 'footer.php'; ?>
-    <script src="../js/Scripts.js"></script>
+    <?php include '../../php/footer.php'; ?>
+    <script src="../../js/Scripts.js"></script>
 
 </body>
 

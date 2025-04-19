@@ -1,23 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secret Shelf</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/Scripts.js"></script>
-    <script src="../js/Bookscript.js" defer></script>
-    <link rel="stylesheet" href="../css/HomeStyles.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
-</head>
-
 <?php 
     require_once("base.php");
+    
 
-    isCustomer();
     includeNavbar();
     includeDropDownNav();
     
@@ -55,11 +39,24 @@
                            ORDER BY RAND() 
                            LIMIT ?";
     $recommendations = fetchBooks($recommendationsQuery);
-    ?>
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Shelf</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/Scripts.js"></script>
+    <script src="../js/Bookscript.js" defer></script>
+    <link rel="stylesheet" href="../css/HomeStyles.css">
+    <link rel="stylesheet" href="../css/NavbarStyles.css">
+    <link rel="stylesheet" href="../css/FooterStyles.css">
+    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+</head>
 
 <body>
-
-
     <div class="IndexBodybackground">
         <div class="up">
             <div class="slider-wrapper">

@@ -4,7 +4,6 @@ require_once("base.php");
 // Check if user is admin
 requireAdmin();
 
-// Replace the search query section with this simpler version
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $query = "
     SELECT u.UserID, u.Username, u.Email, u.ContactNo, u.ProfilePic,

@@ -1,7 +1,7 @@
 <?php
-require_once("base.php");
-require_once("../lib/ValidationHelper.php");
-require_once("../lib/FormHelper.php");
+require_once("../base.php");
+require_once("../../lib/ValidationHelper.php");
+require_once("../../lib/FormHelper.php");
 
 requireLogin();
 
@@ -160,20 +160,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Profile Management - Secret Shelf</title>
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
-    <link rel="stylesheet" href="../css/HomeStyles.css">
-    <link rel="stylesheet" href="../css/ProfileStyles.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
+    <link rel="icon" type="image/x-icon" href="../../img/Logo.png">
+    <link rel="stylesheet" href="../../css/HomeStyles.css">
+    <link rel="stylesheet" href="../../css/ProfileStyles.css">
+    <link rel="stylesheet" href="../../css/NavbarStyles.css">
+    <link rel="stylesheet" href="../../css/FooterStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/Scripts.js"></script>
-    <script src="../js/order.js"></script>
+    <script src="../../js/Scripts.js"></script>
+    <script src="../../js/order.js"></script>
 </head>
 
 <body>
 
-    <a class="redirect-button" data-redirect-url="MainPage.php">
-        <img src="../upload/icon/back.png" alt="Back" class="back-icon" style="width: 30px; height: 30px;"> Continue Shopping
+    <a class="redirect-button" data-redirect-url="/WebAssg/php/MainPage.php">
+        <img src="../../upload/icon/back.png" alt="Back" class="back-icon" style="width: 30px; height: 30px;"> Continue Shopping
     </a>
 
     <main class="profile-container">
@@ -208,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                             <label for="username">Username</label>
                             <div class="input-with-icon">
                                 <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['Username'] ?? ''); ?>" readonly>
-                                <img src="../upload/icon/lock.png" alt="Lock" title="Cannot be changed" class="input-icon">
+                                <img src="../../upload/icon/lock.png" alt="Lock" title="Cannot be changed" class="input-icon">
                             </div>
                         </div>
 
@@ -216,7 +216,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                             <label for="email">Email Address</label>
                             <div class="input-with-icon">
                                 <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['Email'] ?? ''); ?>" readonly>
-                                <img src="../upload/icon/lock.png" alt="Lock" title="Cannot be changed" class="input-icon">
+                                <img src="../../upload/icon/lock.png" alt="Lock" title="Cannot be changed" class="input-icon">
                             </div>
                         </div>
 
@@ -224,7 +224,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                             <label for="phone">Phone Number</label>
                             <div class="input-with-icon">
                                 <?php echo FormHelper::phone('phone', $user['ContactNo']); ?>
-                                <img src="../upload/icon/edit.png" alt="Edit" title="Click to edit" class="input-icon">
+                                <img src="../../upload/icon/edit.png" alt="Edit" title="Click to edit" class="input-icon">
                             </div>
                             <small class="input-hint">Malaysian format: 0123456789</small>
                         </div>
@@ -237,7 +237,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
 
                 <form class="profile-form" method="POST" action="">
                     <div class="form-section">
-                        <h2>Address Information <img src="../upload/icon/edit.png" alt="Edit" title="Editable section" class="section-icon"></h2>
+                        <h2>Address Information <img src="../../upload/icon/edit.png" alt="Edit" title="Editable section" class="section-icon"></h2>
 
                         <?php if ($address): ?>
                             <div class="form-group">
@@ -282,7 +282,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
 
                         <?php else: ?>
                             <p class="no-address-message">
-                                <img src="../upload/icon/info.png" alt="Info" class="info-icon" style="width: 20px; height: 20px;">
+                                <img src="../../upload/icon/info.png" alt="Info" class="info-icon" style="width: 20px; height: 20px;">
                                 No address found. Please add your address below.
                             </p><br>
 

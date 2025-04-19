@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/Scripts.js"></script>
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
-    <link rel="stylesheet" href="../css/AdminprofileMenuStyle.css">
+    <script src="/WebAssg/js/Scripts.js"></script>
+    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
+    <link rel="stylesheet" href="/WebAssg/css/AdminprofileMenuStyle.css">
 </head>
 
 <?php
-require_once("../base.php");
+require_once("base.php");
 $profile_pic = getUserProfilePic();
 ?>
 
@@ -27,10 +27,10 @@ $profile_pic = getUserProfilePic();
             <?php if (isset($_SESSION['user_name'])): ?>
                 <a href="AdminProfile.php"><img src="../upload/icon/personblack.png" alt="Profile" class="nav-icon"> Edit Profile</a>
                 <a href="AdminMainPage.php"><img src="../upload/icon/dashboardblack.png" alt="Dashboard" class="nav-icon"> Dashboard</a>
-                <a href="../Authentication/logout.php"><img src="../upload/icon/logoutblack.png" alt="Logout" class="nav-icon"> Logout</a>
+                <a href="logout.php"><img src="../upload/icon/logoutblack.png" alt="Logout" class="nav-icon"> Logout</a>
             <?php else: ?>
-                <a href="../Authentication/UserLogin.php"><img src="../upload/icon/loginblack.png" alt="Login" class="nav-icon"> Login</a>
-                <a href="../Authentication/UserSignUp.php"><img src="../upload/icon/registerblack.png" alt="Register" class="nav-icon"> Register</a>
+                <a href="UserLogin.php"></i> Login</a>
+                <a href="UserRegister.php"></i> Register</a>
             <?php endif; ?>
         </div>
     </div>

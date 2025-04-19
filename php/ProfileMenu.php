@@ -17,7 +17,7 @@ $profile_pic = getUserProfilePic();
 <!-- Profile dropdown menu -->
 <div class="profile-dropdown">
     <div class="profile-icon" id="profileIcon">
-        <img src="<?= htmlspecialchars($profile_pic) ?>" alt="Profile" class="user-profile-pic">
+    <img src="<?php echo !empty($user['ProfilePic']) ? htmlspecialchars($user['ProfilePic']) : '/WebAssg/upload/icon/UnknownUser.jpg'; ?>" alt="Profile Picture">
     </div>
     <div class="profile-dropdown-content" id="profileDropdown">
         <div class="profile-header">
@@ -25,12 +25,12 @@ $profile_pic = getUserProfilePic();
         </div>
         <div class="profile-menu-items">
             <?php if (isset($_SESSION['user_name'])): ?>
-                <a href="UserEditProfile.php"><img src="../upload/icon/edit.png" alt="Edit Profile" style="width: 20px; height: 20px; filter: invert(1);"> Edit Profile</a>
-                <a href="UserOrderHistory.php"><img src="../upload/icon/history.png" alt="Order History" style="width: 20px; height: 20px; filter: invert(1);"> Order History</a>
-                <a href="logout.php"><img src="../upload/icon/logout.png" alt="Logout" style="width: 20px; height: 20px; filter: invert(1);"> Logout</a>
+                <a href="Customer/UserEditProfile.php"><img src="../upload/icon/edit.png" alt="Edit Profile" style="width: 20px; height: 20px; filter: invert(1);"> Edit Profile</a>
+                <a href="Customer/UserOrderHistory.php"><img src="../upload/icon/history.png" alt="Order History" style="width: 20px; height: 20px; filter: invert(1);"> Order History</a>
+                <a href="Authentication/logout.php"><img src="../upload/icon/logout.png" alt="Logout" style="width: 20px; height: 20px; filter: invert(1);"> Logout</a>
             <?php else: ?>
-                <a href="UserLogin.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
-                <a href="UserSignUp.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>
+                <a href="../Authentication/UserLogin.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+                <a href=".0/Authentication/UserSignUp.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>
             <?php endif; ?>
         </div>
     </div>
@@ -38,4 +38,4 @@ $profile_pic = getUserProfilePic();
 
 <!-- Include scripts at the end for better performance -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../js/Scripts.js"></script> <!-- Include the script for dropdown functionality -->
+<script src="../js/Scripts.js"></script> 

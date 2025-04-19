@@ -8,6 +8,7 @@ $(document).ready(function () {
     initializeRedirectButtons();
     initializeBackButtons();
     initializeProfilePicture();
+    initializeLoginBuffer();
 });
 
 // Login Form Handling
@@ -317,4 +318,20 @@ function initializeBackButtons() {
     $('.back-button').on('click', function() {
         history.back(); // Go to the previous page in browser history
     });
+}
+
+function initializeLoginBuffer() {
+    let countdown = 3;
+    const countdownElement = document.getElementById('countdown');
+    const redirectUrl = document.getElementById('redirectUrl').getAttribute('data-url');
+    
+    const timer = setInterval(function() {
+        countdown--;
+        countdownElement.textContent = countdown;
+        
+        if (countdown <= 0) {
+            clearInterval(timer);
+            window.location.href = redirectUrl;
+        }
+    }, 1000);
 }

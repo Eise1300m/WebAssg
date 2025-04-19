@@ -1,5 +1,5 @@
 <?php
-require_once("base.php");
+require_once("../base.php");
 
 requireLogin();
 
@@ -46,20 +46,20 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart - Secret Shelf</title>
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="stylesheet" href="../css/CartStyles.css">
+    <link rel="stylesheet" href="../../css/NavbarStyles.css">
+    <link rel="stylesheet" href="../../css/FooterStyles.css">
+    <link rel="stylesheet" href="../../css/CartStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/Scripts.js"></script>
-    <script src="../js/order.js"></script>
+    <script src="../../js/Scripts.js"></script>
+    <script src="../../js/order.js"></script>
 </head>
 
 <body>
     
     <div class="cart-page-wrapper">
         <div class="cart-container">
-            <a class="continue-shopping-top redirect-button" data-redirect-url="MainPage.php">
-                <img src="../upload/icon/back.png" alt="Back" class="back-icon"> Continue Shopping
+            <a class="continue-shopping-top redirect-button" data-redirect-url="../MainPage.php">
+                <img src="/WebAssg/upload/icon/back.png" alt="Back" class="back-icon"> Continue Shopping
             </a>
             
             <div class="cart-content">
@@ -72,7 +72,7 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
                     <?php if (empty($cart)): ?>
                         <div class="empty-cart">
                             <p>Your cart is empty.</p>
-                            <a href="MainPage.php" class="continue-shopping-btn">Continue Shopping</a>
+                            <a href="../MainPage.php" class="continue-shopping-btn">Continue Shopping</a>
                         </div>
                     <?php else: ?>
                         <div class="cart-items-grid">
@@ -86,9 +86,9 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
                                     <div class="item-section book">
                                         <h3>Book</h3>
                                         <div class="book-details">
-                                            <img src="<?= htmlspecialchars($bookInfo['BookImage']) ?>" 
+                                            <img src="<?= str_replace('../', '/WebAssg/', htmlspecialchars($bookInfo['BookImage'])) ?>" 
                                                  alt="<?= htmlspecialchars($bookInfo['BookName']) ?>"
-                                                 onerror="this.src='../upload/bookPfp/bookcoverunavailable.png'">
+                                                 onerror="this.src='/WebAssg/upload/bookPfp/bookcoverunavailable.png'">
                                             <span><?= htmlspecialchars($bookInfo['BookName']) ?></span>
                                         </div>
                                     </div>
@@ -120,7 +120,7 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
                                     </div>
                                     
                                     <button class="remove-item" data-id="<?= $book_id ?>">
-                                        <img src="../upload/icon/trash.png" alt="Remove">
+                                        <img src="/WebAssg/upload/icon/trash.png" alt="Remove">
                                     </button>
                                 </div>
                             <?php endforeach; ?>

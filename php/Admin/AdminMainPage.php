@@ -10,7 +10,6 @@ $stmt = $_db->prepare("SELECT * FROM users WHERE Username = :username AND Role =
 $stmt->execute(['username' => $username]);
 $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Debugging output
 if (!$admin) {
     handleError("Only authorized users can access this page.");
 }

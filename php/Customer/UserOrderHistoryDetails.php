@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("base.php");
+require_once("../base.php");
 
 requireLogin();
 
@@ -54,12 +54,12 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details - Secret Shelf</title>
-    <link rel="stylesheet" href="../css/HomeStyles.css">
-    <link rel="stylesheet" href="../css/OrderStyles.css">
-    <link rel="stylesheet" href="../css/ProfileStyles.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <link rel="stylesheet" href="../../css/HomeStyles.css">
+    <link rel="stylesheet" href="../../css/OrderStyles.css">
+    <link rel="stylesheet" href="../../css/ProfileStyles.css">
+    <link rel="stylesheet" href="../../css/NavbarStyles.css">
+    <link rel="stylesheet" href="../../css/FooterStyles.css">
+    <link rel="icon" type="image/x-icon" href="../../img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -139,7 +139,7 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </button>
                             <?php endif; ?>
                             <a href="UserOrderHistory.php" class="back-btn">
-                                <img src="../upload/icon/back.png" alt="Back" class="back-icon" style="width: 20px; height: 20px;">
+                                <img src="/WebAssg/upload/icon/back.png" alt="Back" class="back-icon" style="width: 20px; height: 20px;">
                                 Back to Orders
                             </a>
                         </div>
