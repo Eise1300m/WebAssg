@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("base.php");
+require_once("../base.php");
 
 if (!isset($_SESSION['user_name']) || empty($_SESSION['cart'])) {
     header("Location: Cart.php");
@@ -156,6 +156,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+
+includeNavbar();
 ?>
 
 <!DOCTYPE html>
@@ -164,15 +166,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - Secret Shelf</title>
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="stylesheet" href="../css/CheckOutstyles.css">
+    <link rel="stylesheet" href="../../css/NavbarStyles.css">
+    <link rel="stylesheet" href="../../css/FooterStyles.css">
+    <link rel="stylesheet" href="../../css/CheckOutstyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/Scripts.js"></script>
+    <script src="../../js/Scripts.js"></script>
 
 </head>
 <body>
-    <?php include_once("navbar.php") ?>
     
     <div class="payment-container">
         <div class="payment-header">
@@ -220,7 +221,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <?php foreach ($_SESSION['cart'] as $item): ?>
                     <div class="order-item">
                         <div class="item-image">
-                            <img src="<?php echo !empty($item['BookImage']) ? htmlspecialchars($item['BookImage']) : '../upload/bookPfp/BookCoverUnavailable.webp'; ?>" 
+                            <img src="<?php echo !empty($item['BookImage']) ? str_replace('../', '/WebAssg/', htmlspecialchars($item['BookImage'])) : '../../upload/bookPfp/BookCoverUnavailable.webp'; ?>" 
                                  alt="<?php echo htmlspecialchars($item['BookName']); ?>">
                         </div>
                         <div class="item-details">

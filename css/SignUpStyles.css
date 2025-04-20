@@ -11,7 +11,6 @@ body {
 }
 
 .container {
-
     display: flex;    
     flex-direction: column;
     justify-content: flex-start;
@@ -24,11 +23,10 @@ body {
     border-radius: 40px;
     border: 1px solid white;
     overflow: hidden; 
-
+    margin-top: 40px;
 }
 
 h1 {
-
     text-align: center;
     font-size: 40px;
     color: #ffffff;
@@ -38,7 +36,6 @@ h1 {
 }
 
 input {
-
     padding: 15px;
     border: 2px solid #ffffff;
     border-radius: 40px;
@@ -83,8 +80,6 @@ form {
     border-color: rgb(53, 46, 109);
 }
 
-
-
 .input-container .input-icon {
     position: absolute;
     left: 15px;
@@ -123,7 +118,6 @@ form {
 }
 
 .submit-but {
-
     margin-top: 30px;
     margin-bottom: 10px;
     padding: 12px;
@@ -135,14 +129,12 @@ form {
     font-size: 18px;
     color: rgb(0, 0, 0);
     transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
-
 }
 
 .submit-but:hover{
     background-color: rgb(53, 46, 109);
     color: rgb(255, 255, 255);
 }
-
 
 .error-message {
     color: #ffffff;
@@ -205,6 +197,56 @@ form {
     transform: translateX(-5px);
 }
 
-.container {
-    margin-top: 40px;
+.password-requirements {
+    color: white;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    width: 85%;
+    font-size: 14px;
+}
+
+/* Flash Message Styles */
+.flash-message {
+    position: fixed;
+    top: 180px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 25px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    z-index: 1000;
+    animation: fadeInOut 3s ease-in-out;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+}
+
+.flash-message.error {
+    background-color: #db5260;
+}
+
+.flash-message.success {
+    background-color: #28a745;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -100%);
+    }
+    10% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+    90% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -100%);
+    }
 }

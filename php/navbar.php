@@ -6,6 +6,11 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $login = isset($_SESSION['user_name']);
 
+if(isAdmin()){
+    header("Location: /WebAssg/php/Admin/AdminMainPage.php");
+    exit();
+}
+
 ?>
 
 <div class="navbar">
@@ -39,11 +44,11 @@ $login = isset($_SESSION['user_name']);
                 </a> 
                 <?php 
                 // Include ProfileMenu.php with absolute path
-                include_once dirname(__FILE__) . '/ProfileMenu.php';
+                include_once ('ProfileMenu.php');
                 ?>
             </div>
         <?php else: ?>
-            <a href="Authentication/UserLogin.php" class="Login-Btn">Login / Sign up</a>
+            <a href="/WebAssg/php/Authentication/UserLogin.php" class="Login-Btn">Login / Sign up</a>    
         <?php endif; ?>
     </div>
 </div>

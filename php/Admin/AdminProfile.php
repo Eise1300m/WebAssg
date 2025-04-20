@@ -1,12 +1,11 @@
 <?php
-require_once("base.php");
+require_once("../base.php");
 
 // Check if user is admin
 requireAdmin();
 
-require_once("connection.php");
-require_once("../lib/FormHelper.php");
-require_once("../lib/ValidationHelper.php");
+require_once("../../lib/FormHelper.php");
+require_once("../../lib/ValidationHelper.php");
 
 $username = $_SESSION['user_name'];
 
@@ -29,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
     $validation = ValidationHelper::validateProfilePicture($file);
     
     if ($validation['success']) {
-        $uploadDir = "../upload/adminPfp/";
+        $uploadDir = "../../upload/adminPfp/";
         
         // Ensure upload directory exists with proper permissions
         if (!is_dir($uploadDir)) {
@@ -42,17 +41,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
         if (!is_dir($uploadDir) || !is_writable($uploadDir)) {
             $updateMessage = "❌ Upload directory is not writable. Please check permissions.";
         } else {
+            $fileExt = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
+            $newFileName = $admin['UserID'] . "_" . time() . "." . $fileExt;
+            $uploadPath = $uploadDir . $newFileName;
+            $dbPath = "/WebAssg/upload/adminPfp/" . $newFileName;  // Store the web-accessible path in DB
+            
             // Remove old profile picture if it exists
-            if (!empty($admin['ProfilePic']) && file_exists($admin['ProfilePic']) && strpos($admin['ProfilePic'], 'adminPfp') !== false) {
-                @unlink($admin['ProfilePic']);
+            if (!empty($admin['ProfilePic']) && file_exists($_SERVER['DOCUMENT_ROOT'] . $admin['ProfilePic']) && strpos($admin['ProfilePic'], 'adminPfp') !== false) {
+                @unlink($_SERVER['DOCUMENT_ROOT'] . $admin['ProfilePic']);
             }
 
-            // Use ValidationHelper to handle the file upload
-            $upload = ValidationHelper::handleFileUpload($file, $uploadDir, $admin['UserID'] . "_");
-            
-            if ($upload['success']) {
+            if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+                // Store web-accessible path in database
                 $stmt = $_db->prepare("UPDATE users SET ProfilePic = ? WHERE UserID = ?");
-                $stmt->execute([$upload['path'], $admin['UserID']]);
+                $stmt->execute([$dbPath, $admin['UserID']]);
                 
                 if ($stmt->rowCount() > 0) {
                     $updateMessage = "✅ Profile picture updated successfully!";
@@ -65,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                     $updateMessage = "❌ Failed to update database.";
                 }
             } else {
-                $updateMessage = "❌ " . $upload['message'];
+                $updateMessage = "❌ Failed to upload file.";
             }
         }
     } else {
@@ -78,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_contact"])) {
     $new_phone = trim($_POST["phone"]);
     
     if (!empty($new_phone)) {
-        // Validate phone number using ValidationHelper
+        
         if (ValidationHelper::validatePhone($new_phone)) {
             $stmt = $_db->prepare("UPDATE users SET ContactNo = ? WHERE UserID = ?");
             if ($stmt->execute([$new_phone, $admin['UserID']])) {
@@ -117,6 +119,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
         }
     }
 }
+
+includeAdminNav();
 ?>
 
 <!DOCTYPE html>
@@ -125,16 +129,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Profile - Secret Shelf</title>
-    <link rel="stylesheet" href="../css/HomeStyles.css">
-    <link rel="stylesheet" href="../css/AdminStyles.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <link rel="stylesheet" href="/WebAssg/css/HomeStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/AdminStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/NavbarStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/FooterStyles.css">
+    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/AdminScripts.js"></script>
+    <script src="/WebAssg/js/AdminScripts.js"></script>
 </head>
 <body>
-    <?php include_once("navbaradmin.php") ?>
 
     <main class="admin-container">
         <div class="admin-header">
@@ -145,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
         <div class="admin-content">
             <div class="admin-sidebar">
                 <div class="admin-profile" style="text-align: center;">
-                    <img src="<?php echo !empty($admin['ProfilePic']) ? htmlspecialchars($admin['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>"
+                    <img src="<?php echo !empty($admin['ProfilePic']) ? htmlspecialchars($admin['ProfilePic']) : '/WebAssg/upload/icon/UnknownUser.jpg'; ?>"
                         alt="Admin Profile" class="admin-avatar" id="profile-pic" style="display: block; margin: 0 auto;">
                     <h3><?php echo htmlspecialchars($admin['Username']); ?></h3>
                     <p>Administrator</p>
@@ -166,15 +169,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                 </div>
                 <nav class="admin-nav">
                     <a href="AdminProfile.php" class="admin-nav-item active">
-                        <img src="../upload/icon/profile.png" alt="Profile" class="nav-icon">
+                        <img src="/WebAssg/upload/icon/profile.png" alt="Profile" class="nav-icon">
                         Admin Profile
                     </a>
                     <a href="AdminUpdatePassword.php" class="admin-nav-item">
-                        <img src="../upload/icon/lock.png" alt="Security" class="nav-icon">
+                        <img src="/WebAssg/upload/icon/lock.png" alt="Security" class="nav-icon">
                         Admin Security
                     </a>
                     <a href="AdminMainPage.php" class="admin-nav-item">
-                        <img src="../upload/icon/dashboard.png" alt="Dashboard" class="nav-icon">
+                        <img src="/WebAssg/upload/icon/dashboard.png" alt="Dashboard" class="nav-icon">
                         Back to Dashboard
                     </a>
                 </nav>
@@ -189,7 +192,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
 
                 <div class="admin-form-section">
                     <h2 class="section-title">
-                        <img src="../upload/icon/profile.png" alt="Profile" class="section-icon">
+                        <img src="/WebAssg/upload/icon/profile.png" alt="Profile" class="section-icon">
                         Personal Information
                     </h2>
 
@@ -199,7 +202,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                             <div class="input-with-icon">
                                 <input type="text" id="username" name="username"
                                     value="<?php echo htmlspecialchars($admin['Username']); ?>" readonly>
-                                <img src="../upload/icon/lock.png" alt="Lock" title="Cannot be changed" class="input-icon">
+                                <img src="/WebAssg/upload/icon/lock.png" alt="Lock" title="Cannot be changed" class="input-icon">
                             </div>
                         </div>
 
@@ -208,7 +211,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                             <div class="input-with-icon">
                                 <input type="email" id="email" name="email"
                                     value="<?php echo htmlspecialchars($admin['Email']); ?>" readonly>
-                                <img src="../upload/icon/lock.png" alt="Lock" title="Cannot be changed" class="input-icon">
+                                <img src="/WebAssg/upload/icon/lock.png" alt="Lock" title="Cannot be changed" class="input-icon">
                             </div>
                         </div>
 
@@ -216,7 +219,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                             <label for="phone">Phone Number</label>
                             <div class="input-with-icon">
                                 <?php echo FormHelper::phone('phone', $admin['ContactNo'] ?? ''); ?>
-                                <img src="../upload/icon/edit.png" alt="Edit" title="Click to edit" class="input-icon">
+                                <img src="/WebAssg/upload/icon/edit.png" alt="Edit" title="Click to edit" class="input-icon">
                             </div>
                             <small class="input-hint">Malaysian format: 01Xxxxxxxxx</small>
                             <span class="error-message" id="phoneError"><?php echo FormHelper::error('phone'); ?></span>
@@ -232,6 +235,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
         </div>
     </main>
 
-    <!-- No inline scripts - functionality moved to AdminScripts.js -->
+    
 </body>
 </html> 

@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once("connection.php");
+require_once("../base.php");
 
 if (!isset($_SESSION['user_name'])) {
-    header("Location: UserLogin.php");
+    header("Location: /WebAssg/php/Authentication/UserLogin.php");
     exit;
 }
 
@@ -64,7 +64,6 @@ if (isset($_GET['book_id'])) {
                     $success_message = "Your review has been submitted! Redirecting back...";
                 }
 
-                // Redirect back to book preview page after 2 seconds
                 header("refresh:2;url=BookPreview.php?book_id=" . $book_id);
             } catch (Exception $e) {
                 $error_message = "Error saving review: " . $e->getMessage();
@@ -74,6 +73,8 @@ if (isset($_GET['book_id'])) {
 } else {
     die("Book ID not provided.");
 }
+
+includeNavbar();
 ?>
 
 <!DOCTYPE html>
@@ -83,22 +84,20 @@ if (isset($_GET['book_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Write a Review - <?php echo $book['BookName']; ?></title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="stylesheet" href="../css/WriteReviewStyle.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <link rel="stylesheet" href="/WebAssg/css/NavbarStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/FooterStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/WriteReviewStyle.css">
+    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/Scripts.js"></script>
-    <script src="../js/book.js"></script>
+    <script src="../../js/Scripts.js"></script>
+    <script src="../../js/book.js"></script>
 </head>
 
 <body>
-    <?php include_once("navbar.php") ?>
 
     <div class="review-container">
         <div class="review-header">
-            <img src="<?php echo $book['BookImage'] ?: '../upload/bookPfp/bookcoverunavailable.png'; ?>"
+            <img src="<?= str_replace('../', '/WebAssg/', $book['BookImage']) ?: '/WebAssg/upload/bookPfp/BookCoverUnavailable.png'; ?>"
                 alt="<?php echo htmlspecialchars($book['BookName']); ?>"
                 class="book-thumbnail">
             <div class="book-info">
@@ -113,24 +112,13 @@ if (isset($_GET['book_id'])) {
 
         <?php if ($success_message): ?>
             <div class="success-message">
-                <?php echo $success_message; ?>
-                <div class="countdown">Redirecting in <span id="timer">2</span> seconds...</div>
+                <h3>Review Submitted Successfully!</h3>
+                <p>Thank you for your feedback.</p>
+                <p>Redirecting in <span id="timer" data-book-id="<?php echo $book_id; ?>" data-time-left="2">2</span> seconds...</p>
             </div>
-            <script>
-                // Countdown timer
-                let timeLeft = 2;
-                const timerElement = document.getElementById('timer');
-                const countdown = setInterval(function() {
-                    timeLeft--;
-                    timerElement.textContent = timeLeft;
-                    if (timeLeft <= 0) {
-                        clearInterval(countdown);
-                        window.location.href = 'BookPreview.php?book_id=<?php echo $book_id; ?>';
-                    }
-                }, 1000);
-            </script>
-        <?php endif; ?>
-
+            
+            <?php endif; ?>
+            
         <form method="POST" action="" class="review-form">
             <div class="rate-book">
                 <h3>Rate this book:</h3>
@@ -158,13 +146,13 @@ if (isset($_GET['book_id'])) {
             </div>
 
             <div class="review-actions">
-                <button type="button" class="cancel-btn" onclick="history.back()">Cancel</button>
+                <button type="button" class="redirect-button cancel-btn" data-redirect-url="BookPreview.php?book_id=<?php echo $book_id; ?>">Cancel</button>
                 <button type="submit" class="submit-btn"><?php echo $existing_review ? 'Update Review' : 'Submit Review'; ?></button>
             </div>
         </form>
     </div>
 
-    <?php include_once('footer.php') ?>
+    <?php include_once('../footer.php') ?>
 
 </body>
 

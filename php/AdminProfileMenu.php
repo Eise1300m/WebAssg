@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/Scripts.js"></script>
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
-    <link rel="stylesheet" href="../css/AdminprofileMenuStyle.css">
+    <script src="/WebAssg/js/Scripts.js"></script>
+    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
+    <link rel="stylesheet" href="/WebAssg/css/AdminprofileMenuStyle.css">
 </head>
 
 <?php
-require_once("../base.php");
+require_once("base.php");
 $profile_pic = getUserProfilePic();
 ?>
 
@@ -25,12 +25,12 @@ $profile_pic = getUserProfilePic();
         </div>
         <div class="profile-menu-items">
             <?php if (isset($_SESSION['user_name'])): ?>
-                <a href="AdminProfile.php"><img src="../upload/icon/personblack.png" alt="Profile" class="nav-icon"> Edit Profile</a>
-                <a href="AdminMainPage.php"><img src="../upload/icon/dashboardblack.png" alt="Dashboard" class="nav-icon"> Dashboard</a>
-                <a href="../Authentication/logout.php"><img src="../upload/icon/logoutblack.png" alt="Logout" class="nav-icon"> Logout</a>
+                <a href="/WebAssg/php/Admin/AdminProfile.php"><img src="/WebAssg/upload/icon/personblack.png" alt="Profile" class="nav-icon"> Edit Profile</a>
+                <a href="/WebAssg/php/Admin/AdminMainPage.php"><img src="/WebAssg/upload/icon/dashboardblack.png" alt="Dashboard" class="nav-icon"> Dashboard</a>
+                <a href="/WebAssg/php/Authentication/logout.php"><img src="/WebAssg/upload/icon/logoutblack.png" alt="Logout" class="nav-icon"> Logout</a>
             <?php else: ?>
-                <a href="../Authentication/UserLogin.php"><img src="../upload/icon/loginblack.png" alt="Login" class="nav-icon"> Login</a>
-                <a href="../Authentication/UserSignUp.php"><img src="../upload/icon/registerblack.png" alt="Register" class="nav-icon"> Register</a>
+                <a href="/WebAssg/php/Authentication/UserLogin.php"><img src="/WebAssg/upload/icon/loginblack.png" alt="Login" class="nav-icon"> Login</a>
+                <a href="/WebAssg/php/Authentication/UserSignUp.php"><img src="/WebAssg/upload/icon/registerblack.png" alt="Register" class="nav-icon"> Register</a>
             <?php endif; ?>
         </div>
     </div>

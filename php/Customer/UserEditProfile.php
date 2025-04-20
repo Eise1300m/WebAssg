@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
     $new_state = trim($_POST["state"]);
     $new_postal = trim($_POST["postal"]);
 
-    // Validate input fields
+   
     $errors = [];
     
     if (empty($new_street)) {
@@ -112,7 +112,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
     $validation = ValidationHelper::validateProfilePicture($file);
     
     if ($validation['success']) {
-        $uploadDir = "../upload/customerPfp/";
+        // Use the correct path for customerPfp directory
+        $uploadDir = "../../upload/customerPfp/";
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
@@ -120,31 +121,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
         $fileExt = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
         $newFileName = $user['UserID'] . "_" . time() . "." . $fileExt;
         $uploadPath = $uploadDir . $newFileName;
+        $dbPath = "/WebAssg/upload/customerPfp/" . $newFileName;  // Store the web-accessible path in DB
 
         // Remove old profile picture if it exists
-        if (!empty($user['ProfilePic']) && file_exists($user['ProfilePic']) && strpos($user['ProfilePic'], 'customerPfp') !== false) {
-            unlink($user['ProfilePic']);
+        if (!empty($user['ProfilePic']) && file_exists($_SERVER['DOCUMENT_ROOT'] . $user['ProfilePic']) && strpos($user['ProfilePic'], 'customerPfp') !== false) {
+            unlink($_SERVER['DOCUMENT_ROOT'] . $user['ProfilePic']);
         }
 
-        // Use ValidationHelper to handle the file upload
-        $upload = ValidationHelper::handleFileUpload($file, $uploadDir, $user['UserID'] . "_");
-        
-        if ($upload['success']) {
+        if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+            // Store the web path in database
             $stmt = $_db->prepare("UPDATE users SET ProfilePic = ? WHERE UserID = ?");
-            $stmt->execute([$upload['path'], $user['UserID']]);
+            $stmt->execute([$dbPath, $user['UserID']]);
             
             if ($stmt->rowCount() > 0) {
                 $updateMessage = "✅ Profile picture updated successfully!";
                 
-                // Refresh user data
-                $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
-                $stmt->execute([$username]);
-                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                // Redirect to same page to refresh
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
             } else {
                 $updateMessage = "❌ Failed to update database.";
             }
         } else {
-            $updateMessage = "❌ " . $upload['message'];
+            $updateMessage = "❌ Failed to upload file.";
         }
     } else {
         $updateMessage = "❌ " . $validation['message'];

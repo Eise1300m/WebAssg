@@ -1,6 +1,9 @@
 <?php
 session_start();
-require_once("base.php");
+require_once("../base.php");
+require_once("../../lib/PaginationHelper.php");
+
+PaginationHelper::init($_db);
 
 // Check if user is admin
 requireAdmin();
@@ -47,6 +50,9 @@ $orders = $pagination['items'];
 // Get orderstatuses
 $stmt = $_db->query("SELECT DISTINCT OrderStatus FROM orders ORDER BY OrderStatus");
 $orderStatuses = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+includeAdminNav();
+
 ?>
 
 <!DOCTYPE html>
@@ -56,19 +62,18 @@ $orderStatuses = $stmt->fetchAll(PDO::FETCH_COLUMN);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Management - Secret Shelf</title>
-    <link rel="stylesheet" href="../css/HomeStyles.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="stylesheet" href="../css/AdminOrders.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <link rel="stylesheet" href="/WebAssg/css/HomeStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/NavbarStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/FooterStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/AdminOrders.css">
+    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/Scripts.js"></script>
-    <script src="../js/AdminScripts.js"></script>
+    <script src="/WebAssg/js/Scripts.js"></script>
+    <script src="/WebAssg/js/AdminScripts.js"></script>
 </head>
 
 <body>
-    <?php include_once("navbaradmin.php") ?>
 
     <main class="admin-container">
         <div class="admin-header">
@@ -78,7 +83,7 @@ $orderStatuses = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
         <div class="admin-content">
             <a href="AdminMainPage.php" class="admin-nav-back">
-                <img src="../upload/icon/back.png" alt="Back"> Back to Dashboard
+                <img src="/WebAssg/upload/icon/back.png" alt="Back"> Back to Dashboard
             </a>
 
             <!-- Search and Filter Form -->
@@ -160,7 +165,7 @@ $orderStatuses = $stmt->fetchAll(PDO::FETCH_COLUMN);
                                     <td>
                                         <div class="action-buttons">
                                             <button class="view-details" onclick="viewOrderDetails(<?php echo $order['OrderNo']; ?>)">
-                                                <img src="../upload/icon/view.png" alt="View" class="action-icon" style="width: 13px; height: 13px;">
+                                                <img src="/WebAssg/upload/icon/view.png" alt="View" class="action-icon" style="width: 13px; height: 13px;">
                                                 View
                                             </button>
                                         </div>
@@ -202,6 +207,6 @@ $orderStatuses = $stmt->fetchAll(PDO::FETCH_COLUMN);
     </div>
 </body>
 
-<script src="../js/Scripts.js"></script>
+<script src="/WebAssg/js/Scripts.js"></script>
 
 </html>

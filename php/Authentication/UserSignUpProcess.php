@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("connection.php");
+require_once("../base.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['UName'] ?? '';
@@ -8,6 +8,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['emails'] ?? '';
     $contact = $_POST['tel'] ?? '';
     $role = $_POST['role'] ?? 'customer'; // Default role is "customer" unless specified
+    
+    // Determine the redirect URL based on the referring page
+    $referer = $_SERVER['HTTP_REFERER'] ?? '';
+    $redirectUrl = (strpos($referer, 'AdminSignup.php') !== false) ? 'AdminSignup.php' : 'UserLogin.php';
 
     try {
         // Check if username or email already exists
@@ -18,9 +22,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
-            $_SESSION['signup_errors'] = ['Username or Email is already registered!'];
+            // Create flash message
+            $_SESSION['flash_message'] = [
+                'type' => 'error',
+                'message' => 'Username or Email is already registered!'
+            ];
+            
             $_SESSION['signup_data'] = $_POST;
-            header("Location: UserSignUp.php"); // Redirect back to the signup page
+            header("Location: $redirectUrl");
             exit();
         }
 
@@ -38,18 +47,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(":role", $role);
 
         if ($stmt->execute()) {
-            header("Location: RegisterSuccess.php");
+
+            
+            // Redirect to success page or appropriate dashboard
+            if ($role === 'admin') {
+
+                $_SESSION['flash_message'] = [
+                    'type' => 'success',
+                    'message' => 'Registration successful!'
+                ];
+                
+                header("Location: /WebAssg/php/Admin/AdminMainPage.php");
+            } else {
+                header("Location: /WebAssg/php/Authentication/RegisterSuccess.php");
+            }
             exit();
+
         } else {
-            $_SESSION['signup_errors'] = ['Failed to Register, Please try again later!'];
+            $_SESSION['flash_message'] = [
+                'type' => 'error',
+                'message' => 'Failed to Register, Please try again later!'
+            ];
+            
             $_SESSION['signup_data'] = $_POST;
-            header("Location: UserSignUp.php"); // Redirect back to the signup page
+            header("Location: $redirectUrl");
             exit();
         }
     } catch (PDOException $e) {
-        $_SESSION['signup_errors'] = ["Database Error: " . $e->getMessage()];
+        // Create flash message for exception
+        $_SESSION['flash_message'] = [
+            'type' => 'error',
+            'message' => "Database Error: " . $e->getMessage()
+        ];
+        
         $_SESSION['signup_data'] = $_POST;
-        header("Location: UserSignUp.php"); // Redirect back to the signup page
+        header("Location: $redirectUrl");
         exit();
     }
 }

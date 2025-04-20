@@ -72,7 +72,7 @@ includeDropDownNav();
             <?php foreach ($books as $book): ?>
                 <div class="book-card">
                     <div class="book-image">
-                        <a href="BookPreview.php?book_id=<?php echo $book['BookNo']; ?>">
+                        <a href="/WebAssg/php/ManageBook/BookPreview.php?book_id=<?php echo $book['BookNo']; ?>">
                             <img src="<?php echo BookHelper::getBookImage($book); ?>"
                                 alt="<?php echo htmlspecialchars($book['BookName']); ?>">
                         </a>
@@ -90,12 +90,12 @@ includeDropDownNav();
 
                         <?php if (isset($_SESSION['user_name'])): ?>
                             <button class="cart-but" data-book-id="<?php echo $book['BookNo']; ?>">
-                                <img src="../upload/icon/shoppingcart.png" alt="Cart">
+                                <img src="/WebAssg/upload/icon/shoppingcart.png" alt="Cart">
                                 Add to Cart
                             </button>
                         <?php else: ?>
-                            <button class="cart-but redirect-button" data-redirect-url="Authentication/UserLogin.php">
-                                <img src="../upload/icon/shoppingcart.png" alt="Cart">
+                            <button class="cart-but redirect-button" data-redirect-url="/WebAssg/php/Authentication/UserLogin.php">
+                                <img src="/WebAssg/upload/icon/shoppingcart.png" alt="Cart">
                                 Login to Add
                             </button>
                         <?php endif; ?>

@@ -7,9 +7,6 @@ if (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'MainPag
     $_SESSION['return_to'] = $_SERVER['HTTP_REFERER'];
 }
 
-// The form now posts to UserLoginProcess.php, so we don't need to process form submission here
-// Only handle displaying any error messages that might be set in the session
-
 $errors = [];
 if (isset($_SESSION['login_errors'])) {
     $errors = $_SESSION['login_errors'];

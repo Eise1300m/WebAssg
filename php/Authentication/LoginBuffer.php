@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 session_start();
 require_once("../base.php");
 
@@ -41,4 +41,4 @@ $redirectUrl = ($userRole === 'admin') ? '../Admin/AdminMainPage.php' : '../Main
         });
     </script>
 </body>
-</html> 
+</html>  -->

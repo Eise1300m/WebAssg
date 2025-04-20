@@ -1,5 +1,5 @@
 <?php
-require_once("base.php");
+require_once("../base.php");
 
 // Check if user is admin
 requireAdmin();
@@ -41,18 +41,18 @@ includeAdminNav();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Management - Secret Shelf</title>
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/AdminStyles.css">
-    <link rel="stylesheet" href="../css/AdminCheckCust.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <link rel="stylesheet" href="/WebAssg/css/NavbarStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/AdminStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/AdminCheckCust.css">
+    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/AdminScripts.js"></script>
+    <script src="/WebAssg/js/AdminScripts.js"></script>
 </head>
 
 <body>
 
     <a class="back-button" href='AdminMainPage.php'">
-        <img src="../upload/icon/back.png" alt="Back" class="back-icon"> Back to Dashboard
+        <img src="/WebAssg/upload/icon/back.png" alt="Back" class="back-icon"> Back to Dashboard
     </a>
 
         <div class="customer-stats-header">
@@ -77,7 +77,7 @@ includeAdminNav();
                             value="<?= htmlspecialchars($search) ?>"
                             class="search-input">
                         <button type="submit" class="search-but">
-                            <img src="../upload/icon/search.png" alt="Search" class="search-icon">
+                            <img src="/WebAssg/upload/icon/search.png" alt="Search" class="search-icon">
                         </button>
                     </div>
                     <?php if (!empty($search)): ?>
@@ -90,7 +90,7 @@ includeAdminNav();
                 <?php foreach ($customers as $customer): ?>
                     <div class="customer-card">
                         <div class="customer-header">
-                            <img src="<?= htmlspecialchars($customer['ProfilePic']) ?>"
+                            <img src="<?= str_replace('..', '/WebAssg', $customer['ProfilePic']) ?>"
                                 alt="Profile Picture"
                                 class="customer-avatar">
                             <div class="customer-basic-info">

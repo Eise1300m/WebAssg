@@ -1,7 +1,10 @@
 <?php
 session_start();
-require_once("base.php");
-require_once("../lib/PaginationHelper.php");
+require_once("../base.php");
+require_once("../../lib/PaginationHelper.php");
+
+PaginationHelper::init($_db);
+
 
 requireAdmin();
 
@@ -86,11 +89,11 @@ includeAdminNav();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales Report - Secret Shelf</title>
-    <link rel="stylesheet" href="../css/AdminStyles.css">
-    <link rel="stylesheet" href="../css/AdminSalesReport.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/HomeStyles.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <link rel="stylesheet" href="/WebAssg/css/AdminStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/AdminSalesReport.css">
+    <link rel="stylesheet" href="/WebAssg/css/NavbarStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/HomeStyles.css">
+    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -103,7 +106,7 @@ includeAdminNav();
 
         <div class="contentcontainer">
             <a href="AdminMainPage.php" class="admin-nav-back">
-                <img src="../upload/icon/back.png" alt="Back"> Back to Dashboard
+                <img src="/WebAssg/upload/icon/back.png" alt="Back"> Back to Dashboard
             </a>
 
             <!-- Date Range Filter -->
@@ -131,7 +134,7 @@ includeAdminNav();
             <div class="summary-cards">
                 <div class="summary-card">
                     <div class="card-icon">
-                        <img src="../upload/icon/book.png" alt="Book" style="width: 25px; height: 25px;">
+                        <img src="/WebAssg/upload/icon/book.png" alt="Book" style="width: 25px; height: 25px;">
                     </div>
                     <div class="card-info">
                         <span>Total Books Sold</span>
@@ -140,7 +143,7 @@ includeAdminNav();
                 </div>
                 <div class="summary-card">
                     <div class="card-icon">
-                        <img src="../upload/icon/shoppingcart.png" alt="Shopping Cart" style="width: 25px; height: 25px;">
+                        <img src="/WebAssg/upload/icon/shoppingcart.png" alt="Shopping Cart" style="width: 25px; height: 25px;">
                     </div>
                     <div class="card-info">
                         <span>Total Orders</span>
@@ -149,7 +152,7 @@ includeAdminNav();
                 </div>
                 <div class="summary-card">
                     <div class="card-icon">
-                        <img src="../upload/icon/sales.png" alt="Money" style="width: 25px; height: 25px;">
+                        <img src="/WebAssg/upload/icon/sales.png" alt="Money" style="width: 25px; height: 25px;">
                     </div>
                     <div class="card-info">
                         <span>Total Revenue</span>
@@ -239,6 +242,6 @@ includeAdminNav();
         </div>
     </main>
 
-    <script src="../js/Scripts.js"></script>
+    <script src="/WebAssg/js/Scripts.js"></script>
 </body>
 </html>

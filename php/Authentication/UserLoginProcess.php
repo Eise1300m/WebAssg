@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Redirect the user based on role
                 if ($user['Role'] == 'admin') {
                     // Admin redirect
-                    header("Location: /WebAssg/php/Admin/AdminIndex.php");
+                    header("Location: /WebAssg/php/Admin/AdminMainPage.php");
                     exit();
                 } else {
                     // Regular user redirect

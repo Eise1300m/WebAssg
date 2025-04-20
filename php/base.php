@@ -12,15 +12,7 @@ if (session_status() == PHP_SESSION_NONE) {
 // Database connection
 require_once("connection.php");
 
-// Include helper classes
-// require_once("../lib/ValidationHelper.php");
-// require_once("../lib/FormHelper.php");
-// require_once("../lib/BookHelper.php");
-// require_once("../lib/PaginationHelper.php");
 
-// Initialize helpers
-// BookHelper::init($_db);
-// PaginationHelper::init($_db);
 
 // Common error handling function
 function handleError($message, $redirect = null) {
@@ -93,7 +85,6 @@ function getUsername() {
 function getUserProfilePic() {
     global $_db;
     
-    // Use an absolute path for the default picture
     $default_pic = '/WebAssg/upload/icon/UnknownUser.jpg';
     
     if (!isset($_SESSION['user_name'])) {
@@ -101,18 +92,28 @@ function getUserProfilePic() {
     }
     
     try {
-        $stmt = $_db->prepare("SELECT ProfilePic FROM users WHERE Username = ?");
+        $stmt = $_db->prepare("SELECT ProfilePic, Role FROM users WHERE Username = ?");
         $stmt->execute([$_SESSION['user_name']]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($result && !empty($result['ProfilePic'])) {
-            // Convert relative paths to absolute if needed
             $profilePic = $result['ProfilePic'];
+            
+            // If the path starts with a slash, it's already an absolute path
+            if (strpos($profilePic, '/') === 0) {
+                return $profilePic;
+            }
             
             // If the profile pic is stored with a relative path, convert to absolute
             if (strpos($profilePic, '../') === 0) {
                 // Convert "../upload/..." to "/WebAssg/upload/..."
                 $profilePic = '/WebAssg/' . substr($profilePic, 3);
+                return $profilePic;
+            }
+            
+            // For older paths without proper formatting
+            if (strpos($profilePic, 'upload/') !== false) {
+                return '/WebAssg/' . $profilePic;
             }
             
             return $profilePic;
@@ -212,6 +213,16 @@ function displayFlashMessage() {
         $flash = $_SESSION['flash_message'];
         echo '<div class="flash-message ' . $flash['type'] . '">' . $flash['message'] . '</div>';
         unset($_SESSION['flash_message']);
+    }
+    
+    if (isset($_SESSION['error_message'])) {
+        echo '<div class="flash-message error">' . $_SESSION['error_message'] . '</div>';
+        unset($_SESSION['error_message']);
+    }
+    
+    if (isset($_SESSION['success_message'])) {
+        echo '<div class="flash-message success">' . $_SESSION['success_message'] . '</div>';
+        unset($_SESSION['success_message']);
     }
 }
 

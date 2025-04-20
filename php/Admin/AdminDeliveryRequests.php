@@ -99,20 +99,20 @@ displayFlashMessage();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delivery Requests - Secret Shelf</title>
-    <link rel="stylesheet" href="../../css/HomeStyles.css">
-    <link rel="stylesheet" href="../../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../../css/FooterStyles.css">
-    <link rel="icon" type="image/x-icon" href="../../img/Logo.png">
+    <link rel="stylesheet" href="/WebAssg/css/HomeStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/NavbarStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/FooterStyles.css">
+    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="../css/DeliveryRequestStyles.css">
-    <script src="../js/AdminScripts.js"></script>
+    <link rel="stylesheet" href="/WebAssg/css/DeliveryRequestStyles.css">
+    <script src="/WebAssg/js/AdminScripts.js"></script>
 </head>
 
 <body data-page="admin">
     
 
     <a class="back-button" href="AdminMainPage.php">
-        <img src="../upload/icon/back.png" alt="Back" class="back-icon"> Back to Dashboard
+        <img src="/WebAssg/upload/icon/back.png" alt="Back" class="back-icon"> Back to Dashboard
     </a>
 
     <main class="admin-container">
@@ -124,7 +124,7 @@ displayFlashMessage();
         <!-- Status Overview -->
         <div class="status-overview">
             <div class="status-card preparing">
-                <img src="../upload/icon/package.png" alt="Preparing" class="status-icon">
+                <img src="/WebAssg/upload/icon/package.png" alt="Preparing" class="status-icon">
                 <div class="status-info">
                     <h3>Preparing</h3>
                     <p><?php echo $statusCounts['Preparing']; ?> Orders</p>
@@ -132,7 +132,7 @@ displayFlashMessage();
             </div>
 
             <div class="status-card delivering">
-                <img src="../upload/icon/delivery.png" alt="Delivering" class="status-icon">
+                <img src="/WebAssg/upload/icon/delivery.png" alt="Delivering" class="status-icon">
                 <div class="status-info">
                     <h3>Delivering</h3>
                     <p><?php echo $statusCounts['Delivering']; ?> Orders</p>
@@ -140,7 +140,7 @@ displayFlashMessage();
             </div>
 
             <div class="status-card collected">
-                <img src="../upload/icon/collect.png" alt="Collected" class="status-icon">
+                <img src="/WebAssg/upload/icon/collect.png" alt="Collected" class="status-icon">
                 <div class="status-info">
                     <h3>Collected</h3>
                     <p><?php echo $statusCounts['Collected']; ?> Orders</p>
@@ -148,7 +148,7 @@ displayFlashMessage();
             </div>
 
             <div class="status-card complete">
-                <img src="../upload/icon/check.png" alt="Complete" class="status-icon">
+                <img src="/WebAssg/upload/icon/check.png" alt="Complete" class="status-icon">
                 <div class="status-info">
                     <h3>Complete</h3>
                     <p><?php echo $statusCounts['Complete']; ?> Orders</p>
@@ -191,23 +191,23 @@ displayFlashMessage();
                                     </div>
                                     <div class="order-actions">
                                         <button onclick="viewOrderDetails(<?php echo $order['OrderNo']; ?>)" class="view-btn">
-                                            <img src="../upload/icon/view.png" alt="View" class="btn-icon" style="filter: invert();"> View Details
+                                            <img src="/WebAssg/upload/icon/view.png" alt="View" class="btn-icon" style="filter: invert();"> View Details
                                         </button>
                                         <?php if ($status === 'Preparing'): ?>
                                             <button onclick="updateOrderStatus(<?php echo $order['OrderNo']; ?>, 'Delivering')"
                                                 class="status-btn preparing">
-                                                <img src="../upload/icon/delivery.png" alt="Status" class="btn-icon">
+                                                <img src="/WebAssg/upload/icon/delivery.png" alt="Status" class="btn-icon">
                                                 Mark as Delivering
                                             </button>
                                         <?php elseif ($status === 'Delivering'): ?>
                                             <button disabled class="status-btn delivering" style="opacity: 0.6; cursor: not-allowed;">
-                                                <img src="../upload/icon/collect.png" alt="Status" class="btn-icon">
+                                                <img src="/WebAssg/upload/icon/collect.png" alt="Status" class="btn-icon">
                                                 Waiting for Collection
                                             </button>
                                         <?php elseif ($status === 'Collected'): ?>
                                             <button onclick="updateOrderStatus(<?php echo $order['OrderNo']; ?>, 'Complete')"
                                                 class="status-btn complete">
-                                                <img src="../upload/icon/check.png" alt="Status" class="btn-icon">
+                                                <img src="/WebAssg/upload/icon/check.png" alt="Status" class="btn-icon">
                                                 Mark as Complete
                                             </button>
                                         <?php endif; ?>

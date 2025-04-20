@@ -106,16 +106,17 @@ const ProductManagement = (function ($) {
         },
 
         editBook: function (bookId) {
-        // Reset any previous preview
-        $('#image-preview-container').hide();
+            // Reset any previous preview
+            $('#image-preview-container').hide();
+            $('#image-preview').attr('src', '');
 
-        // Fetch book details via AJAX and populate the form
-        $.ajax({
-            url: 'fetchBookDetails.php',
-            method: 'GET',
-            data: { book_id: bookId },
+            // Fetch book details via AJAX and populate the form
+            $.ajax({
+                url: 'fetchBookDetails.php',
+                method: 'GET',
+                data: { book_id: bookId },
                 dataType: 'json',
-            success: function (data) {
+                success: function (data) {
                     try {
                         // If data is already parsed JSON (from dataType:'json'), use it directly
                         const book = data;
@@ -125,30 +126,34 @@ const ProductManagement = (function ($) {
                             return;
                         }
                         
-                $('#book_id').val(book.BookNo);
-                $('#book_name').val(book.BookName);
+                        $('#book_id').val(book.BookNo);
+                        $('#book_name').val(book.BookName);
                         if (book.Author) {
-                $('#book_author').val(book.Author);
+                            $('#book_author').val(book.Author);
                         }
-                $('#book_price').val(book.BookPrice);
-                $('#book_description').val(book.Description || '');
+                        $('#book_price').val(book.BookPrice);
+                        $('#book_description').val(book.Description || '');
 
-                // Set category and trigger change to load subcategories
-                $('#category').val(book.CategoryNo).trigger('change');
+                        // Set category and trigger change to load subcategories
+                        $('#category').val(book.CategoryNo).trigger('change');
 
-                // Set subcategory after a small delay to ensure subcategories are loaded
-                setTimeout(function () {
-                    $('#subcategory').val(book.SubcategoryNo);
-                }, 100);
+                        // Set subcategory after a small delay to ensure subcategories are loaded
+                        setTimeout(function () {
+                            $('#subcategory').val(book.SubcategoryNo);
+                        }, 100);
 
-                // Show image preview if available
-                if (book.BookImage) {
-                    $('#image-preview').attr('src', book.BookImage);
-                    $('#image-preview-container').show();
-                }
+                        // Show image preview if available
+                        if (book.BookImage) {
+                            $('#image-preview').attr('src', book.BookImage);
+                            $('#image-preview-container').show();
+                            console.log('Book image path:', book.BookImage);
+                        } else {
+                            console.log('No book image available');
+                            $('#image-preview-container').hide();
+                        }
 
-                $('#productModal').show();
-                $('#modalTitle').text('Edit Book');
+                        $('#productModal').show();
+                        $('#modalTitle').text('Edit Book');
                     } catch (e) {
                         console.error('Error processing book data:', e);
                         alert('Error loading book details. Please try again.');
@@ -162,17 +167,17 @@ const ProductManagement = (function ($) {
         },
 
         confirmDeleteBook: function (bookId) {
-        if (confirm('Are you sure you want to delete this book?')) {
-            // Perform delete operation via AJAX
-            $.ajax({
-                url: 'deleteBook.php',
-                method: 'POST',
-                data: { book_id: bookId },
-                success: function (response) {
-                    alert(response);
-                    location.reload();
-                }
-            });
+            if (confirm('Are you sure you want to delete this book?')) {
+                // Perform delete operation via AJAX
+                $.ajax({
+                    url: 'deleteBook.php',
+                    method: 'POST',
+                    data: { book_id: bookId },
+                    success: function (response) {
+                        alert(response);
+                        location.reload();
+                    }
+                });
             }
         }
     };
@@ -192,6 +197,9 @@ $(document).ready(function() {
         $('#productForm')[0].reset();
         $('#image-preview-container').hide();
     };
+
+    // Initialize image preview functionality
+    initializeImagePreview();
 
     // Add global function for subcategory filter used in inline HTML
     window.updateSubcategoryFilter = function() {
@@ -305,6 +313,7 @@ $(document).ready(function() {
             if (file.size > 5000000) {
                 alert('Image file is too large. Maximum size is 5MB.');
                 this.value = '';
+                $('#image-preview-container').hide();
                 return;
             }
 
@@ -312,6 +321,7 @@ $(document).ready(function() {
             if (!file.type.match('image.*')) {
                 alert('Only image files are allowed.');
                 this.value = '';
+                $('#image-preview-container').hide();
                 return;
             }
 
@@ -319,8 +329,11 @@ $(document).ready(function() {
             reader.onload = function (e) {
                 $('#image-preview').attr('src', e.target.result);
                 $('#image-preview-container').show();
+                console.log('Preview image updated from file input');
             };
             reader.readAsDataURL(file);
+        } else {
+            $('#image-preview-container').hide();
         }
     });
 
@@ -808,4 +821,49 @@ function closeOrderModal() {
     window.closeCancelModal = closeCancelModal;
     // window.confirmCancel = processOrderCancellation;
 })();
+
+// Function to initialize image preview functionality
+function initializeImagePreview() {
+    // Book image preview - make sure CSS is set correctly
+    if ($('#image-preview-container').length) {
+        // Set the CSS for the image preview container
+        $('#image-preview-container').css({
+            'margin-top': '10px',
+            'max-width': '200px',
+            'border': '1px solid #ddd',
+            'padding': '5px',
+            'background': '#fff'
+        });
+
+        // Set the CSS for the image preview
+        $('#image-preview').css({
+            'width': '100%',
+            'height': 'auto',
+            'display': 'block'
+        });
+        
+        // Add error handler for image loading
+        $('#image-preview').on('error', function() {
+            console.error('Failed to load image:', $(this).attr('src'));
+            // Try to load default image if loading fails
+            $(this).attr('src', '/WebAssg/upload/bookPfp/BookCoverUnavailable.webp');
+        });
+        
+        // Add load success handler
+        $('#image-preview').on('load', function() {
+            console.log('Successfully loaded image:', $(this).attr('src'));
+            $('#image-preview-container').show();
+        });
+    }
+
+    // Ensure book image is shown on edit
+    $(document).on('click', '.edit-book-btn', function() {
+        const bookId = $(this).data('book-id');
+        if (bookId) {
+            // First hide the preview container until we have data
+            $('#image-preview-container').hide();
+            editBook(bookId);
+        }
+    });
+}
 

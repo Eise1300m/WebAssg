@@ -4,6 +4,11 @@
 
     includeNavbar();
     includeDropDownNav();
+
+    if(isAdmin()){
+        header("Location: /WebAssg/php/Admin/AdminMainPage.php");
+        exit();
+    }
     
 
     function fetchBooks($query, $limit = 5) {
@@ -83,7 +88,7 @@
                     <div class="cat-img">
                         <?php foreach ($bestSellers as $book): ?>
                             <figure>
-                                <a href="BookPreview.php?book_id=<?php echo $book['BookNo']; ?>" class="book-link">
+                                <a href="ManageBook/BookPreview.php?book_id=<?php echo $book['BookNo']; ?>" class="book-link">
                                     <img class="bookImg" src="<?php echo htmlspecialchars($book['BookImage']); ?>" 
                                          alt="<?php echo htmlspecialchars($book['BookName']); ?>">
                                     <div class="book-title">

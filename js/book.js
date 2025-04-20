@@ -1,6 +1,7 @@
 // Star Rating System
 document.addEventListener('DOMContentLoaded', function() {
     initializeStarRating();
+    initializeCountdownTimer();
 });
 
 function initializeStarRating() {
@@ -10,7 +11,7 @@ function initializeStarRating() {
     starLabels.forEach(label => {
         // Create star image element with the correct filename
         const starImg = document.createElement('img');
-        starImg.src = '../upload/icon/star-empty.png'; // Using your filename
+        starImg.src = '/WebAssg/upload/icon/star-empty.png'; // Using your filename
         starImg.alt = 'Star';
         starImg.className = 'star-icon';
         
@@ -24,12 +25,12 @@ function initializeStarRating() {
 
         // Change to filled star on hover
         label.addEventListener('mouseenter', function() {
-            this.querySelector('.star-icon').src = '../upload/icon/star-filled.png';
+            this.querySelector('.star-icon').src = '/WebAssg/upload/icon/star-filled.png';
             let prevSibling = this.previousElementSibling;
             
             // Also change all previous stars
             while (prevSibling && prevSibling.tagName === 'LABEL') {
-                prevSibling.querySelector('.star-icon').src = '../upload/icon/star-filled.png';
+                prevSibling.querySelector('.star-icon').src = '/WebAssg/upload/icon/star-filled.png';
                 prevSibling = prevSibling.previousElementSibling;
             }
         });
@@ -65,9 +66,33 @@ function resetStars() {
         const starImg = label.querySelector('.star-icon');
         
         if (starValue <= selectedRating) {
-            starImg.src = '../upload/icon/star-filled.png';
+            starImg.src = '/WebAssg/upload/icon/star-filled.png';
         } else {
-            starImg.src = '../upload/icon/star-empty.png'; // Using your filename
+            starImg.src = '/WebAssg/upload/icon/star-empty.png'; // Using your filename
         }
     });
+}
+
+// Countdown timer functionality
+function initializeCountdownTimer() {
+    const timerElement = document.getElementById('timer');
+    
+    // Only proceed if the timer element exists on the page
+    if (timerElement) {
+        // Get the book_id from the data attribute on the timer element
+        const bookId = timerElement.getAttribute('data-book-id');
+        let timeLeft = parseInt(timerElement.getAttribute('data-time-left') || '2');
+        
+        // Start the countdown
+        const countdown = setInterval(function() {
+            timeLeft--;
+            timerElement.textContent = timeLeft;
+            
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                // Redirect to BookPreview page
+                window.location.href = 'BookPreview.php?book_id=' + bookId;
+            }
+        }, 1000);
+    }
 }

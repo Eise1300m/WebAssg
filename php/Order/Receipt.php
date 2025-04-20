@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("base.php");
+require_once("../base.php");
 includeNavbar();
 
 if (!isset($_SESSION['order_id'])) {
@@ -49,17 +49,15 @@ $address = $stmt->fetch(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Receipt - Secret Shelf</title>
     <link rel="stylesheet" href="../css/HomeStyles.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="stylesheet" href="../css/ReceiptStyles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <link rel="stylesheet" href="../../css/NavbarStyles.css">
+    <link rel="stylesheet" href="../../css/FooterStyles.css">
+    <link rel="stylesheet" href="../../css/ReceiptStyles.css">
+    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/order.js" defer></script>
-    <script src="../js/Scripts.js"></script>
+    <script src="../../js/order.js" defer></script>
+    <script src="../../js/Scripts.js"></script>
 </head>
 <body>
-    <?php include_once("navbar.php") ?>
 
     <div class="receipt-container">
         <div class="receipt-header">
@@ -135,7 +133,7 @@ $address = $stmt->fetch(PDO::FETCH_ASSOC);
                     <tr>
                         <td>
                             <div class="book-info">
-                                <img src="<?php echo $book['BookImage'] ?: '../img/no-cover.png'; ?>" 
+                                <img src="<?= str_replace('../', '/WebAssg/', htmlspecialchars($book['BookImage'])) ?: '../../img/no-cover.png'; ?>" 
                                      alt="<?php echo htmlspecialchars($book['BookName']); ?>" 
                                      class="book-thumbnail">
                                 <span><?php echo htmlspecialchars($book['BookName']); ?></span>
@@ -183,20 +181,20 @@ $address = $stmt->fetch(PDO::FETCH_ASSOC);
         </div>
         
         <button class="print-button" id="print-receipt">
-            <img src="../upload/icon/print.png" alt="Print" class="button-icon" style="width: 20px; height: 20px;">
+            <img src="/WebAssg/upload/icon/print.png" alt="Print" class="button-icon" style="width: 20px; height: 20px;">
             Print Receipt
         </button>
         
         <div class="thank-you">
             <p>Thank you for shopping with us!</p>
-            <a href="MainPage.php" class="continue-shopping-btn">
-                <img src="../upload/icon/shoppingbag.png" alt="Shopping Bag">
+            <a href="../MainPage.php" class="continue-shopping-btn">
+                <img src="/WebAssg/upload/icon/shoppingbag.png" alt="Shopping Bag">
                 Continue Shopping
             </a>
         </div>
     </div>
 
-    <?php include_once('footer.php') ?>
+    <?php include_once('../footer.php') ?>
 </body>
 
 </html>

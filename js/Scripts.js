@@ -199,24 +199,59 @@ function initializeSignupForm() {
 }
 
 function initializeProfilePicture() {
-    // Show upload button and preview when a file is selected
-    $('#profile-pic-input').on('change', function() {
-        if (this.files && this.files[0]) {
-            
-            $('#upload-pic-btn').show();
-            
-            
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#profile-pic').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(this.files[0]);
-        }
-    });
+    // Profile picture preview and upload handling
+    const profilePicInput = document.getElementById('profile-pic-input');
+    const uploadPicBtn = document.getElementById('upload-pic-btn');
+    const profilePic = document.getElementById('profile-pic');
     
-    $('#profile-pic-form').on('submit', function() {
-        console.log('Profile picture form submitted');
-    });
+    if (profilePicInput && uploadPicBtn && profilePic) {
+        // Show upload button and preview when a file is selected
+        profilePicInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                // Show the upload button
+                uploadPicBtn.style.display = 'block';
+                
+                // Create and use FileReader for preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profilePic.src = e.target.result;
+                };
+                reader.readAsDataURL(this.files[0]);
+                
+                // Validate file type and size
+                const file = this.files[0];
+                const fileType = file.type;
+                const fileSize = file.size;
+                
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                
+                if (!allowedTypes.includes(fileType)) {
+                    alert('Invalid file type! Only JPG, PNG & GIF files are allowed.');
+                    this.value = '';
+                    uploadPicBtn.style.display = 'none';
+                    return;
+                }
+                
+                if (fileSize > maxSize) {
+                    alert('File is too large! Maximum size is 5MB.');
+                    this.value = '';
+                    uploadPicBtn.style.display = 'none';
+                    return;
+                }
+            }
+        });
+        
+        // Handle form submission
+        const profilePicForm = document.getElementById('profile-pic-form');
+        if (profilePicForm) {
+            profilePicForm.addEventListener('submit', function() {
+                // Show loading indicator or disable button if needed
+                uploadPicBtn.textContent = 'Uploading...';
+                uploadPicBtn.disabled = true;
+            });
+        }
+    }
 }
 
 // Slider functionality

@@ -1,5 +1,5 @@
 <?php
-require_once("base.php");
+require_once("../base.php");
 
 $bookId = isset($_GET['book_id']) ? (int)$_GET['book_id'] : 0;
 
@@ -54,18 +54,18 @@ includeNavbar();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($book['BookName']); ?> - Preview</title>
     <link rel="icon" type="image/x-icon" href="../img/Logo.png">
-    <link rel="stylesheet" href="../css/BookPreviewStyle.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link href="../css/NavbarStyles.css" rel="stylesheet">
+    <link rel="stylesheet" href="/WebAssg/css/BookPreviewStyle.css">
+    <link rel="stylesheet" href="/WebAssg/css/FooterStyles.css">
+    <link href="/WebAssg/css/NavbarStyles.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/Scripts.js"></script>
-    <script src="../js/order.js"></script>
+    <script src="/WebAssg/js/Scripts.js"></script>
+    <script src="/WebAssg/js/order.js"></script>
 </head>
 
 <body>
     <!-- Back button -->
     <a class="back-button">
-    <img src="../upload/icon/back.png" alt="Back"> Go Back
+    <img src="/WebAssg/upload/icon/back.png" alt="Back"> Go Back
 </a>
 
 
@@ -74,9 +74,9 @@ includeNavbar();
             <div class="inner-position">
                 <div class="book-image">
                     <?php if (!empty($book['BookImage'])): ?>
-                        <img src="<?php echo $book['BookImage']; ?>" alt="Book cover">
+                        <img src="<?= str_replace('../', '/WebAssg/', $book['BookImage']); ?>" alt="Book cover">
                     <?php else: ?>
-                        <img src="../upload/bookPfp/bookcoverunavailable.png" alt="Cover not available">
+                        <img src="/WebAssg/upload/bookPfp/bookcoverunavailable.png" alt="Cover not available">
                     <?php endif; ?>
                 </div>
 
@@ -95,11 +95,11 @@ includeNavbar();
                                     <?php
                                     for ($i = 1; $i <= 5; $i++) {
                                         if ($i <= $average_rating) {
-                                            echo '<img src="../upload/icon/star-filled.png" alt="Star" class="star-icon">';
+                                            echo '<img src="/WebAssg/upload/icon/star-filled.png" alt="Star" class="star-icon">';
                                         } else if ($i - 0.5 <= $average_rating) {
-                                            echo '<img src="../upload/icon/star-half.png" alt="Half star" class="star-icon">';
+                                            echo '<img src="/WebAssg/upload/icon/star-half.png" alt="Half star" class="star-icon">';
                                         } else {
-                                            echo '<img src="../upload/icon/star-empty.png" alt="Empty star" class="star-icon">';
+                                            echo '<img src="/WebAssg/upload/icon/star-empty.png" alt="Empty star" class="star-icon">';
                                         }
                                     }
                                     ?>
@@ -122,9 +122,9 @@ includeNavbar();
                                 <button type="button" class="quantity-button" onclick="decrementQuantity()">-</button>
                                 <input type="text" id="quantity" class="quantity-input" value="1" readonly>
                                 <button type="button" class="quantity-button" onclick="incrementQuantity()">+</button>
-                            </div>
+                            </div>  
                             <button type="button" class="cart-but" data-book-id="<?php echo $book['BookNo']; ?>" data-quantity-id="quantity">
-                                <img src="../upload/icon/shoppingcart.png" alt="Cart"> Add to Cart
+                                <img src="/WebAssg/upload/icon/shoppingcart.png" alt="Cart"> Add to Cart
                             </button>
                         </div>
                     </div>
@@ -143,9 +143,9 @@ includeNavbar();
                             <?php
                             for ($i = 1; $i <= 5; $i++) {
                                 if ($i <= $average_rating) {
-                                    echo '<img src="../upload/icon/star-filled.png" alt="Star" class="star-icon">';
+                                    echo '<img src="/WebAssg/upload/icon/star-filled.png" alt="Star" class="star-icon">';
                                 } else {
-                                    echo '<img src="../upload/icon/star-empty.png" alt="Empty star" class="star-icon">';
+                                    echo '<img src="/WebAssg/upload/icon/star-empty.png" alt="Empty star" class="star-icon">';
                                 }
                             }
                             ?>
@@ -157,12 +157,12 @@ includeNavbar();
                 </div>
 
                 <?php if (isset($_SESSION['user_name'])): ?>
-                    <button class="redirect-button write-review-btn" data-redirect-url='/WebAssg/php/WriteReview.php?book_id=<?php echo $bookId; ?>'>
-                        <img src="../upload/icon/edit.png" alt="Edit" class="btn-icon"> Write a Review
+                    <button class="redirect-button write-review-btn" data-redirect-url='/WebAssg/php/ManageBook/WriteReview.php?book_id=<?php echo $bookId; ?>'>
+                        <img src="/WebAssg/upload/icon/edit.png" alt="Edit" class="btn-icon"> Write a Review
                     </button>
                 <?php else: ?>
                     <button class="redirect-button write-review-btn" data-redirect-url='/WebAssg/php/Authentication/UserLogin.php?redirect=BookPreview.php?book_id=<?php echo $bookId; ?>'>
-                        <img src="../upload/icon/login.png" alt="Login" class="btn-icon"> Login to Write a Review
+                        <img src="/WebAssg/upload/icon/login.png" alt="Login" class="btn-icon"> Login to Write a Review
                     </button>
                 <?php endif; ?>
             </div>
@@ -178,9 +178,9 @@ includeNavbar();
                             <?php
                             for ($i = 1; $i <= 5; $i++) {
                                 if ($i <= $review['Rating']) {
-                                    echo '<img src="../upload/icon/star-filled.png" alt="Star" class="star-icon">';
+                                    echo '<img src="/WebAssg/upload/icon/star-filled.png" alt="Star" class="star-icon">';
                                 } else {
-                                    echo '<img src="../upload/icon/star-empty.png" alt="Empty star" class="star-icon">';
+                                    echo '<img src="/WebAssg/upload/icon/star-empty.png" alt="Empty star" class="star-icon">';
                                 }
                             }
                             ?>

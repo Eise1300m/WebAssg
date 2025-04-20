@@ -1,6 +1,6 @@
 <?php
-require_once("base.php");
-require_once("../lib/BookHelper.php");
+require_once("../base.php");
+require_once("../../lib/BookHelper.php");
 
 BookHelper::init($_db);
 
@@ -79,15 +79,14 @@ foreach ($allSubcategories as $sub) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Management - Secret Shelf</title>
-    <link rel="stylesheet" href="../css/HomeStyles.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <link rel="stylesheet" href="/WebAssg/css/HomeStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/NavbarStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/FooterStyles.css">
+    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../css/AdminProductStyles.css">
-    <script src="../js/Scripts.js"></script>
-    <script src="../js/AdminScripts.js"></script>
+    <link rel="stylesheet" href="/WebAssg/css/AdminProductStyles.css">
+    <script src="/WebAssg/js/Scripts.js"></script>
+    <script src="/WebAssg/js/AdminScripts.js"></script>
 
 </head>
 
@@ -100,13 +99,13 @@ foreach ($allSubcategories as $sub) {
 
         <div class="admin-content">
             <a href="AdminMainPage.php" class="admin-nav-back">
-                <img src="../upload/icon/back.png" alt="Back"> Back to Dashboard
+                <img src="/WebAssg/upload/icon/back.png" alt="Back"> Back to Dashboard
             </a>
 
             <div class="admin-stats">
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <img src="../upload/icon/book.png" style="width: 30px; height: 30px;" alt="Total Books">
+                        <img src="/WebAssg/upload/icon/book.png" style="width: 30px; height: 30px;" alt="Total Books">
                     </div>
                     <div class="stat-info">
                         <span>Total Books</span>
@@ -116,7 +115,7 @@ foreach ($allSubcategories as $sub) {
 
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <img src="../upload/icon/list.png" style="width: 30px; height: 30px;" alt="Total Categories">
+                        <img src="/WebAssg/upload/icon/list.png" style="width: 30px; height: 30px;" alt="Total Categories">
                     </div>
                     <div class="stat-info">
                         <span>Categories</span>
@@ -126,7 +125,7 @@ foreach ($allSubcategories as $sub) {
 
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <img src="../upload/icon/subcat.png" style="width: 30px; height: 30px;" alt="Total Subcategories">
+                        <img src="/WebAssg/upload/icon/subcat.png" style="width: 30px; height: 30px;" alt="Total Subcategories">
                     </div>
                     <div class="stat-info">
                         <span>Subcategories</span>
@@ -150,7 +149,7 @@ foreach ($allSubcategories as $sub) {
                                            placeholder="Search by name or ID..." 
                                            value="<?php echo htmlspecialchars($searchQuery); ?>">
                                     <button type="submit" class="search-btn">
-                                        <img src="../upload/icon/search.png" style="width: 20px; height: 20px;" alt="Search">
+                                        <img src="/WebAssg/upload/icon/search.png" style="width: 20px; height: 20px;" alt="Search">
                                     </button>
                                 </div>
                             </div>
@@ -175,11 +174,11 @@ foreach ($allSubcategories as $sub) {
                             </div>
 
                             <button type="submit" class="filter-btn">
-                                <img src="../upload/icon/filter.png" style="width: 20px; height: 20px;"> Apply Filter
+                                <img src="/WebAssg/upload/icon/filter.png" style="width: 20px; height: 20px;"> Apply Filter
                             </button>
 
                             <a href="AdminProductManagement.php" class="reset-btn">
-                                <img src="../upload/icon/reset.png" style="width: 20px; height: 20px;"> Reset
+                                <img src="/WebAssg/upload/icon/reset.png" style="width: 20px; height: 20px;"> Reset
                             </a>
                         </form>
                     </div>
@@ -208,7 +207,7 @@ foreach ($allSubcategories as $sub) {
                                     <tr>
                                         <td><?php echo $book['BookNo']; ?></td>
                                         <td>
-                                            <img src="<?php echo $book['BookImage'] ?: '../img/no-cover.png'; ?>"
+                                            <img src="<?= str_replace('..', '/WebAssg', $book['BookImage']) ?: '/WebAssg/upload/bookPfp/BookCoverUnavailable.webp'; ?>"
                                                 alt="<?php echo htmlspecialchars($book['BookName']); ?>"
                                                 class="book-thumbnail">
                                         </td>
@@ -219,10 +218,10 @@ foreach ($allSubcategories as $sub) {
                                         <td>
                                             <div class="action-buttons">
                                                 <button class="edit-btn" onclick="editBook(<?php echo $book['BookNo']; ?>)">
-                                                    <img src="../upload/icon/edit.png" style="width: 20px; height: 20px;"> Edit
+                                                    <img src="/WebAssg/upload/icon/edit.png" style="width: 20px; height: 20px;"> Edit
                                                 </button>
                                                 <button class="delete-btn" onclick="confirmDeleteBook(<?php echo $book['BookNo']; ?>)">
-                                                    <img src="../upload/icon/delete.png" style="width: 20px; height: 20px;"> Delete
+                                                    <img src="/WebAssg/upload/icon/delete.png" style="width: 20px; height: 20px;"> Delete
                                                 </button>
                                             </div>
                                         </td>
@@ -293,8 +292,8 @@ foreach ($allSubcategories as $sub) {
                 <div class="form-group">
                     <label for="book_image">Book Image</label>
                     <input type="file" id="book_image" name="book_image" accept="image/*">
-                    <div id="image-preview-container" class="image-preview-container" style="display: none;">
-                        <img id="image-preview" alt="Book preview">
+                    <div id="image-preview-container" class="image-preview-container" style="display: none; margin-top: 10px; max-width: 200px; border: 1px solid #ddd; padding: 5px; background: #fff; overflow: hidden;">
+                        <img id="image-preview" alt="Book preview" style="width: 100%; height: auto; display: block; max-height: 250px; object-fit: contain;">
                     </div>
                 </div>
 
@@ -312,8 +311,8 @@ foreach ($allSubcategories as $sub) {
     </div>
 
     <!-- Remove inline script references and keep only external ones -->
-    <script src="../js/Scripts.js"></script>
-    <script src="../js/AdminScripts.js"></script>
+    <script src="/WebAssg/js/Scripts.js"></script>
+    <script src="/WebAssg/js/AdminScripts.js"></script>
 </body>
 
 </html>

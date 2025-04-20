@@ -1,10 +1,10 @@
 <?php
 // Disable error display for this page to ensure clean JSON output
-ini_set('display_errors', 0);
-error_reporting(0);
+// ini_set('display_errors', 0);
+// error_reporting(0);
 
 session_start();
-require_once("base.php");
+require_once("../base.php");
 
 // Set JSON content type
 header('Content-Type: application/json');
@@ -29,6 +29,21 @@ if (isset($_GET['book_id'])) {
         $book = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($book) {
+            // Format the BookImage path correctly
+            if (!empty($book['BookImage'])) {
+                // Handle relative paths that start with ../
+                if (strpos($book['BookImage'], '../') === 0) {
+                    $book['BookImage'] = '/WebAssg/' . substr($book['BookImage'], 3);
+                }
+                // Handle paths that don't have a leading slash and don't include the full path
+                else if (strpos($book['BookImage'], '/') !== 0) {
+                    $book['BookImage'] = '/WebAssg/upload/bookPfp/' . $book['BookImage'];
+                }
+            } else {
+                // Set default image if BookImage is empty
+                $book['BookImage'] = '/WebAssg/upload/bookPfp/BookCoverUnavailable.webp';
+            }
+            
             echo json_encode($book);
         } else {
             echo json_encode(['error' => 'Book not found']);

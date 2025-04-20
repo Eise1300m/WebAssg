@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("connection.php");
+require_once("../base.php");
 
 // Change user check to admin check
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
@@ -39,6 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
         }
     }
 }
+
+includeAdminNav();
 ?>
 
 <!DOCTYPE html>
@@ -48,16 +50,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Security - Secret Shelf</title>
-    <link rel="stylesheet" href="../css/HomeStyles.css">
-    <link rel="stylesheet" href="../css/AdminStyles.css">
-    <link rel="stylesheet" href="../css/NavbarStyles.css">
-    <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
+    <link rel="stylesheet" href="/WebAssg/css/HomeStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/AdminStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/NavbarStyles.css">
+    <link rel="stylesheet" href="/WebAssg/css/FooterStyles.css">
+    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/Scripts.js"></script>
+    <script src="/WebAssg/js/Scripts.js"></script>
 </head>
 <body>
-    <?php include_once("navbaradmin.php") ?>
 
     <main class="admin-container">
         <div class="admin-header">
@@ -68,22 +69,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
         <div class="admin-content">
             <div class="admin-sidebar">
             <div class="admin-profile" style="text-align: center;">
-                    <img src="<?php echo !empty($admin['ProfilePic']) ? htmlspecialchars($admin['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>"
+                    <img src="<?php echo !empty($admin['ProfilePic']) ? htmlspecialchars($admin['ProfilePic']) : '/WebAssg/upload/icon/UnknownUser.jpg'; ?>"
                         alt="Admin Profile" class="admin-avatar" style="display: block; margin: 0 auto;">
                     <h3><?php echo htmlspecialchars($admin['Username']); ?></h3>
                     <p>Administrator</p>
                 </div>
                 <nav class="admin-nav">
                     <a href="AdminProfile.php" class="admin-nav-item">
-                        <img src="../upload/icon/profile.png" alt="Profile" class="nav-icon">
+                        <img src="/WebAssg/upload/icon/profile.png" alt="Profile" class="nav-icon">
                         Admin Profile
                     </a>
                     <a href="AdminUpdatePassword.php" class="admin-nav-item active">
-                        <img src="../upload/icon/lock.png" alt="Security" class="nav-icon">
+                        <img src="/WebAssg/upload/icon/lock.png" alt="Security" class="nav-icon">
                         Admin Security
                     </a>
                     <a href="AdminMainPage.php" class="admin-nav-item">
-                        <img src="../upload/icon/dashboard.png" alt="Dashboard" class="nav-icon">
+                        <img src="/WebAssg/upload/icon/dashboard.png" alt="Dashboard" class="nav-icon">
                         Back to Dashboard
                     </a>
                 </nav>
@@ -96,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
 
                 <div class="admin-form-section">
                     <h2 class="section-title">
-                        <img src="../upload/icon/lock.png" alt="Security" class="section-icon">
+                        <img src="/WebAssg/upload/icon/lock.png" alt="Security" class="section-icon">
                         Change Password
                     </h2>
 
@@ -105,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                             <label for="old_password">Current Password</label>
                             <div class="input-with-icon">
                                 <input type="password" id="old_password" name="old_password" required>
-                                <img src="../upload/icon/lock.png" alt="Lock" class="input-icon">
+                                <img src="/WebAssg/upload/icon/lock.png" alt="Lock" class="input-icon">
                             </div>
                         </div>
 
@@ -113,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                             <label for="new_password">New Password</label>
                             <div class="input-with-icon">
                                 <input type="password" id="new_password" name="new_password" required>
-                                <img src="../upload/icon/openlock.png" alt="New Lock" class="input-icon">
+                                <img src="/WebAssg/upload/icon/openlock.png" alt="New Lock" class="input-icon">
                             </div>
                         </div>
 
@@ -121,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                             <label for="confirm_password">Confirm New Password</label>
                             <div class="input-with-icon">
                                 <input type="password" id="confirm_password" name="confirm_password" required>
-                                <img src="../upload/icon/openlock.png" alt="Confirm Lock" class="input-icon">
+                                <img src="/WebAssg/upload/icon/openlock.png" alt="Confirm Lock" class="input-icon">
                             </div>
                         </div>
 
@@ -136,6 +137,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
     </main>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/Scripts.js"></script>
+    <script src="/WebAssg/js/Scripts.js"></script>
 </body>
 </html>

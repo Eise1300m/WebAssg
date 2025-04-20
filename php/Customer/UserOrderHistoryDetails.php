@@ -59,7 +59,7 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="../../css/ProfileStyles.css">
     <link rel="stylesheet" href="../../css/NavbarStyles.css">
     <link rel="stylesheet" href="../../css/FooterStyles.css">
-    <link rel="icon" type="image/x-icon" href="../../img/Logo.png">
+    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -114,11 +114,17 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                         <div class="order-items-section">
                             <h3>Order Items</h3>
+
+                            <a href="UserOrderHistory.php" class="back-btn">
+                                <img src="/WebAssg/upload/icon/back.png" alt="Back" class="back-icon" style="width: 20px; height: 20px;">
+                                Back to Orders
+                            </a>
+
                             <div class="order-items-list">
                                 <?php foreach ($order_items as $item): ?>
                                     <div class="order-item-card">
                                         <div class="item-image">
-                                            <img src="<?php echo htmlspecialchars($item['BookImage']); ?>"
+                                            <img src="<?= str_replace('../', '/WebAssg/', htmlspecialchars($item['BookImage'])); ?>"
                                                 alt="<?php echo htmlspecialchars($item['BookName']); ?>">
                                         </div>
                                         <div class="item-details">
@@ -138,10 +144,7 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     Confirm Collection
                                 </button>
                             <?php endif; ?>
-                            <a href="UserOrderHistory.php" class="back-btn">
-                                <img src="/WebAssg/upload/icon/back.png" alt="Back" class="back-icon" style="width: 20px; height: 20px;">
-                                Back to Orders
-                            </a>
+
                         </div>
                     </div>
                 </div>
