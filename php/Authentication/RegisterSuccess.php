@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Check if the role is set in the session (assuming you store it after registration)
 $userRole = $_SESSION['user_role'] ?? 'customer'; // Default to customer if not set
 
 // Determine the redirect page

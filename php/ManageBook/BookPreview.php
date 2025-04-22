@@ -53,7 +53,6 @@ includeNavbar();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($book['BookName']); ?> - Preview</title>
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <link rel="stylesheet" href="/WebAssg/css/BookPreviewStyle.css">
     <link rel="stylesheet" href="/WebAssg/css/FooterStyles.css">
     <link href="/WebAssg/css/NavbarStyles.css" rel="stylesheet">

@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/WebAssg/js/Scripts.js"></script>
-    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <link rel="stylesheet" href="/WebAssg/css/AdminprofileMenuStyle.css">
 </head>
 

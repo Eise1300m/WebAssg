@@ -35,7 +35,6 @@ includeAdminNav();
     <link rel="stylesheet" href="../../css/NavbarStyles.css">
     <link rel="stylesheet" href="../../css/HomeStyles.css">
     <link rel="stylesheet" href="../../css/AdminStyles.css">
-    <link rel="icon" type="image/x-icon" href="../../img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 

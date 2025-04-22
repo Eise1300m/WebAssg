@@ -25,7 +25,6 @@ includeNavbar();
     <link rel="stylesheet" href="../../css/NavbarStyles.css">
     <link rel="stylesheet" href="../../css/SignUpStyles.css">
     <script src="../../js/Scripts.js"></script>
-    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
 </head>
 
 

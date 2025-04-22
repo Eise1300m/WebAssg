@@ -82,7 +82,6 @@ foreach ($allSubcategories as $sub) {
     <link rel="stylesheet" href="/WebAssg/css/HomeStyles.css">
     <link rel="stylesheet" href="/WebAssg/css/NavbarStyles.css">
     <link rel="stylesheet" href="/WebAssg/css/FooterStyles.css">
-    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/WebAssg/css/AdminProductStyles.css">
     <script src="/WebAssg/js/Scripts.js"></script>

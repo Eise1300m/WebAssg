@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    // Initialize all necessary functions
+
+    initializeHelp();
     initializeLoginForm();
     initializeProfileMenu();
     initializeSignupForm();
@@ -9,7 +10,6 @@ $(document).ready(function () {
     initializeBackButtons();
     initializeProfilePicture();
     initializeLoginBuffer();
-    initializeHelp();
 });
 
 // Login Form Handling
@@ -437,20 +437,21 @@ function initializeLoginBuffer() {
 
 function initializeHelp() {
     // Toggle FAQ answers
-    $('.faq-question').click(function() {
+    $('.faq-question').on('click', function() {
         $(this).toggleClass('active');
         $(this).next('.faq-answer').slideToggle();
     });
-
+    
     // Tab switching
-    $('.help-tab').click(function() {
+    $('.help-tab').on('click', function() {
         const tabId = $(this).data('tab');
-
-        // Update tab classes
+        console.log('Tab clicked:', tabId);
+        
+        // Update active tab
         $('.help-tab').removeClass('active');
         $(this).addClass('active');
-
-        // Update content display
+        
+        // Show the corresponding content
         $('.tab-content').removeClass('active');
         $('#' + tabId).addClass('active');
     });

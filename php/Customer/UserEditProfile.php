@@ -160,7 +160,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Profile Management - Secret Shelf</title>
-    <link rel="icon" type="image/x-icon" href="../../img/Logo.png">
     <link rel="stylesheet" href="../../css/HomeStyles.css">
     <link rel="stylesheet" href="../../css/ProfileStyles.css">
     <link rel="stylesheet" href="../../css/NavbarStyles.css">

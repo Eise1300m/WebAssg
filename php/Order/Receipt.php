@@ -52,7 +52,6 @@ $address = $stmt->fetch(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="../../css/NavbarStyles.css">
     <link rel="stylesheet" href="../../css/FooterStyles.css">
     <link rel="stylesheet" href="../../css/ReceiptStyles.css">
-    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../../js/order.js" defer></script>
     <script src="../../js/Scripts.js"></script>

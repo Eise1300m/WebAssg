@@ -45,7 +45,6 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart - Secret Shelf</title>
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
     <link rel="stylesheet" href="../../css/NavbarStyles.css">
     <link rel="stylesheet" href="../../css/FooterStyles.css">
     <link rel="stylesheet" href="../../css/CartStyles.css">

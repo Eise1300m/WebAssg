@@ -29,7 +29,6 @@ includeAdminNav();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $_title ?? 'Secret Shelf / Admin Registration' ?></title>
-    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/WebAssg/css/NavbarStyles.css">
     <link rel="stylesheet" href="/WebAssg/css/SignUpStyles.css">

@@ -58,7 +58,6 @@
     <link rel="stylesheet" href="../css/HomeStyles.css">
     <link rel="stylesheet" href="../css/NavbarStyles.css">
     <link rel="stylesheet" href="../css/FooterStyles.css">
-    <link rel="icon" type="image/x-icon" href="../img/Logo.png">
 </head>
 
 <body>
