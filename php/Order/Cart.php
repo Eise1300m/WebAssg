@@ -87,8 +87,7 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
                                         <h3>Book</h3>
                                         <div class="book-details">
                                             <img src="<?= str_replace('../', '/WebAssg/', htmlspecialchars($bookInfo['BookImage'])) ?>" 
-                                                 alt="<?= htmlspecialchars($bookInfo['BookName']) ?>"
-                                                 onerror="this.src='/WebAssg/upload/bookPfp/bookcoverunavailable.png'">
+                                                 alt="<?= htmlspecialchars($bookInfo['BookName']) ?>">
                                             <span><?= htmlspecialchars($bookInfo['BookName']) ?></span>
                                         </div>
                                     </div>

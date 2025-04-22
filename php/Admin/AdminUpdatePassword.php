@@ -23,8 +23,8 @@ if (!$admin) {
 // Handle Password Change
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
     $old_password = $_POST["old_password"];
-    $new_password = $_POST["new_password"];
-    $confirm_password = $_POST["confirm_password"];
+    $new_password = $_POST["psw"];
+    $confirm_password = $_POST["pswcfm"];
 
     if (!password_verify($old_password, $admin["Password"])) {
         $updateMessage = "❌ Incorrect current password!";

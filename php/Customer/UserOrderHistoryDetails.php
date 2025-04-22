@@ -8,7 +8,7 @@ includeNavbar();
 
 $username = $_SESSION['user_name'];
 
-$stmt = $_db->prepare("SELECT UserID, ProfilePic FROM users WHERE UserName = ?");
+$stmt = $_db->prepare("SELECT UserID, ProfilePic, Username FROM users WHERE UserName = ?");
 $stmt->execute([$username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -59,7 +59,7 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="../../css/ProfileStyles.css">
     <link rel="stylesheet" href="../../css/NavbarStyles.css">
     <link rel="stylesheet" href="../../css/FooterStyles.css">
-    <link rel="icon" type="image/x-icon" href="/WebAssg/img/Logo.png">
+    <link rel="icon" type="image/x-icon" href="/WebAssgimg/Logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -74,9 +74,12 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="profile-content">
                 <div class="profile-sidebar">
-                    <div class="profile-avatar">
-                        <img src="<?php echo !empty($user['ProfilePic']) ? htmlspecialchars($user['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>"
-                            alt="Profile Picture" id="profile-pic">
+                    <div class="user-profile" style="text-align: center;">
+                        <img src="<?php echo !empty($user['ProfilePic']) ? htmlspecialchars($user['ProfilePic']) : '/WebAssg/upload/icon/UnknownUser.jpg'; ?>"
+                            alt="User Profile" class="profile-avatar" id="profile-pic">
+                        <p>Customer</p>
+                        <h3><?php echo htmlspecialchars($user['Username']); ?></h3>
+
                     </div>
                     <nav class="profile-nav">
                         <a href="UserEditProfile.php">Personal Information</a>

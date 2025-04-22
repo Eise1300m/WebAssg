@@ -6,7 +6,8 @@ class FormHelper {
     }
 
     public static function password($key, $attr = '') {
-        return "<input type='password' id='$key' name='$key' $attr>";
+        $pattern = "pattern='(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}'";
+        return "<input type='password' id='$key' name='$key' $pattern $attr>";
     }
 
     public static function email($key, $attr = '') {
@@ -130,7 +131,7 @@ class FormHelper {
         $defaultImage = '/WebAssg/upload/icon/UnknownUser.jpg';
         $currentImage = !empty($currentPicture) ? $currentPicture : $defaultImage;
         
-        $html = '<div class="profile-avatar">';
+        $html = '<div class="user-avatar">';
         $html .= '<img src="' . htmlspecialchars($currentImage) . '" alt="Profile Picture" id="' . $previewId . '">';
         $html .= '<form method="POST" action="" enctype="multipart/form-data" id="profile-pic-form">';
         $html .= '<input type="file" name="profile_pic" id="' . $inputId . '" style="display: none;" accept="image/jpeg,image/png,image/gif" ' . $attr . '>';

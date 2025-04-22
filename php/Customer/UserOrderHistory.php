@@ -5,6 +5,8 @@ require_once("../base.php");
 requireLogin();
 
 includeNavbar();
+displayFlashMessage();
+
 
 // Handle order collection confirmation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'confirm_collection') {
@@ -68,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 $username = $_SESSION['user_name'];
 
-$stmt = $_db->prepare("SELECT UserID, ProfilePic FROM users WHERE UserName = ?");
+$stmt = $_db->prepare("SELECT UserID, ProfilePic, Username FROM users WHERE UserName = ?");
 $stmt->execute([$username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -78,12 +80,10 @@ if (!$user) {
 
 $user_id = $user['UserID'];
 
-// Get total number of orders for the user
 $stmt = $_db->prepare("SELECT COUNT(*) as total_orders FROM orders WHERE UserID = ?");
 $stmt->execute([$user_id]);
 $order_count = $stmt->fetch(PDO::FETCH_ASSOC)['total_orders'];
 
-// Fetch all orders for the logged-in user
 $stmt = $_db->prepare("SELECT * FROM orders WHERE UserID = ? ORDER BY OrderDate DESC");
 $stmt->execute([$user_id]);
 $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -119,10 +119,13 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="profile-content">
                 <div class="profile-sidebar">
-                    <div class="profile-avatar">
-                        <img src="<?php echo !empty($user['ProfilePic']) ? htmlspecialchars($user['ProfilePic']) : '../upload/icon/UnknownUser.jpg'; ?>"
-                            alt="Profile Picture" id="profile-pic">
-                    </div>
+                <div class="user-profile" style="text-align: center;">
+                    <img src="<?php echo !empty($user['ProfilePic']) ? htmlspecialchars($user['ProfilePic']) : '/WebAssg/upload/icon/UnknownUser.jpg'; ?>"
+                        alt="User Profile" class="profile-avatar" id="profile-pic">
+                    <p>Customer</p>
+                    <h3><?php echo htmlspecialchars($user['Username']); ?></h3>
+
+                </div>
                     <nav class="profile-nav">
                         <a href="UserEditProfile.php">Personal Information</a>
                         <a href="UserSecurity.php">Security</a>

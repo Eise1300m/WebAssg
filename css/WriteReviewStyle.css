@@ -83,7 +83,7 @@ body {
 }
 
 .rating-select h3, .review-textarea h3 {
-    margin-top: 0;
+    margin-top: 10px;
     margin-bottom: 15px;
     color: #6c63ff;
     font-size: 20px;

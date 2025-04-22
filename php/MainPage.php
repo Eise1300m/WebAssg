@@ -55,12 +55,29 @@ includeDropDownNav();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/order.js"></script>
     <script src="../js/Scripts.js"></script>
+
 </head>
 
 <body>
     <div class="wrapbox">
         <div class="page-header">
-            <h1>All Books</h1>
+            <h1>
+                <?php if ($categoryFilter === 'all'): ?>
+                    All Books
+                <?php else: ?>
+                    <?php echo htmlspecialchars($categoryFilter); ?>
+                    <?php if ($subcategoryFilter !== 'all'): ?>
+                         - <?php echo htmlspecialchars($subcategoryFilter); ?>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </h1>
+            
+            <?php if (!empty($searchQuery)): ?>
+                <p class="filter-info">Search results for: "<?php echo htmlspecialchars($searchQuery); ?>"</p><br>
+            <?php endif; ?>
+            
+            
+            
             <?php if (empty($books)): ?>
                 <p class="no-results">No books found. Please try another</p>
             <?php else: ?>

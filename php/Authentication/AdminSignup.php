@@ -44,8 +44,7 @@ includeAdminNav();
     </a>
 
     <div class="container">
-        <h1>Admin Registration</h1>
-        <p class="password-requirements">Password must be at least 8 characters with one capital letter and one special character</p>
+        <h1>Admin Sign Up</h1>
 
         <form id="signupForm" method="post" action="UserSignUpProcess.php" novalidate>
             <?php echo FormHelper::hidden('role', $roleValue); ?>
@@ -61,7 +60,7 @@ includeAdminNav();
             <div class="input-container">
                 <img src="/WebAssg/upload/icon/lock.png" alt="Lock" class="input-icon">
                 <?php 
-                echo FormHelper::password('psw', 'placeholder="Enter password" required');
+                echo FormHelper::password('psw', 'placeholder="Enter password (Use upper,lower,special,> 6char)" required');
                 echo FormHelper::error('psw', $errors ?? []);
                 ?>
             </div>
@@ -95,5 +94,10 @@ includeAdminNav();
 
 
     </div>
+
+
 </body>
+
+<script src="/WebAssg/js/Scripts.js"></script>
+
 </html>

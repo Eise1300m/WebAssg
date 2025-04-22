@@ -64,8 +64,8 @@ includeNavbar();
 
 <body>
     <!-- Back button -->
-    <a class="back-button">
-    <img src="/WebAssg/upload/icon/back.png" alt="Back"> Go Back
+    <a class="main-button" href="/WebAssg/php/MainPage.php">
+    <img src="/WebAssg/upload/icon/back.png" alt="Back"> Back to Main Page
 </a>
 
 

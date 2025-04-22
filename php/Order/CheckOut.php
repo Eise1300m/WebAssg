@@ -37,7 +37,7 @@ try {
             'message' => 'Please add your address before proceeding with checkout.'
         ];
         
-        header("Location: UserEditProfile.php");
+        header("Location: /WebAssg/php/Customer/UserEditProfile.php");
         exit();
     }
 
@@ -182,7 +182,7 @@ includeNavbar();
         </div>
         
         <?php if (!empty($payment_error)): ?>
-        <div class="floating-message error">
+        <div class="floating-message">
             <?php echo htmlspecialchars($payment_error); ?>
         </div>
 
@@ -200,7 +200,7 @@ includeNavbar();
                 </div>
                 
                 <div class="customer-info">
-                    <h3>Customer Information</h3>
+                    <h3>Customer Information</h3><br>
                     <p><strong>Name:</strong> <?php echo htmlspecialchars($userInfo['Username']); ?></p>
                     <p><strong>Email:</strong> <?php echo htmlspecialchars($userInfo['Email']); ?></p>
                     <p><strong>Phone:</strong> <?php echo htmlspecialchars($userInfo['ContactNo']); ?></p>
@@ -209,6 +209,7 @@ includeNavbar();
                 <?php if ($address): ?>
                 <div class="address-info">
                     <h3>Shipping Address</h3>
+                    <a href="/WebAssg/php/Customer/UserEditProfile.php" class="edit-address">Edit Address</a><br><br>
                     <p><?php echo htmlspecialchars($address['Street']); ?></p>
                     <p><?php echo htmlspecialchars($address['City']) . ', ' . 
                               htmlspecialchars($address['State']) . ' ' . 

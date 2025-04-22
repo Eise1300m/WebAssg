@@ -4,15 +4,8 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Add this function at the top of the file after the session_start() code
-// This will help with path resolution across the site
-
-// REMOVING getBasePath function as it's no longer needed with absolute paths
-
 // Database connection
 require_once("connection.php");
-
-
 
 // Common error handling function
 function handleError($message, $redirect = null) {
@@ -131,7 +124,7 @@ function getUserProfilePic() {
  */
 function includeNavbar() {
    
-        include_once dirname(__FILE__) . '/navbar.php';
+        include_once (dirname(__FILE__) . '/navbar.php');
     
 }
 

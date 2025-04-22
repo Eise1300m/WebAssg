@@ -9,11 +9,48 @@ $(document).ready(function () {
     initializeBackButtons();
     initializeProfilePicture();
     initializeLoginBuffer();
+    initializeHelp();
 });
 
 // Login Form Handling
 function initializeLoginForm() {
     const form = document.getElementById("login-form");
+    if (form) {
+        // Clear error messages when user types
+        form.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                const errorElement = this.nextElementSibling;
+                if (errorElement && errorElement.classList.contains('error-message')) {
+                    errorElement.textContent = '';
+                }
+            });
+        });
+
+        // Handle form submission
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+            const username = form.querySelector('input[name="Username"]').value.trim();
+            const password = form.querySelector('input[name="Userpwd"]').value.trim();
+
+            if (!username) {
+                showFieldError('Username', 'Please enter your username');
+                isValid = false;
+            }
+
+            if (!password) {
+                showFieldError('Userpwd', 'Please enter your password');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    }
+}
+
+function initializeSignupValidationForm() {
+    const form = document.getElementById("signupForm");
     if (form) {
         // Clear error messages when user types
         form.querySelectorAll('input').forEach(input => {
@@ -176,6 +213,14 @@ function initializeSignupForm() {
                         isValid = false;
                     }
                 }
+                
+                if ($(this).attr('name') === 'psw') {
+                    const passwordValidation = validatePassword($(this).val());
+                    if (!passwordValidation.isValid) {
+                        showInputError(this, 'minimun 6 char, uppercase, lowercase, special char');
+                        isValid = false;
+                    }
+                }
             }
         });
         
@@ -197,6 +242,25 @@ function initializeSignupForm() {
         clearInputError(this);
     });
 }
+
+// Validate password against security requirements
+function validatePassword(password) {
+    const hasLowercase = /[a-z]/.test(password);
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasSpecial = /[\W_]/.test(password);
+    const isLongEnough = password.length >= 6;
+    
+    return {
+        isValid: hasLowercase && hasUppercase && hasSpecial && isLongEnough,
+        requirements: {
+            hasLowercase,
+            hasUppercase,
+            hasSpecial,
+            isLongEnough
+        }
+    };
+}
+
 
 function initializeProfilePicture() {
     // Profile picture preview and upload handling
@@ -369,4 +433,25 @@ function initializeLoginBuffer() {
             window.location.href = redirectUrl;
         }
     }, 1000);
+}
+
+function initializeHelp() {
+    // Toggle FAQ answers
+    $('.faq-question').click(function() {
+        $(this).toggleClass('active');
+        $(this).next('.faq-answer').slideToggle();
+    });
+
+    // Tab switching
+    $('.help-tab').click(function() {
+        const tabId = $(this).data('tab');
+
+        // Update tab classes
+        $('.help-tab').removeClass('active');
+        $(this).addClass('active');
+
+        // Update content display
+        $('.tab-content').removeClass('active');
+        $('#' + tabId).addClass('active');
+    });
 }

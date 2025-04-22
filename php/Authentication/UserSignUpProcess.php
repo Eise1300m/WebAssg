@@ -7,9 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['pswcfm'] ?? '';
     $email = $_POST['emails'] ?? '';
     $contact = $_POST['tel'] ?? '';
-    $role = $_POST['role'] ?? 'customer'; // Default role is "customer" unless specified
+    $role = $_POST['role'] ?? 'customer'; // Default role is "customer"
     
-    // Determine the redirect URL based on the referring page
     $referer = $_SERVER['HTTP_REFERER'] ?? '';
     $redirectUrl = (strpos($referer, 'AdminSignup.php') !== false) ? 'AdminSignup.php' : 'UserLogin.php';
 
@@ -28,7 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'message' => 'Username or Email is already registered!'
             ];
             
-            $_SESSION['signup_data'] = $_POST;
             header("Location: $redirectUrl");
             exit();
         }
@@ -51,7 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             // Redirect to success page or appropriate dashboard
             if ($role === 'admin') {
-
                 $_SESSION['flash_message'] = [
                     'type' => 'success',
                     'message' => 'Registration successful!'
@@ -62,14 +59,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: /WebAssg/php/Authentication/RegisterSuccess.php");
             }
             exit();
-
         } else {
             $_SESSION['flash_message'] = [
                 'type' => 'error',
                 'message' => 'Failed to Register, Please try again later!'
             ];
             
-            $_SESSION['signup_data'] = $_POST;
             header("Location: $redirectUrl");
             exit();
         }
@@ -80,7 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'message' => "Database Error: " . $e->getMessage()
         ];
         
-        $_SESSION['signup_data'] = $_POST;
         header("Location: $redirectUrl");
         exit();
     }

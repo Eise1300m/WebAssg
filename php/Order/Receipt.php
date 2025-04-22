@@ -48,7 +48,7 @@ $address = $stmt->fetch(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Receipt - Secret Shelf</title>
-    <link rel="stylesheet" href="../css/HomeStyles.css">
+    <link rel="stylesheet" href="../../css/HomeStyles.css">
     <link rel="stylesheet" href="../../css/NavbarStyles.css">
     <link rel="stylesheet" href="../../css/FooterStyles.css">
     <link rel="stylesheet" href="../../css/ReceiptStyles.css">

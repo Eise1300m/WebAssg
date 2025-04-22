@@ -3,9 +3,9 @@
     <div class="Bottom-Area">
         <div class="Bot1">
             <p style="font-weight: bold;">&copy; 2025 Secret Shelf. All Rights Reserved.</p>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">About Us</a>
+            <a href="/WebAssg/php/InfoDisplay/PrivacyPolicy.php">Privacy Policy</a>
+            <a href="/WebAssg/php/InfoDisplay/TermAndCondition.php">Terms and Conditions</a>
+            <a href="/WebAssg/php/InfoDisplay/AboutUs.php">About Us</a>
         </div>
 
         <div class="Bot2">

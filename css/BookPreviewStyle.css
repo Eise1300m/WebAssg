@@ -13,7 +13,7 @@ body {
     color: #333;
 }
 
-.back-button {
+.main-button {
     position: absolute;
     top: 150px;
     left: 25px;
@@ -29,14 +29,15 @@ body {
     align-items: center;
     gap: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-decoration: none;
 }
 
-.back-button:hover {
+.main-button:hover {
     background-color: #5a52d5;
     transform: translateY(-2px);
 }
 
-.back-button img {
+.main-button img {
     width: 20px; 
     height: 20px;
     filter: brightness(0) invert(1);

@@ -37,25 +37,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_address"])) {
     $new_state = trim($_POST["state"]);
     $new_postal = trim($_POST["postal"]);
 
-   
+
     $errors = [];
-    
+
     if (empty($new_street)) {
         $errors['street'] = 'Street address is required';
     }
-    
+
     if (empty($new_city)) {
         $errors['city'] = 'City is required';
     } elseif (!ValidationHelper::validateCity($new_city)) {
         $errors['city'] = 'City should contain only letters and be at least 2 characters';
     }
-    
+
     if (empty($new_state)) {
         $errors['state'] = 'State is required';
     } elseif (!ValidationHelper::validateState($new_state)) {
         $errors['state'] = 'State should contain only letters';
     }
-    
+
     // Use new postal code validation
     $postalValidation = ValidationHelper::validatePostalCode($new_postal);
     if ($postalValidation !== true) {
@@ -107,10 +107,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_contact"])) {
 // profile picture upload
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
     $file = $_FILES["profile_pic"];
-    
+
     // Use ValidationHelper for file validation
     $validation = ValidationHelper::validateProfilePicture($file);
-    
+
     if ($validation['success']) {
         // Use the correct path for customerPfp directory
         $uploadDir = "../../upload/customerPfp/";
@@ -132,10 +132,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
             // Store the web path in database
             $stmt = $_db->prepare("UPDATE users SET ProfilePic = ? WHERE UserID = ?");
             $stmt->execute([$dbPath, $user['UserID']]);
-            
+
             if ($stmt->rowCount() > 0) {
                 $updateMessage = "✅ Profile picture updated successfully!";
-                
+
                 // Redirect to same page to refresh
                 header("Location: " . $_SERVER['PHP_SELF']);
                 exit();
@@ -149,6 +149,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
         $updateMessage = "❌ " . $validation['message'];
     }
 }
+
 
 ?>
 
@@ -183,8 +184,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
 
         <div class="profile-content">
             <div class="profile-sidebar">
-                <?php echo FormHelper::profilePicture('profile-pic-input', 'profile-pic', $user['ProfilePic']); ?>
-                
+                <div class="user-profile" style="text-align: center;">
+                    <?php echo FormHelper::profilePicture('profile-pic-input', 'profile-pic', $user['ProfilePic']); ?>
+                    <p>Customer</p>
+                    <h3><?php echo htmlspecialchars($user['Username']); ?></h3>
+
+                </div>
+
                 <nav class="profile-nav">
                     <a href="#personal-info" class="active">Personal Information</a>
                     <a href="UserSecurity.php">Security</a>
@@ -339,8 +345,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
         </div>
     </main>
 
-    <?php include 'footer.php'; ?>
-    
 </body>
 
 </html>

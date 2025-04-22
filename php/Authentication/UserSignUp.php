@@ -34,7 +34,7 @@ includeNavbar();
     <?php displayFlashMessage(); ?>
 
     <a class="back-button" href="../index.php">
-        <img src="/WebAssg/upload/icon/back.png" alt="Back" class="back-icon"> Back 
+        <img src="/WebAssg/upload/icon/back.png" alt="Back" class="back-icon"> Back
     </a>
 
     <div class="container">
@@ -45,7 +45,7 @@ includeNavbar();
 
             <div class="input-container">
                 <img src="/WebAssg/upload/icon/personwhite.png" alt="Person" class="input-icon">
-                <?php 
+                <?php
                 echo FormHelper::text('UName', 'placeholder="Enter Username" required');
                 echo FormHelper::error('UName', $errors ?? []);
                 ?>
@@ -53,15 +53,15 @@ includeNavbar();
 
             <div class="input-container">
                 <img src="/WebAssg/upload/icon/lock.png" alt="Lock" class="input-icon">
-                <?php 
-                echo FormHelper::password('psw', 'placeholder="Enter password" required');
+                <?php
+                echo FormHelper::password('psw', 'placeholder="Enter password (Use upper, lower, special, > 6 char)" required');
                 echo FormHelper::error('psw', $errors ?? []);
                 ?>
             </div>
 
             <div class="input-container">
                 <img src="/WebAssg/upload/icon/lock.png" alt="Lock" class="input-icon">
-                <?php 
+                <?php
                 echo FormHelper::password('pswcfm', 'placeholder="Confirm your password" required');
                 echo FormHelper::error('pswcfm', $errors ?? []);
                 ?>
@@ -69,7 +69,7 @@ includeNavbar();
 
             <div class="input-container">
                 <img src="/WebAssg/upload/icon/info.png" alt="Info" class="input-icon">
-                <?php 
+                <?php
                 echo FormHelper::email('emails', 'placeholder="Email - Exp: Secret@example.com" required');
                 echo FormHelper::error('emails', $errors ?? []);
                 ?>
@@ -77,7 +77,7 @@ includeNavbar();
 
             <div class="input-container">
                 <img src="/WebAssg/upload/icon/phone.png" alt="Phone" class="input-icon">
-                <?php 
+                <?php
                 echo FormHelper::phone('tel', '', 'placeholder="Phone number - Exp: 01xxxxxxxx" required');
                 echo FormHelper::error('tel', $errors ?? []);
                 ?>
@@ -92,4 +92,5 @@ includeNavbar();
         </div>
     </div>
 </body>
+
 </html>

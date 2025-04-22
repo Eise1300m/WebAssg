@@ -64,8 +64,11 @@ includeNavbar();
 
         <div class="profile-content">
             <div class="profile-sidebar">
-                <div class="profile-avatar">
-                    <img src="<?php echo !empty($user['ProfilePic']) ? htmlspecialchars($user['ProfilePic']) : '/WebAssg/upload/icon/UnknownUser.jpg'; ?>" alt="Profile Picture">
+                <div class="user-profile" style="text-align: center;">
+                    <img src="<?php echo !empty($user['ProfilePic']) ? htmlspecialchars($user['ProfilePic']) : '/WebAssg/upload/icon/UnknownUser.jpg'; ?>"
+                    alt="User Profile" class="profile-avatar" id="profile-pic">
+                    <p>Customer</p>
+                    <h3><?php echo htmlspecialchars($user['Username']); ?></h3>
                 </div>
                 <nav class="profile-nav">
                     <a href="UserEditProfile.php">Personal Information</a>
@@ -116,7 +119,6 @@ includeNavbar();
         </div>
     </main>
 
-    <?php include 'footer.php'; ?>
 </body>
 
 </html>

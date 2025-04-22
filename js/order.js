@@ -3,11 +3,9 @@ $(document).ready(function () {
     // Add to cart from product listing
     $(".cart-but").click(function () {
         const bookId = $(this).data('book-id');
-        if (!bookId) return; // Skip if no book ID (login button)
+        if (!bookId) return; 
+        let quantity = 1; 
 
-        let quantity = 1; // Default quantity
-
-        // Check if we're on a product detail page by looking for quantity input
         const quantityId = $(this).data('quantity-id');
         if (quantityId) {
             const quantityInput = $('#' + quantityId);
@@ -63,6 +61,7 @@ $(document).ready(function () {
                 if (response.status === "success") {
                     showFloatingMessage(response.message, "success");
                     updateCartCount();
+
                 } else {
                     showFloatingMessage(response.message, "error");
                 }
@@ -76,7 +75,7 @@ $(document).ready(function () {
     // Update cart count in navbar
     function updateCartCount() {
         $.ajax({
-            url: "CartCount.php",
+            url: "/WebAssg/php/Order/CartCount.php",
             method: "GET",
             success: function (response) {
                 $(".cart-count").text(response);
@@ -128,7 +127,7 @@ $(document).ready(function () {
             errorMsg.removeClass('error-active');
         }
 
-        // Update quantity in database and UI
+
         updateQuantity(bookId, quantity, input);
     });
 
@@ -180,10 +179,7 @@ $(document).ready(function () {
                         updateCartCount();
                         showFloatingMessage("Item removed from cart", "success");
 
-                        // If cart is empty, reload page to show empty cart message
-                        if ($('.cart-item').length === 0) {
-                            location.reload();
-                        }
+
                     });
                 } else {
                     showFloatingMessage(response.message || "Error removing item", "error");
@@ -198,7 +194,7 @@ $(document).ready(function () {
 
     // Initialize quantity controls for the book preview page
     if ($('#quantity').length) {
-        // These functions are defined in the global scope for use as inline handlers
+
         window.incrementQuantity = function () {
             const input = $('#quantity');
             let value = parseInt(input.val()) || 1;
@@ -217,9 +213,9 @@ $(document).ready(function () {
     }
 
 
-    // Payment option handling for checkout page
+    // Payment option for checkout page
     if ($('#payment-form').length > 0) {
-        // Make payment options more obvious when selected
+
         $('.payment-option').on('click', function () {
             // First, reset all options to unselected state
             $('.payment-option').css({
@@ -275,17 +271,6 @@ $(document).ready(function () {
         window.print();
     });
 
-    // Checkout alert auto-dismiss
-    // setTimeout(function() {
-    //     var checkoutAlert = $('#checkout-alert');
-    //     if (checkoutAlert.length) {
-    //         checkoutAlert.css('animation', 'fadeOut 2s forwards');
-    //         setTimeout(function() {
-    //             checkoutAlert.hide();
-    //         }, 2000);
-    //     }
-    // }, 8000);
-
     // Handle checkout button click
     $('.checkout-btn').on('click', function (e) {
         e.preventDefault();
@@ -297,10 +282,10 @@ $(document).ready(function () {
     $('.collect-btn').on('click', function () {
         const orderNo = $(this).data('order-id');
         console.log("Collection button clicked for order:", orderNo);
-        
+
         const confirmed = confirm('Have you received your order? This action cannot be undone.');
         console.log("User confirmed:", confirmed);
-        
+
         if (confirmed) {
             console.log("Sending AJAX request to update status");
             $.ajax({
@@ -370,10 +355,8 @@ $(document).ready(function () {
                                     `);
                                 }
                             });
-                            // Reload the page to show the flash message
                             location.reload();
                         } else {
-                            // Show error message and reload to display flash message
                             location.reload();
                         }
                     } catch (e) {
@@ -414,37 +397,37 @@ function showFloatingMessage(message, type) {
 }
 
 // Highlight selected payment option
-document.addEventListener('DOMContentLoaded', function () {
-    // Book preview page animations
-    animateReviewItems();
+// document.addEventListener('DOMContentLoaded', function () {
 
-    document.querySelectorAll('.payment-option').forEach(option => {
-        option.addEventListener('click', function () {
-            // Select the radio button when clicking anywhere in the option
-            const radio = this.querySelector('input[type="radio"]');
-            if (radio) {
-                radio.checked = true;
-            }
-        });
-    });
-});
+//     animateReviewItems();
 
-// Animate review items
-function animateReviewItems() {
-    const reviewItems = document.querySelectorAll('.review-item');
-    if (reviewItems.length === 0) return;
+//     document.querySelectorAll('.payment-option').forEach(option => {
+//         option.addEventListener('click', function () {
+//             // Select the radio button when clicking anywhere in the option
+//             const radio = this.querySelector('input[type="radio"]');
+//             if (radio) {
+//                 radio.checked = true;
+//             }
+//         });
+//     });
+// });
 
-    reviewItems.forEach((item, index) => {
-        item.style.opacity = '0';
-        item.style.transform = 'translateY(20px)';
+// // Animate review items
+// function animateReviewItems() {
+//     const reviewItems = document.querySelectorAll('.review-item');
+//     if (reviewItems.length === 0) return;
 
-        setTimeout(() => {
-            item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            item.style.opacity = '1';
-            item.style.transform = 'translateY(0)';
-        }, 100 + (index * 100));
-    });
-}
+//     reviewItems.forEach((item, index) => {
+//         item.style.opacity = '0';
+//         item.style.transform = 'translateY(20px)';
+
+//         setTimeout(() => {
+//             item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+//             item.style.opacity = '1';
+//             item.style.transform = 'translateY(0)';
+//         }, 100 + (index * 100));
+//     });
+// }
 
 // Update or add the checkCartAndProceed function
 function checkCartAndProceed() {

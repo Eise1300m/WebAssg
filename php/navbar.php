@@ -31,9 +31,9 @@ if(isAdmin()){
 
     <div class="nav-container">
         <nav class="navtittle">
-            <a href="#">Contact Us</a>
-            <a href="#">Promo</a>
-            <a href="#">Help</a>
+            <a href="/WebAssg/php/InfoDisplay/ContactUs.php">Contact Us</a>
+            <a href="/WebAssg/php/InfoDisplay/Promo.php">Promo</a>
+            <a href="/WebAssg/php/InfoDisplay/Help.php">Help</a>
         </nav>
 
         <?php if ($login): ?>
