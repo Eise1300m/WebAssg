@@ -7,7 +7,7 @@ requireLogin();
 
 $username = $_SESSION['user_name'];
 
-// Get user details
+// Get user detials
 $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
 $stmt->execute([$username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -121,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
         $fileExt = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
         $newFileName = $user['UserID'] . "_" . time() . "." . $fileExt;
         $uploadPath = $uploadDir . $newFileName;
-        $dbPath = "/WebAssg/upload/customerPfp/" . $newFileName;  // Store the web-accessible path in DB
+        $dbPath = "/WebAssg/upload/customerPfp/" . $newFileName; 
 
         // Remove old profile picture if it exists
         if (!empty($user['ProfilePic']) && file_exists($_SERVER['DOCUMENT_ROOT'] . $user['ProfilePic']) && strpos($user['ProfilePic'], 'customerPfp') !== false) {
@@ -132,9 +132,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
             // Store the web path in database
             $stmt = $_db->prepare("UPDATE users SET ProfilePic = ? WHERE UserID = ?");
             $stmt->execute([$dbPath, $user['UserID']]);
+            
 
             if ($stmt->rowCount() > 0) {
                 $updateMessage = "✅ Profile picture updated successfully!";
+                
 
                 // Redirect to same page to refresh
                 header("Location: " . $_SERVER['PHP_SELF']);

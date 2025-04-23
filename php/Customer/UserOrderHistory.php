@@ -15,56 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     exit();
 }
 
-// Handle order cancellation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'cancel_order') {
     header('Content-Type: application/json');
-    
-    // Get user ID
-    $stmt = $_db->prepare("SELECT UserID FROM users WHERE UserName = ?");
-    $stmt->execute([$_SESSION['user_name']]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if (!$user) {
-        setSuccessMessage('User not found');
-        echo json_encode(['success' => false, 'message' => 'User not found']);
-        exit();
-    }
-    
-    $user_id = $user['UserID'];
-    $order_id = $_POST['order_id'];
-    
-    try {
-        $checkStmt = $_db->prepare("SELECT OrderStatus FROM orders WHERE OrderNo = ? AND UserID = ?");
-        $checkStmt->execute([$order_id, $user_id]);
-        $order = $checkStmt->fetch(PDO::FETCH_ASSOC);
-        
-        if (!$order) {
-            setSuccessMessage('Order not found or does not belong to you');
-            echo json_encode(['success' => false, 'message' => 'Order not found or does not belong to you']);
-            exit();
-        }
-        
-        if ($order['OrderStatus'] !== 'Preparing') {
-            setSuccessMessage('Only orders in Preparing status can be cancelled');
-            echo json_encode(['success' => false, 'message' => 'Only orders in Preparing status can be cancelled']);
-            exit();
-        }
-        
-        // Update the order status
-        $stmt = $_db->prepare("UPDATE orders SET OrderStatus = 'Cancelled' WHERE OrderNo = ? AND UserID = ?");
-        $stmt->execute([$order_id, $user_id]);
-        
-        if ($stmt->rowCount() > 0) {
-            setSuccessMessage('Order cancelled successfully');
-            echo json_encode(['success' => true, 'message' => 'Order cancelled successfully']);
-        } else {
-            setSuccessMessage('Failed to cancel order');
-            echo json_encode(['success' => false, 'message' => 'Failed to cancel order']);
-        }
-    } catch (PDOException $e) {
-        setSuccessMessage('Database error: ' . $e->getMessage());
-        echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
-    }
+    echo json_encode(['success' => false, 'message' => 'Having linking problem. Please use updateOrderStatus.php']);
     exit();
 }
 
@@ -87,6 +40,12 @@ $order_count = $stmt->fetch(PDO::FETCH_ASSOC)['total_orders'];
 $stmt = $_db->prepare("SELECT * FROM orders WHERE UserID = ? ORDER BY OrderDate DESC");
 $stmt->execute([$user_id]);
 $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Get the user's first order number (if any)
+$firstOrderStmt = $_db->prepare("SELECT OrderNo FROM orders WHERE UserID = ? ORDER BY OrderDate ASC LIMIT 1");
+$firstOrderStmt->execute([$user_id]);
+$firstOrder = $firstOrderStmt->fetch(PDO::FETCH_ASSOC);
+$firstOrderId = $firstOrder ? $firstOrder['OrderNo'] : null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,6 +61,8 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="../../css/FooterStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../../js/order.js"></script>
+    <script src="/WebAssg/js/Scripts.js"></script>
+
 </head>
 
 <body data-page="orders">
@@ -151,6 +112,10 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                     <div class="order-details">
                                         <p><strong>Total Items:</strong> <?php echo htmlspecialchars($order['TotalQuantity']); ?></p>
+                                        <p><strong>Shipping Fee:</strong> RM 5.00</p>
+                                        <?php if ($order['OrderNo'] == $firstOrderId): ?>
+                                            <p><strong>First Order Discount:</strong> <span style="color: #4CAF50;">20% OFF</span></p>
+                                        <?php endif; ?>
                                         <p><strong>Total Price:</strong> RM <?php echo number_format($order['TotalAmount'], 2); ?></p>
                                         <p><strong>Status:</strong>
                                             <span class="order-status <?php echo strtolower($order['OrderStatus']); ?>">
@@ -187,7 +152,6 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </main>
 
     <?php include '../../php/footer.php'; ?>
-    <script src="../../js/Scripts.js"></script>
 
 </body>
 

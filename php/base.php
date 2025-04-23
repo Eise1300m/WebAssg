@@ -119,9 +119,6 @@ function getUserProfilePic() {
     return $default_pic;
 }
 
-/**
- * Include the navbar file based on user role
- */
 function includeNavbar() {
    
         include_once (dirname(__FILE__) . '/navbar.php');

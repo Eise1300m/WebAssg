@@ -52,7 +52,7 @@ try {
     die("Checkout preparation failed: " . $e->getMessage());
 }
 
-// After retrieving user information and before calculating totals, add this code:
+// Check if it  user first order
 $isFirstOrder = true;
 try {
     $checkOrderStmt = $_db->prepare("SELECT COUNT(*) as order_count FROM orders WHERE UserID = ?");

@@ -24,7 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
     
     $file = $_FILES["profile_pic"];   
     
-    // Use ValidationHelper for file validation
     $validation = ValidationHelper::validateProfilePicture($file);
     
     if ($validation['success']) {
@@ -59,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_pic"])) {
                 if ($stmt->rowCount() > 0) {
                     $updateMessage = "✅ Profile picture updated successfully!";
                     
-                    // Refresh admin data
+                    
                     $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ?");
                     $stmt->execute([$username]);
                     $admin = $stmt->fetch(PDO::FETCH_ASSOC);

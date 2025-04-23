@@ -39,6 +39,7 @@ $baseQuery = "SELECT b.BookNo, b.BookName, b.BookPrice,
               JOIN orderdetails od ON b.BookNo = od.BookNo
               JOIN orders o ON od.OrderNo = o.OrderNo
               WHERE o.OrderDate BETWEEN ? AND ?
+              AND o.OrderStatus != 'Cancelled'
               GROUP BY b.BookNo, b.BookName, b.BookPrice";
 
 $params = [$startDate, $endDate];
@@ -55,7 +56,8 @@ $totalSalesQuery = "SELECT SUM(od.Quantity * b.BookPrice) as GrandTotal
                    FROM book b
                    JOIN orderdetails od ON b.BookNo = od.BookNo
                    JOIN orders o ON od.OrderNo = o.OrderNo
-                   WHERE o.OrderDate BETWEEN ? AND ?";
+                   WHERE o.OrderDate BETWEEN ? AND ?
+                   AND o.OrderStatus != 'Cancelled'";
 $stmt = $_db->prepare($totalSalesQuery);
 $stmt->execute([$startDate, $endDate]);
 $totalSales = $stmt->fetch(PDO::FETCH_ASSOC)['GrandTotal'] ?? 0;
@@ -64,7 +66,8 @@ $totalSales = $stmt->fetch(PDO::FETCH_ASSOC)['GrandTotal'] ?? 0;
 $totalBooksQuery = "SELECT SUM(od.Quantity) as TotalBooksSold
                    FROM orderdetails od
                    JOIN orders o ON od.OrderNo = o.OrderNo
-                   WHERE o.OrderDate BETWEEN ? AND ?";
+                   WHERE o.OrderDate BETWEEN ? AND ?
+                   AND o.OrderStatus != 'Cancelled'";
 $stmt = $_db->prepare($totalBooksQuery);
 $stmt->execute([$startDate, $endDate]);
 $totalBooksSold = $stmt->fetch(PDO::FETCH_ASSOC)['TotalBooksSold'] ?? 0;
@@ -72,7 +75,8 @@ $totalBooksSold = $stmt->fetch(PDO::FETCH_ASSOC)['TotalBooksSold'] ?? 0;
 // Calculate total orders
 $totalOrdersQuery = "SELECT COUNT(DISTINCT o.OrderNo) as TotalOrders
                     FROM orders o
-                    WHERE o.OrderDate BETWEEN ? AND ?";
+                    WHERE o.OrderDate BETWEEN ? AND ?
+                    AND o.OrderStatus != 'Cancelled'";
 $stmt = $_db->prepare($totalOrdersQuery);
 $stmt->execute([$startDate, $endDate]);
 $totalOrders = $stmt->fetch(PDO::FETCH_ASSOC)['TotalOrders'] ?? 0;
@@ -94,6 +98,9 @@ includeAdminNav();
     <link rel="stylesheet" href="/WebAssg/css/NavbarStyles.css">
     <link rel="stylesheet" href="/WebAssg/css/HomeStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/WebAssg/js/Scripts.js"></script>
+
+
 </head>
 <body>
 

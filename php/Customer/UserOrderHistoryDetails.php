@@ -36,6 +36,12 @@ if (!$order) {
     exit;
 }
 
+// Check if this is the user's first order
+$firstOrderStmt = $_db->prepare("SELECT MIN(OrderNo) as FirstOrderNo FROM orders WHERE UserID = ?");
+$firstOrderStmt->execute([$user_id]);
+$firstOrderId = $firstOrderStmt->fetch(PDO::FETCH_ASSOC)['FirstOrderNo'];
+$isFirstOrder = ($order['OrderNo'] == $firstOrderId);
+
 // Fetch order items - using the correct table names
 $stmt = $_db->prepare("
     SELECT od.*, b.BookName, b.BookImage 
@@ -60,6 +66,7 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="../../css/NavbarStyles.css">
     <link rel="stylesheet" href="../../css/FooterStyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/WebAssg/js/Scripts.js"></script>
 </head>
 
 <body data-page="orders">
@@ -101,6 +108,16 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </i> Total Items:
                                     <?php echo $order['TotalQuantity']; ?>
                                 </p>
+                                <p>
+                                    </i> Shipping Fee:
+                                    RM 5.00
+                                </p>
+                                <?php if ($isFirstOrder): ?>
+                                <p>
+                                    </i> First Order Discount:
+                                    <span style="color: #4CAF50;">20% OFF</span>
+                                </p>
+                                <?php endif; ?>
                                 <p>
                                     Total Price:
                                     RM <?php echo number_format($order['TotalAmount'], 2); ?>

@@ -329,48 +329,33 @@ $(document).ready(function () {
         const orderId = $(this).data('order-id');
         if (confirm('Are you sure you want to cancel this order?')) {
             $.ajax({
-                url: 'UserOrderHistory.php',
+                url: 'updateOrderStatus.php',
                 type: 'POST',
                 data: {
-                    action: 'cancel_order',
-                    order_id: orderId
+                    order_id: orderId,
+                    status: 'Cancelled'
                 },
+                dataType: 'json',
                 success: function (response) {
                     try {
-                        const result = typeof response === 'string' ? JSON.parse(response) : response;
-
-                        if (result.success) {
-                            // Remove the order card from the UI
-                            const orderCard = $(`.cancel-btn[data-order-id="${orderId}"]`).closest('.order-card');
-                            orderCard.fadeOut(300, function () {
-                                $(this).remove();
-                                // If no orders left, show the no orders message
-                                if ($('.order-card').length === 0) {
-                                    $('.orders-section').html(`
-                                        <div class="no-orders">
-                                            <h3>No Orders Yet</h3>
-                                            <p>You haven't placed any orders yet.</p>
-                                            <a href="MainPage.php" class="browse-btn">Browse Books</a>
-                                        </div>
-                                    `);
-                                }
-                            });
-                            location.reload();
+                        console.log('Response:', response);
+                        if (response.success) {
+                            showFloatingMessage('Order cancelled successfully', 'success');
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1500);
                         } else {
-                            location.reload();
+                            showFloatingMessage(response.message || 'Error cancelling order', 'error');
                         }
                     } catch (e) {
-                        console.error('Error parsing response:', e);
-                        console.error('Response:', response);
+                        console.error('Error parsing response:', e, response);
+                        showFloatingMessage('Error processing server response', 'error');
                         location.reload();
                     }
                 },
                 error: function (xhr, status, error) {
-                    console.error('Ajax error:', {
-                        status: status,
-                        error: error,
-                        response: xhr.responseText
-                    });
+                    console.error('Ajax error:', xhr.responseText);
+                    showFloatingMessage('Error connecting to server', 'error');
                     location.reload();
                 }
             });
@@ -395,39 +380,6 @@ function showFloatingMessage(message, type) {
         });
     }, 3000);
 }
-
-// Highlight selected payment option
-// document.addEventListener('DOMContentLoaded', function () {
-
-//     animateReviewItems();
-
-//     document.querySelectorAll('.payment-option').forEach(option => {
-//         option.addEventListener('click', function () {
-//             // Select the radio button when clicking anywhere in the option
-//             const radio = this.querySelector('input[type="radio"]');
-//             if (radio) {
-//                 radio.checked = true;
-//             }
-//         });
-//     });
-// });
-
-// // Animate review items
-// function animateReviewItems() {
-//     const reviewItems = document.querySelectorAll('.review-item');
-//     if (reviewItems.length === 0) return;
-
-//     reviewItems.forEach((item, index) => {
-//         item.style.opacity = '0';
-//         item.style.transform = 'translateY(20px)';
-
-//         setTimeout(() => {
-//             item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-//             item.style.opacity = '1';
-//             item.style.transform = 'translateY(0)';
-//         }, 100 + (index * 100));
-//     });
-// }
 
 // Update or add the checkCartAndProceed function
 function checkCartAndProceed() {

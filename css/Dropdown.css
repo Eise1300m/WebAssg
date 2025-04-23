@@ -5,17 +5,17 @@
 
 .wrapbox {
     display: flex;
-    
 }
 
 .subcategory-list {
-    position: absolute;
     background-color: white;
     border: 1px solid #ddd;
     z-index: 1000;
     margin-top: 10px;
     border-radius: 5px;
     width: 100%;
+    position: fixed;
+    top: 100px;
 }
 
 .category:hover .subcategory-list,

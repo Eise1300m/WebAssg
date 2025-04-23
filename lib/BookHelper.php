@@ -65,45 +65,6 @@ class BookHelper {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function addBook($data) {
-        $query = "INSERT INTO book (BookName, Author, BookPrice, Description, BookImage, SubcategoryNo) 
-                  VALUES (?, ?, ?, ?, ?, ?)";
-        
-        $stmt = self::$db->prepare($query);
-        return $stmt->execute([
-            $data['BookName'],
-            $data['Author'],
-            $data['BookPrice'],
-            $data['Description'],
-            $data['BookImage'],
-            $data['SubcategoryNo']
-        ]);
-    }
-
-    public static function updateBook($id, $data) {
-        $query = "UPDATE book 
-                  SET BookName = ?, Author = ?, BookPrice = ?, Description = ?, 
-                      BookImage = ?, SubcategoryNo = ? 
-                  WHERE BookNo = ?";
-        
-        $stmt = self::$db->prepare($query);
-        return $stmt->execute([
-            $data['BookName'],
-            $data['Author'],
-            $data['BookPrice'],
-            $data['Description'],
-            $data['BookImage'],
-            $data['SubcategoryNo'],
-            $id
-        ]);
-    }
-
-    public static function deleteBook($id) {
-        $query = "DELETE FROM book WHERE BookNo = ?";
-        $stmt = self::$db->prepare($query);
-        return $stmt->execute([$id]);
-    }
-
     public static function formatPrice($price) {
         return 'RM ' . number_format($price, 2);
     }
