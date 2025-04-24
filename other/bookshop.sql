@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2025 at 06:43 PM
+-- Generation Time: Apr 23, 2025 at 08:55 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,17 +42,8 @@ CREATE TABLE `address` (
 
 INSERT INTO `address` (`AddressID`, `UserID`, `Street`, `City`, `State`, `PostalCode`) VALUES
 (1, 1, '45, Jalan Bunga Raya', 'George Town', 'Penang', '10200'),
-(2, 11, 'No. 25, Jalan Meranti 3, Taman Bukit Indah', 'Johor Bahru', 'Johor', '81200'),
-(3, 12, 'No. 18, Lorong Cempaka 5, Taman Sri Muda', 'Shah Alam', 'Selangor', '40400'),
-(4, 13, 'No. 10, Jalan Anggerik 7, Taman Desa', 'Kuala Lumpur', 'Wilayah Persekutuan', '58100'),
-(5, 14, 'Jalan Melati Indah 2, Taman Seri Puteri', 'Ipoh', 'Perak', '31400'),
-(6, 4, 'No.9, Jalan Melawati 6, Taman Buaya', 'Kajang', 'Selangor', '43000'),
-(7, 5, 'kk16, Jalan Tambahan 8, Taman Belakang', 'Alor Setar', 'Kedah', '06550'),
-(8, 6, 'M4, Jalan kbk/15, Taman Ikan Bilis', 'Muar', 'Johor', '77400'),
-(9, 7, 'Y16, Jalan Port Dickson, Taman Sungai Malim', 'Seremban', 'Negeri Sembilan', '70000'),
-(10, 8, 'T14, Jalan Tanah Tinggi, Taman Kantan', 'Cameron Highlands', 'Pahang', '39000'),
 (11, 3, '123 Jalan Bunga Raya', 'Kuala Lumpur', 'Wilayah Persekutuan', '52200'),
-(12, 17, 'No. 21, Jalan Anggerik 2/7, Taman Anggerik', 'Skudai', 'Johor', '81301');
+(13, 4, 'No. 15, Jalan Setia Impian U13/10F,', 'Setia Alam', 'Selangor', '40170');
 
 -- --------------------------------------------------------
 
@@ -66,7 +57,7 @@ CREATE TABLE `book` (
   `BookPrice` decimal(10,2) NOT NULL,
   `Description` text DEFAULT NULL,
   `Author` varchar(50) NOT NULL,
-  `BookImage` varchar(255) DEFAULT NULL,
+  `BookImage` varchar(255) DEFAULT '/WebAssg/upload/bookPfp/BookCoverUnavailable.webp',
   `SubcategoryNo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -266,7 +257,8 @@ INSERT INTO `book` (`BookNo`, `BookName`, `BookPrice`, `Description`, `Author`, 
 (188, 'The Age of Choice: A History of Freedom in Modern Life', 25.99, 'Drawing on a wealth of sources ranging from novels and restaurant menus to the latest scientific findings about choice in psychology and economics, The Age of Choice urges us to rethink the meaning of choice and its promise and limitations in modern life.', 'Sophie Rosenfeld', '../upload/bookPfp/The Age of Choice - A History of Freedom in Modern Life.png', 408),
 (189, 'The Wisdom of Your Heart: Discovering the God-given Purpose ', 39.99, 'Christians believe many myths about Emotions lead you astray. Emotions aren’t spiritual. And the biggest God is not emotional. The truth is emotions are a God-given source of wisdom when we know how to interpret them. Marc Alan Schelske. The Wisdom of Your Heart provides a path for listening to the spiritual insights that your emotions offer every day.', 'Marc Alan Schelske', '../upload/bookPfp/The Wisdom of Your Heart - Discovering the God-given Purpose and Power of Your Emotions.png', 408),
 (190, 'The Psychology of Money', 48.99, 'In The Psychology of Money, award-winning author Morgan Housel shares 19 short stories exploring the strange ways people think about money and teaches you how to make better sense of one of life\'s most important topics.', 'Morgan Housel', '../upload/bookPfp/The Psychology of Money.png', 401),
-(191, 'Hunter x Hunter', 20.00, 'The story focuses on a young boy named Gon Freecss who discovers that his father, who left him at a young age, is actually a world-renowned Hunter, a licensed professional who specializes in fantastical pursuits such as locating rare or unidentified animal species, treasure hunting, surveying unexplored enclaves, or hunting down lawless individuals. Gon departs on a journey to become a Hunter and eventually find his father. Along the way, Gon meets various other Hunters and encounters the paranormal.', 'Yoshiro Togashi', '../upload/bookPfp/Hunterxhunter.jpg', 205);
+(191, 'Hunter x Hunter', 20.00, 'The story focuses on a young boy named Gon Freecss who discovers that his father, who left him at a young age, is actually a world-renowned Hunter, a licensed professional who specializes in fantastical pursuits such as locating rare or unidentified animal species, treasure hunting, surveying unexplored enclaves, or hunting down lawless individuals. Gon departs on a journey to become a Hunter and eventually find his father. Along the way, Gon meets various other Hunters and encounters the paranormal.', 'Yoshiro Togashi', '/WebAssg/upload/bookPfp/191_1745136792.jpg', 205),
+(192, 'On the Way to Meet Mom', 80.00, 'One day, after being discovered in an abandoned house by a rescue team, Mori suddenly finds himself in a children\'s protection center. Here, he begins to learn a new way of life – one that includes grand care packages sent by a mysterious patron. But when his closest friend is reunited with her mother and leaves the center, Mori learns for the first time the existence of a mother for every child, and decides to embark on a journey to find his own. But what sort of obstacles wait along the way?', 'Gomyang', '/WebAssg/upload/bookPfp/193_1745387535.png', 205);
 
 -- --------------------------------------------------------
 
@@ -308,7 +300,22 @@ CREATE TABLE `orderdetails` (
 
 INSERT INTO `orderdetails` (`OrderNo`, `BookNo`, `Quantity`, `Price`) VALUES
 (1, 23, 1, 29.99),
-(1, 161, 1, 27.99);
+(1, 161, 1, 27.99),
+(2, 133, 1, 32.50),
+(2, 162, 1, 29.99),
+(3, 143, 1, 16.99),
+(4, 72, 1, 84.99),
+(4, 79, 3, 89.97),
+(5, 23, 1, 29.99),
+(5, 78, 1, 112.99),
+(6, 100, 1, 80.00),
+(7, 57, 1, 19.99),
+(8, 162, 1, 29.99),
+(8, 170, 1, 42.99),
+(9, 57, 1, 19.99),
+(10, 78, 1, 112.99),
+(11, 78, 1, 112.99),
+(12, 23, 1, 29.99);
 
 -- --------------------------------------------------------
 
@@ -332,7 +339,18 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`OrderNo`, `OrderDate`, `TotalQuantity`, `TotalAmount`, `PaymentType`, `UserID`, `AddressID`, `OrderStatus`) VALUES
-(1, '2025-04-18 16:42:38', 2, 51.38, 'ewallet', 1, 1, 'Preparing');
+(1, '2025-04-18 16:42:38', 2, 51.38, 'ewallet', 1, 1, 'Complete'),
+(2, '2025-04-20 06:05:06', 2, 67.49, 'bank transfer', 1, 1, 'Complete'),
+(3, '2025-04-20 06:15:22', 1, 21.99, 'ewallet', 1, 1, 'Complete'),
+(4, '2025-04-21 13:04:59', 4, 144.97, 'ewallet', 3, 11, 'Collected'),
+(5, '2025-04-22 10:52:24', 2, 119.38, 'bank transfer', 4, 13, 'Cancelled'),
+(6, '2025-04-22 10:57:30', 1, 85.00, 'ewallet', 4, 13, 'Cancelled'),
+(7, '2025-04-22 10:58:49', 1, 24.99, 'ewallet', 4, 13, 'Cancelled'),
+(8, '2025-04-23 05:08:13', 2, 119.96, 'credit card', 4, 13, 'Collected'),
+(9, '2025-04-23 05:22:20', 1, 24.99, 'ewallet', 4, 13, 'Cancelled'),
+(10, '2025-04-23 05:30:00', 1, 117.99, 'debit card', 4, 13, 'Cancelled'),
+(11, '2025-04-23 05:30:26', 1, 117.99, 'ewallet', 4, 13, 'Collected'),
+(12, '2025-04-23 05:42:47', 1, 34.99, 'ewallet', 4, 13, 'Collected');
 
 -- --------------------------------------------------------
 
@@ -348,6 +366,15 @@ CREATE TABLE `reviews` (
   `ReviewText` text DEFAULT NULL,
   `ReviewDate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`ReviewID`, `UserID`, `BookNo`, `Rating`, `ReviewText`, `ReviewDate`) VALUES
+(1, 1, 161, 5, 'Interesting !', '2025-04-20 13:24:01'),
+(2, 3, 133, 5, 'Good Book', '2025-04-22 06:35:40'),
+(3, 1, 100, 4, 'good book', '2025-04-22 11:59:18');
 
 -- --------------------------------------------------------
 
@@ -403,7 +430,7 @@ CREATE TABLE `users` (
   `Email` varchar(50) NOT NULL,
   `ContactNo` varchar(20) NOT NULL,
   `Role` enum('admin','customer') NOT NULL,
-  `ProfilePic` varchar(255) DEFAULT '../upload/icon/UnknownUser.jpg'
+  `ProfilePic` varchar(255) DEFAULT '/WebAssg/upload/icon/UnknownUser.jpg'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -411,23 +438,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`UserID`, `Username`, `Password`, `Email`, `ContactNo`, `Role`, `ProfilePic`) VALUES
-(1, 'Jiajia', '$2y$10$0paAgfRsRyEr17PnP5tTj.KiLep0Wq0gBw8t3GWrbK49Y9NSqo/tm', 'adasd@gmail.com', '0123455467', 'customer', '../upload/customerPfp/1_1742969603.png'),
-(2, 'Admin01', '$2y$10$SxwY4SNad8SB52jernXVB.XwsdZW4C4FFGXD6voRAxw5e1R3EZu6O', 'AhMan@gmail.com', '0120111286', 'admin', '../upload/adminPfp/2_1744981928.jpg'),
-(3, 'Dada', '$2y$10$mww2cs24M2AoG9ic9aqj0O69rRwOWtivJX6ohFE5EETBKvkQNqa26', 'dada@gmail.com', '0158499888', 'customer', '../upload/customerPfp/3_1743870281.png'),
-(4, 'Lingangu', '$2y$10$SoVntdOnTKt7beicvhjjTeQmM5cBkY1hQ.GZmMNLC94WpeRbeH4A.', 'lingangu@gmail.com', '01123456789', 'customer', '../upload/icon/UnknownUser.jpg'),
-(5, 'Meme', '$2y$10$VpHT2wbNtx9GCalka5kXOeUUH8lqkkHn23KDdfe2Snvm3G2boqfGO', 'meme@gmail.com', '0127894563', 'customer', '../upload/icon/UnknownUser.jpg'),
-(6, 'Dora', '$2y$10$FKtTg2IavPDkT70naTeGoO//ZiLf4o2CbaEg5iTuFDtB7LPD9cDLO', 'dora@gmail.com', '0169987321', 'customer', '../upload/icon/UnknownUser.jpg'),
-(7, 'Maggie', '$2y$10$4nC5qd214ndlGYbhvEJlQuEZMIY1LEy.2dOFWRCifZsnAZ1LT27H.', 'maggie@gmail.com', '0105569781', 'customer', '../upload/icon/UnknownUser.jpg'),
-(8, 'Jojo', '$2y$10$mU4DnjcXTPlws1wOZ6O4a.8.l.lyFBEvlfmEWxf62UU5.cg5yO76u', 'jojo@gmail.com', '0146632557', 'customer', '../upload/icon/UnknownUser.jpg'),
-(9, 'Admin02', '$2y$10$CUbzKXhsry33cnq9HMHZmOwxllWFTILef5clgxB58RYgLGiNdUkYO', 'Bobo@gmail.com', '0111433223', 'admin', '../upload/icon/UnknownUser.jpg'),
-(11, 'Aimi', '$2y$10$HwJ9/XlAMEmNHCMYm014DuOlD7ym/5ubyD8I8spdxODCM/UUufIRy', 'Aimi@gmail.com', '0128974581', 'customer', '../upload/customerPfp/11_1744370933.jpg'),
-(12, 'beklaozai', '$2y$10$Mdbg2cd2qUObwXvA592K.OJ.ZfcCgygbNGODUpIX4wx7udYPHdDOW', 'LaiChai@gmail.com', '0123455465', 'customer', '../upload/icon/UnknownUser.jpg'),
-(13, 'OMG', '$2y$10$Q/PLnhOWROsPg31p5pC9c.1mBT/dPKRjhCwGzIX6NjsZPGoNwOraO', 'OMG@gmail.com', '01254894561', 'customer', '../upload/icon/UnknownUser.jpg'),
-(14, 'amirmir', '$2y$10$JembV2fL5tQ0sF7xFrKgI.JkNktD54ngG9pUVFdOb8v0xwmCShxM2', 'amir@gmail.com', '0128974567', 'customer', '../upload/icon/UnknownUser.jpg'),
-(15, 'aa', '$2y$10$be24xU/i/PscG1ngSC4PY.O/FVeiOR7oQe4PxnOiE.0CJArtekQge', 'aaa@gmail.com', '0145867985', 'customer', '../upload/icon/UnknownUser.jpg'),
-(16, 'aloha', '$2y$10$fs4YasyOKunaThwgLrEl7u0Q0n7fcrzXdppz1am1V1CVwxOer1on.', 'alo@gmail.com', '0158499544', 'customer', '../upload/icon/UnknownUser.jpg'),
-(17, 'testnew', '$2y$10$IWgtUs66PSlk8QZIXavYhejgSz5ekVRCT4vzIuaWcbn0dPes8o9/e', 'test@gamil.com', '0162354874', 'customer', '../upload/customerPfp/17_1744966572.jpg'),
-(18, 'testadmin', '$2y$10$X/E0kuS1qz9jgmfrkLdGFu4usjvskEy6IKqSiSJX9tJw5BBb9UVn2', 'testtest@gmail.com', '0154897568', 'admin', '../upload/adminPfp/18_1744984669.jpg');
+(1, 'Jiajia', '$2y$10$iJJv7Q0pMoQNpCOjlGk8reedlUVhI.E4IC1Ba8ajcsXFZD1pt1Mjq', 'adasd@gmail.com', '0123455466', 'customer', '/WebAssg/upload/customerPfp/1_1745389982.png'),
+(2, 'Admin01', '$2y$10$SxwY4SNad8SB52jernXVB.XwsdZW4C4FFGXD6voRAxw5e1R3EZu6O', 'AhMan@gmail.com', '0120111286', 'admin', '/WebAssg/upload/adminPfp/2_1745384192.jpg'),
+(3, 'Dada', '$2y$10$mww2cs24M2AoG9ic9aqj0O69rRwOWtivJX6ohFE5EETBKvkQNqa26', 'dada@gmail.com', '0158499888', 'customer', '/WebAssg/upload/customerPfp/3_1745302738.png'),
+(4, 'Aimi', '$2y$10$kTeizp6L0RWfv3Z.cqpPI.mKT8StyMMoIVKOQRHPq2cnXOiQ7rywu', 'Aimi@gmail.com', '0123434448', 'customer', '/WebAssg/upload/customerPfp/4_1745313430.jpg'),
+(5, 'Admin2', '$2y$10$ffpkUkAiWspbN9QNPKuOveAuu38BhIC4KyA9SWOh54eLF1iw7nELu', 'AAd@gmail.com', '0151244125', 'admin', '/WebAssg/upload/adminPfp/5_1745387821.jpg');
 
 --
 -- Indexes for dumped tables
@@ -498,13 +513,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `AddressID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `AddressID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `book`
 --
 ALTER TABLE `book`
-  MODIFY `BookNo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=192;
+  MODIFY `BookNo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=193;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -516,13 +531,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `OrderNo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `OrderNo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `subcategory`
@@ -534,7 +549,7 @@ ALTER TABLE `subcategory`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
