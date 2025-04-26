@@ -1,10 +1,9 @@
 <?php
 require_once("../base.php");
 require_once("../../lib/FormHelper.php");
-require_once("../../lib/ValidationHelper.php");
 
 if (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'MainPage.php') !== false) {
-    $_SESSION['return_to'] = $_SERVER['HTTP_REFERER'];
+    $_SESSION['return_to'] = $_SERVER['HTTP_REFERER']; // store the URL of the page the user was on before login
 }
 
 $errors = [];

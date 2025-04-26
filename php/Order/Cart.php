@@ -35,8 +35,6 @@ if (!empty($cart)) {
     }
 }
 
-// Calculate final total (subtotal + shipping)
-$total = empty($cart) ? 0 : $subtotal + $shipping;
 ?>
 
 <!DOCTYPE html>
@@ -128,6 +126,7 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
 
                 <div class="order-summary">
                     <h2>Order Summary</h2>
+                    
                     <div class="summary-details">
                         <div class="summary-row">
                             <span>Subtotal</span>
@@ -158,18 +157,6 @@ $total = empty($cart) ? 0 : $subtotal + $shipping;
             </div>
         </div>
     </div>
-
-    <?php 
-
-    // Recalculate total after the cart items loop is complete
-    $total = $subtotal + $shipping;
-
-    // Store the total in session for use in checkout
-    $_SESSION['cart_total'] = $total;
-    $_SESSION['cart_subtotal'] = $subtotal;
-    $_SESSION['cart_shipping'] = $shipping;
-    ?>
-
  
 </body>
 </html>

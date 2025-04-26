@@ -86,6 +86,8 @@ $(document).ready(function () {
     // Calculate and update all totals in the cart
     function updateAllTotals() {
         let subtotal = 0;
+        const shipping = parseFloat($('#shipping-cost').data('value')) || 5.00;
+        const itemCount = $('.cart-item').length;
 
         // Calculate each item's total and the subtotal
         $('.cart-item').each(function () {
@@ -100,10 +102,30 @@ $(document).ready(function () {
 
         // Update summary totals
         $('.summary-row:first span:last').text('RM' + subtotal.toFixed(2));
-        $('.summary-total span:last').text('RM' + subtotal.toFixed(2));
+        
+        // Check if cart is empty
+        if (itemCount === 0) {
+            // If cart is empty, show 0 for total and hide shipping
+            $('.summary-total span:last').text('RM0.00');
+            $('.summary-row:contains("Shipping")').hide();
+            $('.checkout-btn').prop('disabled', true);
+            
+            // Add empty cart message if it doesn't exist
+            if ($('.empty-cart').length === 0) {
+                $('.cart-items-grid').html('<div class="empty-cart"><p>Your cart is empty.</p><a href="../MainPage.php" class="continue-shopping-btn">Continue Shopping</a></div>');
+            }
+        } else {
+            // Show shipping row and calculate total with shipping
+            $('.summary-row:contains("Shipping")').show();
+            $('.checkout-btn').prop('disabled', false);
+            
+            // Calculate total (subtotal + shipping)
+            const total = subtotal + shipping;
+            $('.summary-total span:last').text('RM' + total.toFixed(2));
+        }
 
         // Update item count
-        $('.item-count').text($('.cart-item').length + ' Item(s)');
+        $('.item-count').text(itemCount + ' Item(s)');
     }
 
     // Handle quantity buttons in cart
@@ -177,9 +199,10 @@ $(document).ready(function () {
                         $(this).remove();
                         updateAllTotals();
                         updateCartCount();
-                        showFloatingMessage("Item removed from cart", "success");
-
-
+                        
+                        // Show updated total in the message
+                        const newTotal = $('.summary-total span:last').text();
+                        showFloatingMessage("Item removed from cart. Total: " + newTotal, "success");
                     });
                 } else {
                     showFloatingMessage(response.message || "Error removing item", "error");
@@ -212,59 +235,6 @@ $(document).ready(function () {
         };
     }
 
-
-    // Payment option for checkout page
-    if ($('#payment-form').length > 0) {
-
-        $('.payment-option').on('click', function () {
-            // First, reset all options to unselected state
-            $('.payment-option').css({
-                'borderColor': '#e0e0e0',
-                'backgroundColor': 'transparent'
-            });
-
-            // Then highlight the selected option
-            $(this).css({
-                'borderColor': '#47186e',
-                'backgroundColor': '#f5f0ff'
-            });
-
-            // Set the radio input as checked
-            $(this).find('input[type="radio"]').prop('checked', true);
-        });
-
-        // Also handle when radio button is directly clicked
-        $('input[name="payment_type"]').on('change', function () {
-            // Reset all options
-            $('.payment-option').css({
-                'borderColor': '#e0e0e0',
-                'backgroundColor': 'transparent'
-            });
-
-            // Highlight container of selected radio
-            $(this).closest('.payment-option').css({
-                'borderColor': '#47186e',
-                'backgroundColor': '#f5f0ff'
-            });
-        });
-
-        // Form validation on submit
-        $('#payment-form').on('submit', function (e) {
-            // Get the clicked button
-            const clickedButton = $(document.activeElement);
-
-            // Only validate if confirming payment (not cancelling)
-            if (clickedButton.attr('name') === 'confirm_payment') {
-                const paymentSelected = $('input[name="payment_type"]:checked').length > 0;
-
-                if (!paymentSelected) {
-                    e.preventDefault();
-                    showFloatingMessage('Please select a payment method.', 'error');
-                    return false;
-                }
-            }
-        });
-    }
 
     // Print receipt
     $("#print-receipt").on("click", function () {

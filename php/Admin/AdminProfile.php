@@ -147,7 +147,7 @@ includeAdminNav();
             <div class="admin-sidebar">
                 <div class="admin-profile" style="text-align: center;">
                     <img src="<?php echo !empty($admin['ProfilePic']) ? htmlspecialchars($admin['ProfilePic']) : '/WebAssg/upload/icon/UnknownUser.jpg'; ?>"
-                        alt="Admin Profile" class="admin-avatar" id="profile-pic" style="display: block; margin: 0 auto;">
+                        alt="Admin Profile" class="admin-avatar" id="profile-pic">
                     <h3><?php echo htmlspecialchars($admin['Username']); ?></h3>
                     <p>Administrator</p>
                     

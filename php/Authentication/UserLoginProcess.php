@@ -67,6 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         exit();
                     }
                 }
+
             } else {
                 $_SESSION['flash_message'] = [
                     'type' => 'error',
@@ -75,6 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: UserLogin.php");
                 exit;
             }
+
         } else {
             $_SESSION['flash_message'] = [
                 'type' => 'error',
@@ -83,6 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: UserLogin.php");
             exit;
         }
+
     } catch (PDOException $e) {
         error_log("Login error: " . $e->getMessage());
         
@@ -93,6 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: UserLogin.php");
         exit;
     }
+    
 } else {
     $_SESSION['flash_message'] = [
         'type' => 'error',

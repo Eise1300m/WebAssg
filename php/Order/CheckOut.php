@@ -43,7 +43,7 @@ try {
 
     $user_id = $userInfo['UserID'];
     
-    // Get user's address
+    // Get user address
     $addressStmt = $_db->prepare("SELECT * FROM address WHERE UserID = ? LIMIT 1");
     $addressStmt->execute([$user_id]);
     $address = $addressStmt->fetch(PDO::FETCH_ASSOC);
@@ -52,7 +52,7 @@ try {
     die("Checkout preparation failed: " . $e->getMessage());
 }
 
-// Check if it  user first order
+// Check if it user first order
 $isFirstOrder = true;
 try {
     $checkOrderStmt = $_db->prepare("SELECT COUNT(*) as order_count FROM orders WHERE UserID = ?");
@@ -96,6 +96,7 @@ $_SESSION['order_details'] = [
 
 // Process payment submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     if (isset($_POST['cancel_checkout'])) {
         // Cancel checkout and return to cart
         header("Location: Cart.php?cancelled=1");
@@ -103,11 +104,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     if (isset($_POST['confirm_payment'])) {
-        if (!isset($_POST['payment_type']) || empty($_POST['payment_type'])) {
-            $_SESSION['payment_error'] = "Please select a payment method.";
-            header("Location: CheckOut.php");
-            exit;
-        }
         
         $payment_type = $_POST['payment_type'];
         
@@ -171,7 +167,6 @@ includeNavbar();
     <link rel="stylesheet" href="../../css/CheckOutstyles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../../js/Scripts.js"></script>
-
 </head>
 <body>
     
@@ -181,16 +176,8 @@ includeNavbar();
             <p>Complete your order</p>
         </div>
         
-        <?php if (!empty($payment_error)): ?>
-        <div class="floating-message">
-            <?php echo htmlspecialchars($payment_error); ?>
-        </div>
-
-        <?php endif; ?>
-        
         <div class="payment-body">
-            
-            
+        
             <div class="order-summary">
                 <h2 class="section-title">Order Summary</h2>
                 
@@ -319,8 +306,7 @@ includeNavbar();
         </div>
     </div>
     
-    <?php include 'footer.php'; ?>
-    <script src="../js/order.js"></script>
     
 </body>
+
 </html>

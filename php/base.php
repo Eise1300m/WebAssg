@@ -31,21 +31,21 @@ function redirect($url) {
 // Common authentication check
 function requireLogin() {
     if (!isset($_SESSION['user_name'])) {
-        redirect('UserLogin.php');
+        redirect('/WebAssg/php/Authentication/UserLogin.php');
     }
 }
 
 // Common admin check
 function requireAdmin() {
     if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-        redirect('UserLogin.php');
+        redirect('/WebAssg/php/Authentication/UserLogin.php');
     }
 }
 
 // Common customer check
 function requireCustomer() {
     if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'customer') {
-        redirect('UserLogin.php');
+        redirect('/WebAssg/php/Authentication/UserLogin.php');
     }
 }
 
@@ -126,7 +126,7 @@ function includeNavbar() {
 }
 
 function includeAdminNav() {
-    // Include with absolute path
+
     include_once dirname(__FILE__) . '/navbaradmin.php';
 }
 

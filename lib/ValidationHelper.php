@@ -11,37 +11,6 @@ class ValidationHelper {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
-    /**
-     * @param string $password The password to validate
-     * @return array Array with 'valid' (boolean) and 'message' (string) if invalid
-     */
-    public static function validatePassword($password) {
-        $result = ['valid' => true, 'message' => ''];
-        
-        // Check minimum length
-        if (strlen($password) < 8) {
-            $result['valid'] = false;
-            $result['message'] = 'Password must be at least 8 characters long';
-            return $result;
-        }
-        
-        // Check for capital letter
-        if (!preg_match('/[A-Z]/', $password)) {
-            $result['valid'] = false;
-            $result['message'] = 'Password must contain at least one capital letter';
-            return $result;
-        }
-        
-        // Check for special character
-        if (!preg_match('/[^a-zA-Z0-9]/', $password)) {
-            $result['valid'] = false;
-            $result['message'] = 'Password must contain at least one special character';
-            return $result;
-        }
-        
-        return $result;
-    }
-
     public static function validatePhone($phone) {
         // Support Malaysian mobile format (01xxxxxxxx) with optional +60/60 prefix
         return preg_match('/^(?:\+?6?01)[0-46-9][0-9]{7,8}$/', $phone);
@@ -328,21 +297,4 @@ class ValidationHelper {
         return ['success' => true];
     }
 
-    // New method to handle file upload
-    // public static function handleFileUpload($file, $uploadDir, $prefix = '') {
-    //     if (!file_exists($uploadDir)) {
-    //         mkdir($uploadDir, 0777, true);
-    //     }
-
-    //     $fileName = $file['name'];
-    //     $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-    //     $newFileName = $prefix . time() . '.' . $fileExt;
-    //     $uploadPath = $uploadDir . $newFileName;
-
-    //     if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
-    //         return ['success' => true, 'path' => $uploadPath];
-    //     }
-
-    //     return ['success' => false, 'message' => 'Failed to upload file.'];
-    // }
 } 

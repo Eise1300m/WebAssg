@@ -11,12 +11,9 @@ displayFlashMessage();
 // Ensure this page is only accessible to admins
 requireAdmin();
 
-// Always set role to admin for this page and ensure it's string "admin" to match database expectations 
+// Always set role to admin for this page 
 $roleValue = "admin";
 
-// Get any previous form data if available (in case of form errors)
-$formData = $_SESSION['signup_data'] ?? [];
-unset($_SESSION['signup_data']); // Clear after retrieving
 
 includeAdminNav();
 

@@ -1,7 +1,4 @@
 <?php
-// Disable error display for this page to ensure clean JSON output
-// ini_set('display_errors', 0);
-// error_reporting(0);
 
 session_start();
 require_once("../base.php");

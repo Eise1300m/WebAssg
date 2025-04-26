@@ -1,8 +1,9 @@
 <?php
 require_once("../base.php");
 
-// Check if user is admin
+// Ensure is logged in and role is admin
 requireAdmin();
+
 
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $query = "

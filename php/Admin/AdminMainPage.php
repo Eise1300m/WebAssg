@@ -19,8 +19,7 @@ if (!isset($admin['Username'])) {
     handleError("Username key is missing in the admin data.");
 }
 
-// Output header with custom title
-// Include navbar
+
 includeAdminNav();
 
 ?>
@@ -51,7 +50,7 @@ includeAdminNav();
             <div class="admin-sidebar">
                 <div class="admin-profile" style="text-align: center;">
                     <img src="<?php echo !empty($admin['ProfilePic']) ? htmlspecialchars($admin['ProfilePic']) : '/WebAssg/upload/icon/UnknownUser.jpg'; ?>"
-                        alt="Admin Profile" class="admin-avatar" style="display: block; margin: 0 auto;">
+                        alt="Admin Profile" class="admin-avatar">
                     <h3><?php echo htmlspecialchars($admin['Username']); ?></h3>
                     <p>Administrator</p>
                 </div>
@@ -112,18 +111,6 @@ includeAdminNav();
         </div>
     </main>
     
-    <script>
-        // Auto-hide flash messages after 5 seconds
-        $(document).ready(function() {
-            // Make flash messages visible first (they start with opacity 0)
-            $('.flash-message').css('opacity', '1');
-            
-            // Then fade them out after delay
-            setTimeout(function() {
-                $('.flash-message').fadeOut(500);
-            }, 5000);
-        });
-    </script>
 </body>
 
 </html>

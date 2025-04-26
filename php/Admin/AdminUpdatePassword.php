@@ -1,15 +1,14 @@
 <?php
 session_start();
 require_once("../base.php");
+require_once("../../lib/FormHelper.php");
+require_once("../../lib/ValidationHelper.php");
 
-// Change user check to admin check
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    header("Location: UserLogin.php");
-    exit;
-}
+requireAdmin(); 
 
 $username = $_SESSION['user_name'];
 $updateMessage = "";
+$passwordUpdateSuccess = false;
 
 // Get Admin Info
 $stmt = $_db->prepare("SELECT * FROM users WHERE Username = ? AND Role = 'admin'");
@@ -22,20 +21,35 @@ if (!$admin) {
 
 // Handle Password Change
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
-    $old_password = $_POST["old_password"];
-    $new_password = $_POST["psw"];
-    $confirm_password = $_POST["pswcfm"];
+    $old_password = $_POST["old_password"] ?? '';
+    $new_password = $_POST["new_password"] ?? '';
+    $confirm_password = $_POST["confirm_password"] ?? '';
 
-    if (!password_verify($old_password, $admin["Password"])) {
-        $updateMessage = "❌ Incorrect current password!";
+    // Validate inputs
+    if (empty($old_password)) {
+        $updateMessage = "❌ Current password is required";
+    } elseif (!ValidationHelper::verifyPassword($old_password, $admin["Password"])) {
+        $updateMessage = "❌ Incorrect current password";
+    } elseif (empty($new_password)) {
+        $updateMessage = "❌ New password is required";
+    } elseif (strlen($new_password) < 6) {
+        $updateMessage = "❌ Password must be at least 6 characters long";
+    } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).+$/', $new_password)) {
+        $updateMessage = "❌ Password must include at least one lowercase letter, one uppercase letter, and one special character";
+    } elseif (empty($confirm_password)) {
+        $updateMessage = "❌ Please confirm your password";
     } elseif ($new_password !== $confirm_password) {
-        $updateMessage = "❌ New passwords do not match!";
+        $updateMessage = "❌ Passwords do not match";
     } else {
-        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+       
+        $hashed_password = ValidationHelper::hashPassword($new_password);
         $stmt = $_db->prepare("UPDATE users SET Password = ? WHERE Username = ? AND Role = 'admin'");
         if ($stmt->execute([$hashed_password, $username])) {
-            $updateMessage = "✅ Password updated successfully!";
-            header("refresh:2;url=AdminProfile.php");
+            $updateMessage = "✅ Password updated successfully! Please log in again.";
+            $passwordUpdateSuccess = true;
+            session_regenerate_id(true); // Regenerate session ID for security
+        } else {
+            $updateMessage = "❌ An error occurred. Please try again.";
         }
     }
 }
@@ -69,7 +83,7 @@ includeAdminNav();
             <div class="admin-sidebar">
             <div class="admin-profile" style="text-align: center;">
                     <img src="<?php echo !empty($admin['ProfilePic']) ? htmlspecialchars($admin['ProfilePic']) : '/WebAssg/upload/icon/UnknownUser.jpg'; ?>"
-                        alt="Admin Profile" class="admin-avatar" style="display: block; margin: 0 auto;">
+                        alt="Admin Profile" class="admin-avatar">
                     <h3><?php echo htmlspecialchars($admin['Username']); ?></h3>
                     <p>Administrator</p>
                 </div>
@@ -93,12 +107,22 @@ includeAdminNav();
                 <?php if ($updateMessage): ?>
                     <div class="admin-message"><?php echo $updateMessage; ?></div>
                 <?php endif; ?>
+                
+                <?php if ($passwordUpdateSuccess): ?>
+                    <!-- Hidden element for JS to detect and perform redirect -->
+                    <div id="password-update-success" data-redirect-url="/WebAssg/php/Authentication/logout.php" style="display: none;"></div>
+                <?php endif; ?>
 
                 <div class="admin-form-section">
                     <h2 class="section-title">
                         <img src="/WebAssg/upload/icon/lock.png" alt="Security" class="section-icon">
                         Change Password
                     </h2>
+                    
+                    <div class="form-info-message" style="color: white; margin-bottom: 10px;">
+                        Password must contain at least 6 characters, including an uppercase letter, 
+                        a lowercase letter, and a special character.
+                    </div>
 
                     <form class="admin-form" method="POST" action="">
                         <div class="form-group">

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("connection.php");
+require_once("../connection.php");
 
 header('Content-Type: application/json');
 
@@ -68,12 +68,28 @@ try {
             'ShippingAddress' => $order['ShippingAddress']
         ],
         'items' => array_map(function($item) {
+            // Fix the book image path
+            $bookImage = $item['BookImage'];
+            if (!empty($bookImage) && strpos($bookImage, '/WebAssg') !== 0) {
+                
+                if (strpos($bookImage, '../') === 0) {
+                    
+                    $bookImage = '/WebAssg/' . substr($bookImage, 3);
+                } else {
+                    
+                    $bookImage = '/WebAssg/' . $bookImage;
+                }
+            }
+            
+            // Use the fixed path or default if empty
+            $bookImage = !empty($bookImage) ? $bookImage : '/WebAssg/upload/bookPfp/BookCoverUnavailable.webp';
+            
             return [
                 'BookName' => $item['BookName'],
                 'Author' => $item['Author'],
                 'Quantity' => $item['Quantity'],
                 'Price' => $item['Price'],
-                'BookImage' => $item['BookImage'] ?? '../upload/bookPfp/default-book.png'
+                'BookImage' => $bookImage
             ];
         }, $items)
     ];
@@ -82,6 +98,6 @@ try {
     
 } catch (PDOException $e) {
     error_log("Database error: " . $e->getMessage());
-    echo json_encode(['error' => 'Database error occurred']);
+    echo json_encode(['error' => 'Database error occurred: ' . $e->getMessage()]);
 }
 ?> 

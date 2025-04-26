@@ -615,10 +615,12 @@ function filterCustomerCards(query) {
 
 // Order Details Modal
 function viewOrderDetails(orderId) {
+
     $.ajax({
-        url: 'fetchOrderDetails.php',
+        url: '/WebAssg/php/Order/fetchOrderDetails.php',
         type: 'POST',
         data: { order_id: orderId },
+        
         success: function(response) {
             try {
                 if (typeof response === 'string') {
@@ -738,6 +740,7 @@ function closeOrderModal() {
 
 // Order cancellation functionality
 (function() {
+    
     // Private variable to store the order ID being cancelled
     // let orderIdToCancel = null;
     
@@ -765,13 +768,7 @@ function closeOrderModal() {
             closeCancelModal();
         });
         
-        // // Use event delegation to handle cancel button clicks
-        // $(document).on('click', '.cancel-btn[data-order-id]', function() {
-        //     const orderId = $(this).data('order-id');
-        //     if (orderId) {
-        //         showCancelModal(orderId);
-        //     }
-        // });
+
     });
     
     // Function to show the cancel modal
@@ -786,43 +783,13 @@ function closeOrderModal() {
         orderIdToCancel = null;
     }
     
-    // // Function to process the order cancellation
-    // function processOrderCancellation() {
-    //     if (!orderIdToCancel) return;
-        
-    //     $.ajax({
-    //         url: 'update_order_status.php',
-    //         type: 'POST',
-    //         data: { 
-    //             order_id: orderIdToCancel,
-    //             new_status: 'Cancelled'
-    //         },
-    //         dataType: 'json',
-    //         success: function(response) {
-    //             if (response.success) {
-    //                 showFloatingMessage('Order cancelled successfully!', 'success');
-    //                 setTimeout(function() {
-    //                 location.reload();
-    //                 }, 1500);
-    //             } else {
-    //                 showFloatingMessage(response.message || 'Failed to cancel order.', 'error');
-    //             }
-    //             closeCancelModal();
-    //         },
-    //         error: function() {
-    //             showFloatingMessage('Error cancelling order. Please try again.', 'error');
-    //             closeCancelModal();
-    //         }
-    //     });
-    // }
-    
     // Expose functions to the global scope
     window.cancelOrder = showCancelModal;
     window.closeCancelModal = closeCancelModal;
     // window.confirmCancel = processOrderCancellation;
 })();
 
-// Function to initialize image preview functionality
+// Function to initialize image preview in the book CRUD modal
 function initializeImagePreview() {
     // Book image preview - make sure CSS is set correctly
     if ($('#image-preview-container').length) {

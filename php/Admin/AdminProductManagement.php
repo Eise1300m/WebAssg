@@ -6,10 +6,12 @@ BookHelper::init($_db);
 
 requireAdmin();
 
+// read filters from URL parameters
 $categoryFilter = isset($_GET['category']) ? $_GET['category'] : 'all';
 $subcategoryFilter = isset($_GET['subcategory']) ? $_GET['subcategory'] : 'all';
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
 
+// build the query for the books
 $query = "
     SELECT b.*, s.SubcategoryName, s.CategoryNo, c.CategoryName 
     FROM book b 
@@ -18,7 +20,7 @@ $query = "
     WHERE 1=1
 ";
 
-// Add filters if selected
+// Build SQL Query with Filters
 $params = [];
 if ($categoryFilter !== 'all') {
     $query .= " AND s.CategoryNo = ?";
@@ -60,6 +62,7 @@ includeAdminNav();
 
 displayFlashMessage();
 
+// build a map of subcategories by category (used for synamic dropdown for subcategories)
 $subcategoriesMap = [];
 foreach ($allSubcategories as $sub) {
     if (!isset($subcategoriesMap[$sub['CategoryNo']])) {

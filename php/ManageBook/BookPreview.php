@@ -155,6 +155,7 @@ includeNavbar();
                     <?php endif; ?>
                 </div>
 
+                <!-- if login then write review button , else login page-->
                 <?php if (isset($_SESSION['user_name'])): ?>
                     <button class="redirect-button write-review-btn" data-redirect-url='/WebAssg/php/ManageBook/WriteReview.php?book_id=<?php echo $bookId; ?>'>
                         <img src="/WebAssg/upload/icon/edit.png" alt="Edit" class="btn-icon"> Write a Review

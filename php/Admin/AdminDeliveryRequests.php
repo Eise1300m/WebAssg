@@ -3,7 +3,7 @@ session_start();
 require_once("../base.php");
 
 requireAdmin();
-// Handle order status update
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_status') {
     // Set JSON content type header
     header('Content-Type: application/json');
@@ -22,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             exit();
         }
 
-        // Validate status transition
         $validTransitions = [
             'Preparing' => ['Delivering'],
             'Collected' => ['Complete']
@@ -226,6 +225,7 @@ displayFlashMessage();
             <span class="close">&times;</span>
             <h2>Order Details</h2>
             <div id="orderDetailsContent">
+                <!--show order details here by fetching from fetchOrderDetails.php using ajax and show in modal in json format-->
             </div>
         </div>
     </div>

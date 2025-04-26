@@ -113,10 +113,10 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     RM 5.00
                                 </p>
                                 <?php if ($isFirstOrder): ?>
-                                <p>
-                                    </i> First Order Discount:
-                                    <span style="color: #4CAF50;">20% OFF</span>
-                                </p>
+                                    <p>
+                                        </i> First Order Discount:
+                                        <span style="color: #4CAF50;">20% OFF</span>
+                                    </p>
                                 <?php endif; ?>
                                 <p>
                                     Total Price:
@@ -156,18 +156,10 @@ $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                         </div>
 
-                        <div class="order-actions">
-                            <?php if ($order['OrderStatus'] === 'Delivering'): ?>
-                                <button class="collect-btn" data-order-id="<?php echo htmlspecialchars($order['OrderNo']); ?>">
-                                    <i class="fa fa-check"></i>
-                                    Confirm Collection
-                                </button>
-                            <?php endif; ?>
-
-                        </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </main>
 

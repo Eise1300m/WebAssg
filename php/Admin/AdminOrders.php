@@ -178,13 +178,14 @@ includeAdminNav();
 
             <!-- Pagination -->
             <?php
-            // Build the URL pattern preserving existing parameters
+            // keep any existing filters/search parameters in the URL when paginating, 
+            //so users don’t lose their place or search context when clicking to another page
             $urlParams = $_GET;
             unset($urlParams['page']); // Remove page so we can set it in the pattern
             $queryString = http_build_query($urlParams);
-            $urlPattern = 'AdminOrders.php?' . ($queryString ? $queryString . '&' : '') . 'page=:page';
+            $urlPattern = 'AdminOrders.php?' . ($queryString ? $queryString . '&' : '') . 'page=:page'; // build a URL pattern where ':page' will be replaced with the actual page number.
 
-            // Generate pagination links
+            // use PaginationHelper to generate the HTML for the page links.
             echo $paginationHelper->generatePaginationLinks(
                 $pagination['currentPage'],
                 $pagination['totalPages'],

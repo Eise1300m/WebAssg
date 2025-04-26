@@ -23,7 +23,7 @@ function initializeStarRating() {
             label.appendChild(starImg);
         }
 
-        // Change to filled star on hover
+        // When a label (star) is hovered, fill all previous stars
         label.addEventListener('mouseenter', function() {
             this.querySelector('.star-icon').src = '/WebAssg/upload/icon/star-filled.png';
             let prevSibling = this.previousElementSibling;
@@ -68,7 +68,7 @@ function resetStars() {
         if (starValue <= selectedRating) {
             starImg.src = '/WebAssg/upload/icon/star-filled.png';
         } else {
-            starImg.src = '/WebAssg/upload/icon/star-empty.png'; // Using your filename
+            starImg.src = '/WebAssg/upload/icon/star-empty.png'; 
         }
     });
 }

@@ -7,20 +7,6 @@ requireLogin();
 includeNavbar();
 displayFlashMessage();
 
-
-// Handle order collection confirmation
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'confirm_collection') {
-    $response = confirmOrderCollection($_POST['order_id']);
-    echo json_encode($response);
-    exit();
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'cancel_order') {
-    header('Content-Type: application/json');
-    echo json_encode(['success' => false, 'message' => 'Having linking problem. Please use updateOrderStatus.php']);
-    exit();
-}
-
 $username = $_SESSION['user_name'];
 
 $stmt = $_db->prepare("SELECT UserID, ProfilePic, Username FROM users WHERE UserName = ?");

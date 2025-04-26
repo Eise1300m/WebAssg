@@ -1,10 +1,10 @@
 <?php
 /**
- * A utility class to handle pagination for database queries
+ * This class makes it easy to paginate database results and generate
  */
 class PaginationHelper {
     private static $_instance = null;
-    private $_db = null;
+    private $_db = null; // store the database connection
     
     private function __construct($db) {
         $this->_db = $db;
@@ -38,28 +38,29 @@ class PaginationHelper {
      * @return array Contains 'items', 'totalItems', 'totalPages', 'currentPage'
      */
     public function paginate($baseQuery, $orderBy, $params = [], $page = 1, $itemsPerPage = 10, $countField = '*') {
-        // Ensure page is at least 1
+        // Make sure page and itemsPerPage are at least 1
         $page = max(1, intval($page));
         $itemsPerPage = max(1, intval($itemsPerPage));
         
-        // Get total count
+        // Get total count of our items
         $countQuery = "SELECT COUNT($countField) as total FROM (" . $baseQuery . ") as count_table";
         $stmt = $this->_db->prepare($countQuery);
         $stmt->execute($params);
         $totalItems = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
         
-        // Calculate total pages
+        // see how many pages we need
         $totalPages = ceil($totalItems / $itemsPerPage);
         
         // Calculate offset
         $offset = ($page - 1) * $itemsPerPage;
         
-        // Get paginated items
+        // Get the items for the this page
         $fullQuery = $baseQuery . " " . $orderBy . " LIMIT " . $offset . ", " . $itemsPerPage;
         $stmt = $this->_db->prepare($fullQuery);
         $stmt->execute($params);
         $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
+        // return the result here
         return [
             'items' => $items,
             'totalItems' => $totalItems,
@@ -85,14 +86,14 @@ class PaginationHelper {
         
         $html = '<div class="pagination">';
         
-        // Previous link
+        // Previous button to redirect previous page
         if ($currentPage > 1) {
             $html .= '<a href="' . str_replace(':page', ($currentPage - 1), $urlPattern) . '" class="page-link prev">&laquo;</a>';
         } else {
             $html .= '<span class="page-link disabled">&laquo;</span>';
         }
         
-        // Calculate range of page links to show
+        // Calculate which page to show
         $startPage = max(1, $currentPage - floor($maxLinks / 2));
         $endPage = min($totalPages, $startPage + $maxLinks - 1);
         
@@ -109,7 +110,7 @@ class PaginationHelper {
             }
         }
         
-        // Page links
+        // show the main page current link
         for ($i = $startPage; $i <= $endPage; $i++) {
             if ($i === $currentPage) {
                 $html .= '<span class="page-link current">' . $i . '</span>';
@@ -126,7 +127,7 @@ class PaginationHelper {
             $html .= '<a href="' . str_replace(':page', $totalPages, $urlPattern) . '" class="page-link">' . $totalPages . '</a>';
         }
         
-        // Next link
+        // Next button to redirect next page
         if ($currentPage < $totalPages) {
             $html .= '<a href="' . str_replace(':page', ($currentPage + 1), $urlPattern) . '" class="page-link next">&raquo;</a>';
         } else {
