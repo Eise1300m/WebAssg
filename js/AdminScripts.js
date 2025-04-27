@@ -1,11 +1,11 @@
 // Use IIFE to avoid global scope pollution
 const ProductManagement = (function ($) {
     // Private variables
-    let _subcategoriesByCategory = {};
+    let _subcategoriesByCategory = {}; 
     let _currentCategoryFilter = 'all';
     let _currentSubcategoryFilter = 'all';
 
-    // Private functions
+    // a dropdown filter for subcategories based on the selected category
     function _updateSubcategoryFilter() {
         const categorySelect = document.getElementById('category-filter');
         const subcategorySelect = document.getElementById('subcategory-filter');
@@ -46,11 +46,13 @@ const ProductManagement = (function ($) {
         }
     }
 
+    // reset the filter form to default
     function _handleFilterReset(e) {
         e.preventDefault();
         window.location.href = 'AdminProductManagement.php';
     }
 
+    // set up the category and subcategory filters
     function _initializeFilters() {
         const subcategoriesData = document.getElementById('subcategories-data');
         if (subcategoriesData) {
@@ -75,6 +77,7 @@ const ProductManagement = (function ($) {
         }
     }
 
+    // set up the event listeners for the category and subcategory filters + reset the filter form
     function _setupEventListeners() {
         // Category filter change event
         const categoryFilter = document.getElementById('category-filter');
@@ -91,6 +94,7 @@ const ProductManagement = (function ($) {
 
     // Public methods
     return {
+        // initialize the filters and event listeners
         init: function () {
             $(document).ready(function () {
                 _initializeFilters();
@@ -98,6 +102,7 @@ const ProductManagement = (function ($) {
             });
         },
 
+        // show the add product form
         showAddProductForm: function () {
             const modal = document.getElementById('productModal');
             if (modal) {
@@ -105,6 +110,7 @@ const ProductManagement = (function ($) {
             }
         },
 
+        // edit a book
         editBook: function (bookId) {
         // Reset any previous preview
         $('#image-preview-container').hide();

@@ -158,5 +158,15 @@ if (!empty($cart)) {
         </div>
     </div>
  
+    <?php
+    // Recalculate total after the cart items loop is complete
+    $total = $subtotal + $shipping;
+
+    // Store the total in session for use in checkout
+    $_SESSION['cart_total'] = $total;
+    $_SESSION['cart_subtotal'] = $subtotal;
+    $_SESSION['cart_shipping'] = $shipping;
+    ?>
+
 </body>
 </html>
