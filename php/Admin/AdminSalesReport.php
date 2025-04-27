@@ -5,7 +5,6 @@ require_once("../../lib/PaginationHelper.php");
 
 PaginationHelper::init($_db);
 
-
 requireAdmin();
 
 // Get pagination parameters

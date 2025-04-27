@@ -247,7 +247,7 @@ body {
 }
 
 .product-table th {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgb(45, 35, 71);
     color: #fff;
     padding: 15px;
     text-align: left;

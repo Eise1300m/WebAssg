@@ -440,18 +440,3 @@ function initializeHelp() {
         $('#' + tabId).addClass('active');
     });
 }
-
-// Delayed redirect after password update
-function initializePasswordUpdateRedirect() {
-    const passwordUpdateSuccess = document.getElementById('password-update-success');
-    
-    if (passwordUpdateSuccess) {
-        const redirectUrl = passwordUpdateSuccess.getAttribute('data-redirect-url');
-        
-        if (redirectUrl) {
-            setTimeout(function() {
-                window.location.href = redirectUrl;
-            }, 2000); // 2 seconds delay
-        }
-    }
-}

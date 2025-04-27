@@ -2,10 +2,7 @@
 session_start();
 require_once("../base.php");
 
-if (!isset($_SESSION['user_name'])) {
-    header("Location: /WebAssg/php/Authentication/UserLogin.php");
-    exit;
-}
+requireLogin();
 
 $username = $_SESSION['user_name'];
 $error_message = "";
@@ -46,8 +43,6 @@ if (isset($_GET['book_id'])) {
 
         if ($rating < 1 || $rating > 5) {
             $error_message = "Please select a rating between 1 and 5 stars.";
-        } elseif (empty($review_text)) {
-            $error_message = "Please write a review.";
         } else {
             try {
                 if ($existing_review) {

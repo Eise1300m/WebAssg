@@ -747,8 +747,6 @@ function closeOrderModal() {
 // Order cancellation functionality
 (function() {
     
-    // Private variable to store the order ID being cancelled
-    // let orderIdToCancel = null;
     
     // Initialize event listeners when document is ready
     $(document).ready(function() {
@@ -762,11 +760,6 @@ function closeOrderModal() {
             if ($(event.target).is('#cancelModal')) {
                 closeCancelModal();
             }
-        });
-        
-        // Handle confirm button click in cancel modal
-        $(document).on('click', '#cancelModal .confirm-btn', function() {
-            processOrderCancellation();
         });
         
         // Handle cancel button click in cancel modal

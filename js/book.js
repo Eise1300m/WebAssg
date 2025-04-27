@@ -15,7 +15,7 @@ function initializeStarRating() {
         starImg.alt = 'Star';
         starImg.className = 'star-icon';
         
-        // Replace the existing <i> element with our new image
+        // Replace the existing <i> element with new image
         const existingIcon = label.querySelector('i');
         if (existingIcon) {
             existingIcon.replaceWith(starImg);
